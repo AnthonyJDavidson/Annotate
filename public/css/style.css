@@ -1,0 +1,124 @@
+/*	css page will be broekn up via large description ascii lettering  */
+
+
+body{
+	/*background: linear-gradient(#B1B8FA, #FFFFFF)*/
+}
+
+.header{
+	background-color: #707EFF;
+	margin-bottom: 5px;
+}
+#title{
+	color: black;
+	font-size: 4em;
+	font-style: bold;
+	padding: 20px;
+}
+
+#title_descrip{
+	float: right;
+	font-size: 2em;
+	font-style: italic;
+	padding: 20px;
+}
+#nav_menu{
+	margin: 0;
+	padding: 0;
+	background-color: #4C55A8;
+}
+
+#navigation li{
+	background-color: #4C55A8;
+	float: left;
+	width: 33%;
+	color: #FFFFFF;
+	font-size: 2em;
+	text-align: center;
+	margin-bottom: 5px;
+}
+#navigation a:link{
+	text-decoration:none;
+	color: #fff;
+}
+#navigation a:visited{
+	text-decoration:none;
+	color: #fff;
+}
+#navigation a:hover{
+	color: #EDE29D;
+}
+#navigation a:active {
+	text-decoration:none;
+	color: #4C55A8;
+}
+#footer{
+	clear: both;
+	background-color: #707EFF;
+	padding: 10px; 
+}
+
+.page-content{
+	clear: both;
+	background-color: #C5C9F0;
+	margin-bottom: 5px;
+}
+
+/* home */
+
+#homepage{
+	padding: 15px;
+}
+
+/* Login */
+
+#loginBase{
+	text-align: center;
+}
+#loginTitle{
+	font-size: 3em;
+	font-style: bold;
+}
+#loginBase ul{
+	margin: 0;
+	padding: 0;
+	padding-bottom: 5px;
+}
+#loginBase li{
+	margin-top: 5px;
+	list-style-type: none;
+}
+
+/* literatue */
+
+#left_col{
+	clear: both;
+	border: solid;
+	border-width: .1em;
+	max-width: 15%;
+	max-height: 100%;
+	float: left;
+	background-color: #C5C9F0;
+	height: 80%;
+	list-style-type: none;
+}
+#left_col ul{
+	margin: 10px;
+	padding: 0;
+}
+
+#filters{
+	list-style-type: none;
+}
+#annotation_text{
+	background-color: #C5C9F0;
+	height: 80%;
+	float: left;
+	width: 90%;
+	border: solid;
+	border-width: .1em;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+
