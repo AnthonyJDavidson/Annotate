@@ -16,6 +16,7 @@ Route::get('/', array('as' => 'home', 'uses' => 'HomeController@getIndex'));
 Route::get('/home',function(){ return View::make('home'); });
 /* Route::get('/literature',function(){ return View::make('literature'); }); */
 Route::get('/literature',array('before' => 'auth', function(){ return View::make('literature'); })); 
+Route::get('/documentUpload',array('before' => 'auth', function(){ return View::make('documentUpload'); }));
 Route::get('/about',function(){ return View::make('about'); });
 /*Route::get('/login',function(){ return View::make('login'); });*/
 
@@ -37,3 +38,6 @@ Route::get('signOut', array('before' => 'auth', 'as' => 'account-signOut', 'uses
 //Change Password
 Route::get('changePassword', array('before' => 'auth', 'as'	=> 'changePassword', 'uses' => 'UserController@getChangePassword'));
 Route::post('changePassword', array('before' => 'auth', 'as'	=> 'changePassword-post', 'uses' => 'UserController@postChangePassword'));
+
+//Document Upload
+Route::post('docUpload',array('as'=>'docUpload','uses'=>'DocumentController@docUpload'));
