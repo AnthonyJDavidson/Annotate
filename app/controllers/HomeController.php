@@ -15,9 +15,21 @@ class HomeController extends BaseController {
 	
 	*/
 
-	public function getIndex()
-	{
-		return View::make('home');
-	}
+	public function getIndex(){
+		if (Auth::check()){
+			$user = User::find(Auth::user()->id);
+			$userGroups = UserGroup::where('user_id','=',$user->id)->get();
+			$groups = array();
+			foreach($userGroups as $uGroup){
+				$groups[$uGroup->group_id] = Group::where('id','=',$uGroup->group_id)->get();
+			}
+			$documents = array();
+			foreach ($groups as $group => $value){
+				$documents[$group] = Document::where('group_id','=',$group)->get();
+			}
+			$data = array('groups'=>$groups,'documents'=>$documents);
+			return View::make('myProfile',$data);
 
+		}else return View::make('home');
+	}
 }

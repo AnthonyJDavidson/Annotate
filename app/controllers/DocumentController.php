@@ -2,8 +2,7 @@
 
 class DocumentController extends BaseController {
 
-	public function docUpload()
-		{
+	public function docUpload(){
 			$user = User::find(Auth::user()->id); 
 			if(!$user)return 'Please Log in';
 
@@ -14,8 +13,7 @@ class DocumentController extends BaseController {
 
 			
 			//randomising the name of the document so that duplicate names are not possible
-			function randString($length)
-			{
+			function randString($length){
 			    $str = '';
 			    $charset='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 			    $count = strlen($charset);
@@ -28,17 +26,17 @@ class DocumentController extends BaseController {
 
 			//Check if logo directory exists
 			if(is_dir('documents')){
-				if($filetype == "txt") $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
-				else if ($filetype == "docx")  $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
-				else if ($filetype == "doc")  $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
+				/*if($filetype == "txt")*/ $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
+				//else if ($filetype == "docx")  $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
+				//else if ($filetype == "doc")  $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
 			}
 			else{
 				$old = umask(0);
 				mkdir('documents', 0777);
 				umask($old);
-				if($filetype == "txt") $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
-				else if ($filetype == "docx")  $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
-				else if ($filetype == "doc")  $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
+				/*if($filetype == "txt")*/ $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
+				//else if ($filetype == "docx")  $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
+				//else if ($filetype == "doc")  $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
 			}
 
 			if($result){ //i.e. if all goes well uploading the document

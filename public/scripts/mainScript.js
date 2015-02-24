@@ -4,7 +4,7 @@ jQuery(function ($) { // more elegant way of doing this?
 
 	//Document Upload
 	$("#uploadDoc").click(function(e){
-	    if (confirm("Accepted extensions: .doc .docx .txt") == false) e.preventDefault();
+	    if (confirm("Accepted extensions: .txt") == false) e.preventDefault();
 	});
 
 	$("#uploadDoc").change(function(e){
@@ -21,7 +21,7 @@ jQuery(function ($) { // more elegant way of doing this?
 	        console.log("uploadingDocument");
 	        file.ext = (file.name.substring(file.name.lastIndexOf('.') + 1)).toLowerCase();
 	        file.fname = (file.name.substring(0, file.name.lastIndexOf('.'))).toLowerCase();
-	        if(file.ext == "doc" || file.ext == "docx" || file.ext == "txt"){
+	        if(/*file.ext == "doc" || file.ext == "docx" || */file.ext == "txt"){
 	            var reader = new FileReader();
 	            reader.onload = function(e) {
 	                console.log("reader onload");
@@ -29,7 +29,7 @@ jQuery(function ($) { // more elegant way of doing this?
 	                sendDocument(file);
 	            };
 	            reader.readAsDataURL(file);
-	        }else alert("unsupported filetype, please use .doc, .docx, .txt");
+	        }else alert("unsupported filetype, please use .txt");
 	    }
 	    function sendDocument(file){
 	    	console.log("sending");

@@ -13,7 +13,8 @@
 
 
 Route::get('/', array('as' => 'home', 'uses' => 'HomeController@getIndex'));
-Route::get('/home',function(){ return View::make('home'); });
+Route::get('/home',array('as' => 'home', 'uses' => 'HomeController@getIndex'));
+
 /* Route::get('/literature',function(){ return View::make('literature'); }); */
 Route::get('/literature',array('before' => 'auth', function(){ return View::make('literature'); })); 
 Route::get('/documentUpload',array('before' => 'auth', function(){ return View::make('documentUpload'); }));
