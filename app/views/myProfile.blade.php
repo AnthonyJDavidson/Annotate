@@ -3,38 +3,28 @@
 @section('content')
 		<div class="page-content">
 			<div id="myProfile">
-			@foreach($groups as $group)
-				{{$group}}
-				@endforeach
+				<h1>My Groups</h1>
+				@foreach($groups as $group)
+				<h2>{{$group["name"]}}</h2>
 				<table>
 					<thead>
 						<tr>
-							<th class="tHead">Name</th>
-							<th class="tHead">Name</th>
-							<th class="tHead">Name</th>
-							<th class="tHead">Name</th>
-							<th class="tHead">Name</th>
+							<th class="tHead">Available Documents</th>
 						</tr>
 					</thead>
 					<tbody>
-							<tr> 
-								<td class="text-info"> Item</td>
-								<td class="text-info"> Item</td>
-								<td class="text-info"> Item</td>
-								<td class="text-info"> Item</td>
-								<td class="text-info"> Item</td>
-							</tr>
-
-							<tr> 
-								<td class="text-info"> Item</td>
-								<td class="text-info"> Item</td>
-								<td class="text-info"> Item</td>
-								<td class="text-info"> Item</td>
-								<td class="text-info"> Item</td>
-							</tr>
+							@foreach($documents as $doc)
+								@if($doc["group_id"] == $group["id"])
+									<tr> 
+										<td class"docName" id="g{{$group["id"]}}d{{$doc["id"]}}" data="{{$doc["storage_name"]}}"> {{$doc["name"]}} </td>
+										
+									</tr>
+								@endif
+							@endforeach
 					
 					</tbody>
 				</table>
+				@endforeach
 				
 			</div>
 		</div>

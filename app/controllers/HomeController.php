@@ -21,13 +21,29 @@ class HomeController extends BaseController {
 			$userGroups = UserGroup::where('user_id','=',$user->id)->get();
 			$groups = array();
 			foreach($userGroups as $uGroup){
-				$groups[$uGroup->group_id] = Group::where('id','=',$uGroup->group_id)->get();
+				//find all groups
+				$groups[$uGroup->group_id] = Group::where('id','=',$uGroup->group_id)->get()->first();
 			}
 			$documents = array();
-			foreach ($groups as $group => $value){
-				$documents[$group] = Document::where('group_id','=',$group)->get();
+			$gs = array();
+			foreach ($groups as $g){
+				//find all correspondin documents
+				$documents[$g->id] = Document::where('group_id','=',$g->id)->get();
+				//sort groups for array to send back ($data)
+				$gs[$g->id] = array('id' => $g->id, 'name' => $g->name);
+				//above quicker/more intuitive way?
 			}
-			$data = array('groups'=>$groups,'documents'=>$documents);
+			//Doc array for send back $data
+			$ds = array();
+			foreach ($documents as $doc){
+				foreach ($doc as $d ) {
+					$ds[$d->id] = array('id' => $d->id, 'group_id' => $d->group_id, "name" => $d->name,"storage_name" =>$d->storage_name);
+				}
+			}
+
+			
+
+			$data = array('groups'=>$gs,'documents'=>$ds);
 			return View::make('myProfile',$data);
 
 		}else return View::make('home');
