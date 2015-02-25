@@ -16,6 +16,8 @@ jQuery(function ($) { // more elegant way of doing this?
 	    var docFound = false;
 	    var files = scope.files;
 	    var stop=false;
+	    var groupId = $(".uploadDocument").data("group");
+	    console.log(groupId);
 	        
 	    function findDocument(file){
 	        console.log("uploadingDocument");
@@ -35,7 +37,7 @@ jQuery(function ($) { // more elegant way of doing this?
 	    	console.log("sending");
 	        $.ajax({
 	            type: "POST",
-	            data: {file: file.fileText, filetype: file.ext, name: file.fname},
+	            data: {file: file.fileText, filetype: file.ext, name: file.fname, group:groupId},
 	            url: "docUpload",
 	            success: function(data){
 	                window.location.href = 'home';

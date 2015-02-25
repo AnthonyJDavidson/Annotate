@@ -43,7 +43,7 @@ class DocumentController extends BaseController {
 				$doc = new Document;
 				$doc->user_id= $user->id;
 				$doc->name = $name;
-				$doc->group_id = 1;
+				$doc->group_id = $group;
 				$doc->filetype = $filetype;
 				$doc->storage_name = $documentName;
 				$doc->save();

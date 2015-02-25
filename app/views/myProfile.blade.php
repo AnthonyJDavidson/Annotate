@@ -5,7 +5,11 @@
 			<div id="myProfile">
 				<h1>My Groups</h1>
 				@foreach($groups as $group)
-				<h2>{{$group["name"]}}</h2>
+				<h2>{{$group["name"]}}	
+						@if(Auth::user()->permission_level == 2)
+							<a href="editGroup{{$group["id"]}}">Edit</a>
+						@endif
+				</h2>
 				<table>
 					<thead>
 						<tr>

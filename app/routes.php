@@ -42,3 +42,6 @@ Route::post('changePassword', array('before' => 'auth', 'as'	=> 'changePassword-
 
 //Document Upload
 Route::post('docUpload',array('as'=>'docUpload','uses'=>'DocumentController@docUpload'));
+
+//Edit group page
+Route::get('/editGroup{g_id}',array('as'=>'getEditGroup','uses'=>'GroupController@getEditGroup'));
