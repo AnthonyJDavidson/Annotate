@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'adavidsonFYPROJECT@gmail.com', 'name' => 'Auth'),
+	'from' => array('address' => 'adavidsonFYPROJECT@gmail.com', 'name' => 'Anthony from Annotate'),
 
 	/*
 	|--------------------------------------------------------------------------
