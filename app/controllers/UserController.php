@@ -121,6 +121,7 @@ class UserController extends BaseController {
 			$code =	str_random(60);
 
 			$user = User::create(array(
+				'permission_level' => 1,
 				'email' => $email,
 				'firstnames' => $firstnames,
 				'surname' => $surname,
