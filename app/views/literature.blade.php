@@ -13,7 +13,7 @@
 
 				</ul>
 			</div>
-			<div id="annotation_text"> 
+			<div class="annotation_text"> 
 				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc at vehicula leo. Vestibulum interdum ipsum bibendum, 
 				condimentum justo vitae, malesuada metus. Integer tempus in nisl tempor laoreet. Sed lacinia in lacus id pulvinar. 
 				Nam odio quam, bibendum in blandit ac, luctus sit amet ligula. Quisque sodales est molestie, imperdiet diam ut, dictum lacus. 

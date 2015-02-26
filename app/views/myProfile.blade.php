@@ -20,7 +20,7 @@
 							@foreach($documents as $doc)
 								@if($doc["group_id"] == $group["id"])
 									<tr> 
-										<td class"docName" id="g{{$group["id"]}}d{{$doc["id"]}}" data="{{$doc["storage_name"]}}"> {{$doc["name"]}} </td>
+										<td class"docName" id="g{{$group["id"]}}d{{$doc["id"]}}"><a href="doc-{{$doc["storage_name"]}}.{{$doc["filetype"]}}">{{$doc["name"]}}</a></td>
 										
 									</tr>
 								@endif

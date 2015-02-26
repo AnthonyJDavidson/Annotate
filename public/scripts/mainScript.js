@@ -1,5 +1,5 @@
 jQuery(function ($) { // more elegant way of doing this?
-    $('#annotation_text').annotator();
+    $('.annotation_text').annotator();
 
 
 	//Document Upload

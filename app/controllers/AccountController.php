@@ -1,11 +1,6 @@
 <?php
 class AccountController extends BaseController{
 
-
-
-
-
-
 	/* User Account Creation */
 
 	//viewing create form

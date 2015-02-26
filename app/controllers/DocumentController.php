@@ -3,8 +3,8 @@
 class DocumentController extends BaseController {
 
 	public function docUpload(){
+		if (Auth::check()){
 			$user = User::find(Auth::user()->id); 
-			if(!$user)return 'Please Log in';
 
 			$file = Input::get('file'); 
 			$name = Input::get('name');
@@ -24,19 +24,16 @@ class DocumentController extends BaseController {
 			}
 			$documentName = randString(40); //string size - 40 characters
 
-			//Check if logo directory exists
 			if(is_dir('documents')){
-				/*if($filetype == "txt")*/ $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
-				//else if ($filetype == "docx")  $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
-				//else if ($filetype == "doc")  $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
+				if($filetype == "txt") $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
+				else $result=file_put_contents('documents/'.$documentName.'.'.$filetype, $file);
 			}
 			else{
 				$old = umask(0);
 				mkdir('documents', 0777);
 				umask($old);
-				/*if($filetype == "txt")*/ $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
-				//else if ($filetype == "docx")  $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
-				//else if ($filetype == "doc")  $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
+				if($filetype == "txt") $result=file_put_contents('documents/'.$documentName.'.'.$filetype, base64_decode(str_replace("data:text/plain;base64,",'', $file)));
+				else $result=file_put_contents('documents/'.$documentName.'.'.$filetype, $file);
 			}
 
 			if($result){ //i.e. if all goes well uploading the document
@@ -54,5 +51,25 @@ class DocumentController extends BaseController {
 			}else{
 				return Response::json(array('message'=>"Document not saved"));
 			}
-		}
+
+		}else return Redirect::route('home')->with('global', 'Please Sign In');
+	}
+
+	public function loadDoc($d_name){
+		if (Auth::check()){
+			$user = User::find(Auth::user()->id); 
+			$doc = fopen('documents/'.$d_name, "r");
+			// Read line by line until end of file
+			$count = 0;
+			while (!feof($doc)) { 
+
+			// Make an array using comma as delimiter
+			   $arrM[$count] = explode("\r\n",fgets($doc)); 
+			   $count++;
+			}
+			$data = array("doc"=>  $arrM);
+			return View::make('document',$data);
+
+		}else return Redirect::route('home')->with('global', 'Please Sign In');
+	}
 }

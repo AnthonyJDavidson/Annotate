@@ -37,7 +37,7 @@ class HomeController extends BaseController {
 			$ds = array();
 			foreach ($documents as $doc){
 				foreach ($doc as $d ) {
-					$ds[$d->id] = array('id' => $d->id, 'group_id' => $d->group_id, "name" => $d->name,"storage_name" =>$d->storage_name);
+					$ds[$d->id] = array('id' => $d->id, 'group_id' => $d->group_id, "name" => $d->name,"storage_name" =>$d->storage_name,"filetype"=> $d->filetype);
 				}
 			}
 
