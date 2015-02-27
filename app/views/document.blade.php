@@ -13,10 +13,9 @@
 
 				</ul>
 			</div>
-			<div class="annotation_text"> 
-				
-				@foreach($doc as $d)
-				<p>{{$d[0]}}</p>
+			<div id="annotation_text" data="{{$docName}}"> 
+				@foreach($doc as $d =>$value)
+				<p data="{{$d}}">{{$value[0]}}</p>
 				@endforeach
 				
 			</div>

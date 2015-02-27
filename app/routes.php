@@ -46,3 +46,6 @@ Route::post('docUpload',array('as'=>'docUpload','uses'=>'DocumentController@docU
 //Edit group page
 Route::get('/editGroup{g_id}',array('as'=>'getEditGroup','uses'=>'GroupController@getEditGroup'));
 Route::get('/doc-{d_name}',array('as'=>'getEditGroup','uses'=>'DocumentController@loadDoc'));
+Route::get('/createAnnotation',array('as'=>'createAnnotation','uses'=>'AnnotationController@createAnnotation'));
+Route::get('/updateAnnotation{id}',array('as'=>'updateAnnotation','uses'=>'AnnotationController@updateAnnotation'));
+Route::get('/deleteAnnotation{id}',array('as'=>'deleteAnnotation','uses'=>'AnnotationController@deleteAnnotation'));

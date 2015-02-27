@@ -1,6 +1,16 @@
 jQuery(function ($) { // more elegant way of doing this?
-    $('.annotation_text').annotator();
-
+    $('#annotation_text').annotator().annotator('addPlugin', 'Tags');
+    
+    /* -- store does not work (no local store and I probably wont install one)
+    $('#annotation_text').annotator('addPlugin', 'Store', {
+	  urls: {
+	    // These are the default URLs.
+	    create:  '/createAnnotation',
+	    update:  '/updateAnnotation:id',
+	    destroy: '/deleteAnnotation:id'
+	    //search:  '/search'
+	  }
+	}); */
 
 	//Document Upload
 	$("#uploadDoc").click(function(e){
@@ -58,5 +68,25 @@ jQuery(function ($) { // more elegant way of doing this?
 	        console.log("The file is being uploaded");
 	    }//for
 
+	}
+
+
+
+	function sendDocuments(file){
+		console.log("sending");
+	    $.ajax({
+	        type: "POST",
+	        data: {file: file.fileText, filetype: file.ext, name: file.fname, group:groupId},
+	        url: "docUpload",
+	        success: function(data){
+	            window.location.href = 'home';
+	            console.log("Document upload successful",data);
+	            alert("Document upload successful");
+	        },
+	        error: function(data){
+	            alert("upload failed: "+data.message);
+	            console.log("upload failed: ",data);
+	        }
+	    });//ajax
 	}
 });

@@ -67,7 +67,7 @@ class DocumentController extends BaseController {
 			   $arrM[$count] = explode("\r\n",fgets($doc)); 
 			   $count++;
 			}
-			$data = array("doc"=>  $arrM);
+			$data = array("doc"=>  $arrM, "docName" =>$d_name);
 			return View::make('document',$data);
 
 		}else return Redirect::route('home')->with('global', 'Please Sign In');

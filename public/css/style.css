@@ -110,7 +110,7 @@ body{
 #filters{
 	list-style-type: none;
 }
-.annotation_text{
+#annotation_text{
 	background-color: #C5C9F0;
 	height: 80%;
 	float: left;
