@@ -1,5 +1,10 @@
 jQuery(function ($) { // more elegant way of doing this?
-    $('#annotation_text').annotator().annotator('addPlugin', 'Tags');
+	
+
+
+
+	window.onload = init;
+    //$('#annotation_text').annotator().annotator('addPlugin', 'Tags');
     
     /* -- store does not work (no local store and I probably wont install one)
     $('#annotation_text').annotator('addPlugin', 'Store', {
@@ -11,6 +16,31 @@ jQuery(function ($) { // more elegant way of doing this?
 	    //search:  '/search'
 	  }
 	}); */
+
+
+	function init() {
+		if (window.Event) {
+			document.captureEvents(Event.MOUSEMOVE);
+		}
+		document.onmousemove = getCursorXY;	    
+	}
+	function getCursorXY(e) {
+		xpos = (window.Event) ? 
+			e.pageX : event.clientX +
+				(document.documentElement.scrollLeft ? 
+					document.documentElement.scrollLeft : document.body.scrollLeft);
+		ypos = (window.Event) ?
+			e.pageY : event.clientY + 
+				(document.documentElement.scrollTop ? 
+					document.documentElement.scrollTop : document.body.scrollTop);
+		console.log(xpos,ypos);
+  		//e1 = document.getElementById('ttit'); e1.style.top = (ypos+10)+"px"; e1.style.left = (xpos+10)+"px";
+		//e2 = document.getElementById('ttip'); e2.style.top = (ypos+10+24)+"px"; e2.style.left = (xpos+10)+"px";
+    }
+
+
+
+
 
 	//Document Upload
 	$("#uploadDoc").click(function(e){
