@@ -14,33 +14,44 @@ function getSelectionText() {
 }
 
 function saveAnnotation(){
-
-	//create new <p> with a span in the middle as the annotation
-	var textElem = window.getSelection();
-	var paragraphId = textElem.baseNode.parentElement.id;
-	var pNextIdNum = parseInt(paragraphId.slice(-1)) + 1;
-	var textExtentOffset = textElem.extentOffset;
-	var textBaseOffset = textElem.baseOffset;
-	var oldPText = $('#annotation_text #'+paragraphId).text();
-	// guts of the new p
-	var beforeAnnotationText = oldPText.substring(0,textBaseOffset);
-	var annotateText = textElem.toString();
-	var afterAnnotationText = oldPText.substring(textExtentOffset,oldPText.length -1);
-	annotateSpan = '<span class="annotation">'+annotateText+'</span>';
-	//remove old
-	//get next paragraph id to place new one before or after 
-	$('#annotation_text #'+paragraphId).remove();
-	if ($('#annotation_text #paragraph'+pNextIdNum).length){
-		$('#annotation_text #paragraph'+pNextIdNum).before('<p id='+paragraphId+'>'+beforeAnnotationText+annotateSpan+afterAnnotationText+'</p>');
-    }else{
-    	pNextIdNum -= 2;
-    	$('#annotation_text #paragraph'+pNextIdNum).after('<p id='+paragraphId+'>'+beforeAnnotationText+annotateSpan+afterAnnotationText+'</p>');
-    }
-
-	console.log("saveAnn");
-	console.log(text);
+	console.log("Saving Annotation");
 	annotating = false;
 	$(".annotationTool").remove();
+	if(window.getSelection().toString() != ""){
+		//create new <p> with a span in the middle as the annotation
+		var textElem = window.getSelection();
+		var prevElemTag;
+		var nextElemTag;
+		if(textElem.baseNode.previousSibling){
+			prevElemTag = textElem.baseNode.previousSibling.tagName;
+		}else if(textElem.baseNode.nextSibling){
+			nextElemTag = textElem.baseNode.nextSibling.tagName;
+		}
+		if(prevElemTag == "SPAN" || nextElemTag == "SPAN"){ // already annotation in the paragraph
+			return 0;
+		}else{ //  first annotation of paragraph
+			var paragraphId = textElem.baseNode.parentElement.id;
+			var pNextIdNum = parseInt(paragraphId.slice(-1)) + 1;
+			var textExtentOffset = textElem.extentOffset;
+			var textBaseOffset = textElem.baseOffset;
+			var oldPText = $('#annotation_text #'+paragraphId).text();
+			// guts of the new p
+			var beforeAnnotationText = oldPText.substring(0,textBaseOffset);
+			var annotateText = textElem.toString();
+			var afterAnnotationText = oldPText.substring(textExtentOffset,oldPText.length -1);
+			annotateSpan = '<span class="annotation">'+annotateText+'</span>';
+			//remove old
+			//get next paragraph id to place new one before or after 
+			$('#annotation_text #'+paragraphId).remove();
+			if ($('#annotation_text #paragraph'+pNextIdNum).length){
+				$('#annotation_text #paragraph'+pNextIdNum).before('<p id='+paragraphId+'>'+beforeAnnotationText+annotateSpan+afterAnnotationText+'</p>');
+		    }else{
+		    	pNextIdNum -= 2;
+		    	$('#annotation_text #paragraph'+pNextIdNum).after('<p id='+paragraphId+'>'+beforeAnnotationText+annotateSpan+afterAnnotationText+'</p>');
+		    }
+		}
+	}
+	
 }
 
 function cancelAnnotation(){
@@ -55,8 +66,8 @@ $(document).ready(function (){
    		text = getSelectionText();
    		if(text != "" && annotating == false){
    			annotating = true;
-   			var iconYpos = (ypos+10)+"px"
-   			var iconXpos = (xpos+10)+"px"
+   			var iconYpos = (ypos+10)+"px";
+   			var iconXpos = (xpos+10)+"px";
 	   		$("#annotation_text").append('<div class="annotationTool" style="top:'+iconYpos+';left:'+iconXpos+';"><textarea id="annotationInput" rows="4" cols="30" >BLANK</textarea><br /><textarea id="annotationTag" rows="1" cols="30" >Tags</textarea><br /><button onclick="cancelAnnotation()" type="button" id="button" class="cancelAnn">Cancel</button><button onclick="saveAnnotation()" type="button" class="saveAnn">Save</button></div>');
    		}
    })
