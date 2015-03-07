@@ -15,7 +15,7 @@
 			</div>
 			<div id="annotation_text" data="{{$docName}}"> 
 				@foreach($doc as $d =>$value)
-				<p data="{{$d}}">{{$value[0]}}</p>
+				<p id="paragraph{{$d}}">{{$value[0]}}</p>
 				@endforeach
 				
 			</div>

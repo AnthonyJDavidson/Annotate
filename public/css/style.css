@@ -124,3 +124,29 @@ body{
 #documentUp{
 	padding: 15px;
 }
+
+ .annotationTool { 
+ 	position: absolute;
+   left: 0px; top: 24px; width: auto;  z-index: 100;
+   background: white; opacity: 0.9; font-family: Arial, sans-serif;
+   border: 1px solid #aaaaaa;  visibility: visible;
+   font-size: 14px; font-weight:normal; text-align: justify;
+   overflow: auto; padding: 3px;
+ }
+
+ .annotationInput{
+ 	overflow: none;
+ 	margin-bottom: 2px;
+ }
+ .annotationTag{
+ 	overflow: none;
+ }
+ .saveAnn{
+ 	float:	right;
+ }
+ .cancelAnn{
+ 	float: right;
+ }
+ .annotation{
+ 	background: #FFF500;
+ }
