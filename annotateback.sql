@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 25, 2015 at 11:17 PM
+-- Generation Time: Mar 08, 2015 at 12:02 AM
 -- Server version: 5.5.36
 -- PHP Version: 5.4.25
 
@@ -27,15 +27,25 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `annotations` (
-  `id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
-  `group_id` int(10) unsigned NOT NULL,
   `doc_id` int(11) NOT NULL,
+  `paragraph_id` varchar(60) NOT NULL,
+  `annotation` mediumtext NOT NULL,
+  `a_text` varchar(60) NOT NULL,
+  `tags` varchar(60) NOT NULL DEFAULT 'NOTAG',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `annotations`
+--
+
+INSERT INTO `annotations` (`id`, `user_id`, `doc_id`, `paragraph_id`, `annotation`, `a_text`, `tags`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(4, 10, 13, 'paragraph0', '', 'Lorem ipsum dolor sit amet, c', 'NOTAG', '2015-03-07 22:59:26', '2015-03-07 22:59:26', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -53,8 +63,9 @@ CREATE TABLE IF NOT EXISTS `documents` (
   `created_at` datetime NOT NULL,
   `deleted_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `storage_name` (`storage_name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `documents`
@@ -63,7 +74,8 @@ CREATE TABLE IF NOT EXISTS `documents` (
 INSERT INTO `documents` (`id`, `name`, `user_id`, `group_id`, `storage_name`, `filetype`, `created_at`, `deleted_at`, `updated_at`) VALUES
 (13, 'test', 10, 1, '7TMQpIT4jlbi0o28L94XkZkots9q1sf5qyTvFrhd', 'txt', '2015-02-23 21:24:00', '0000-00-00 00:00:00', '2015-02-23 21:24:00'),
 (15, 'test2', 10, 2, 'g7bcQDiH3c9bzeFaNUiihnrtbaupb5Du79xWCiJ4', 'txt', '2015-02-25 22:04:22', '0000-00-00 00:00:00', '2015-02-25 22:04:22'),
-(16, 'test2', 10, 1, 'PckVA6NZkvzWClk1G6V0NlJPntTKqWFnzq8sTd4K', 'txt', '2015-02-25 22:15:23', '0000-00-00 00:00:00', '2015-02-25 22:15:23');
+(16, 'test2', 10, 1, 'PckVA6NZkvzWClk1G6V0NlJPntTKqWFnzq8sTd4K', 'txt', '2015-02-25 22:15:23', '0000-00-00 00:00:00', '2015-02-25 22:15:23'),
+(17, 'test3', 10, 2, 'OUdfXTz5XnYmGDae3ZFJ8RTmVVlaMY49TGTOVtjx', 'txt', '2015-02-26 17:05:05', '0000-00-00 00:00:00', '2015-02-26 17:05:05');
 
 -- --------------------------------------------------------
 
@@ -117,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`id`, `permission_level`, `email`, `firstnames`, `surname`, `password`, `password_temp`, `code`, `active`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (7, 1, 'adavidsonFYPROJECT@gmail.com', 'Anthony James', 'Davidson', '$2y$10$omnapbGwaFSFsY8xjV/KGOEa1cekCourar6d8ZbTTxJuOacrpk.5S', '', '', 1, 'Me5AW0sblVWOtLJOlVx8ZP53kv5zeNBZAKDT0qrZjOfuLxs4rIafoWomnnsM', '2014-12-11 20:19:28', '2015-02-25 22:10:05', '0000-00-00 00:00:00'),
-(10, 2, 'anthony.davidson.2011@nuim.ie', 'A', 'Davidson', '$2y$10$h7PaMtFeOS83LdHTrnGrceJi2pSUeO8IKZJ0zO/DGL2p8yOobvueC', '', '', 1, '3CB4ySQhOLMCK5csbqAZ3gluoD7ifguMuNdhPDPG77yjgy4f8CaBUM5fyOex', '2014-12-12 14:28:58', '2015-02-25 22:08:35', '0000-00-00 00:00:00');
+(10, 2, 'anthony.davidson.2011@nuim.ie', 'A', 'Davidson', '$2y$10$h7PaMtFeOS83LdHTrnGrceJi2pSUeO8IKZJ0zO/DGL2p8yOobvueC', '', '', 1, 'IQPVXZgSkxVJUc5N2Uay6tVFh5KreC8BXAyfNqDz1oNfTTr8MFY7WwD2t0fg', '2014-12-12 14:28:58', '2015-02-27 15:36:54', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
