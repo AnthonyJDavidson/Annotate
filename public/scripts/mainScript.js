@@ -27,29 +27,29 @@ function saveAnnotation(){
 		}else if(textElem.baseNode.nextSibling){
 			nextElemTag = textElem.baseNode.nextSibling.tagName;
 		}
-		if(prevElemTag == "SPAN" || nextElemTag == "SPAN"){ // already annotation in the paragraph
-			return 0;
-		}else{ //  first annotation of paragraph
-			var paragraphId = textElem.baseNode.parentElement.id;
-			var pNextIdNum = parseInt(paragraphId.slice(-1)) + 1;
-			var textExtentOffset = textElem.extentOffset;
-			var textBaseOffset = textElem.baseOffset;
-			var oldPText = $('#annotation_text #'+paragraphId).text();
-			// guts of the new p
-			var beforeAnnotationText = oldPText.substring(0,textBaseOffset);
-			var annotateText = textElem.toString();
-			var afterAnnotationText = oldPText.substring(textExtentOffset,oldPText.length -1);
-			annotateSpan = '<span class="annotation">'+annotateText+'</span>';
-			//remove old
-			//get next paragraph id to place new one before or after 
-			$('#annotation_text #'+paragraphId).remove();
-			if ($('#annotation_text #paragraph'+pNextIdNum).length){
-				$('#annotation_text #paragraph'+pNextIdNum).before('<p id='+paragraphId+'>'+beforeAnnotationText+annotateSpan+afterAnnotationText+'</p>');
-		    }else{
-		    	pNextIdNum -= 2;
-		    	$('#annotation_text #paragraph'+pNextIdNum).after('<p id='+paragraphId+'>'+beforeAnnotationText+annotateSpan+afterAnnotationText+'</p>');
-		    }
-		}
+	 	//  first annotation of paragraph
+		var paragraphId = textElem.baseNode.parentElement.id;
+		var pNextIdNum = parseInt(paragraphId.slice(-1)) + 1;
+
+		//Old way, still might be relevant later
+		//var textExtentOffset = textElem.extentOffset;
+		//var textBaseOffset = textElem.baseOffset;
+
+		var annotateText = textElem.toString();
+		var oldPText = textElem.baseNode.parentNode.outerHTML;
+		var ind = oldPText.indexOf(annotateText);
+		var htmlHead = oldPText.substring(0,ind);
+		annotateSpan = '<span class="annotation">'+annotateText+'</span>';
+		var htmlTail = oldPText.substring(ind + annotateText.length,oldPText.length -1);
+		var newHTML = htmlHead+annotateSpan+htmlTail;
+		$('#annotation_text #'+paragraphId).remove();
+		if ($('#annotation_text #paragraph'+pNextIdNum).length){
+			$('#annotation_text #paragraph'+pNextIdNum).before(newHTML);
+	    }else{
+	    	pNextIdNum -= 2;
+	    	$('#annotation_text #paragraph'+pNextIdNum).after(newHTML);
+	    }
+		
 	}
 	
 }
