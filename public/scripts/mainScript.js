@@ -35,20 +35,45 @@ function saveAnnotation(){
 		//var textExtentOffset = textElem.extentOffset;
 		//var textBaseOffset = textElem.baseOffset;
 
-		var annotateText = textElem.toString();
+		var annotatedText = textElem.toString();
 		var oldPText = textElem.baseNode.parentNode.outerHTML;
-		var ind = oldPText.indexOf(annotateText);
+		var ind = oldPText.indexOf(annotatedText);
 		var htmlHead = oldPText.substring(0,ind);
-		annotateSpan = '<span class="annotation">'+annotateText+'</span>';
-		var htmlTail = oldPText.substring(ind + annotateText.length,oldPText.length -1);
+		annotateSpan = '<span class="annotation">'+annotatedText+'</span>';
+		var htmlTail = oldPText.substring(ind + annotatedText.length,oldPText.length -1);
 		var newHTML = htmlHead+annotateSpan+htmlTail;
-		$('#annotation_text #'+paragraphId).remove();
-		if ($('#annotation_text #paragraph'+pNextIdNum).length){
-			$('#annotation_text #paragraph'+pNextIdNum).before(newHTML);
-	    }else{
-	    	pNextIdNum -= 2;
-	    	$('#annotation_text #paragraph'+pNextIdNum).after(newHTML);
-	    }
+		var docName = $("#annotation_text").data("file");
+		
+		docName = docName.substring(0,docName.indexOf(".txt"));
+		console.log(docName); 
+		annotationText= $('#annotationInput').text();
+		annotationTag= $('#annotationTag').text();
+		if(annotationTag == "") annotationTag = "NOTAG";
+		console.log(annotationTag);
+		$.ajax({
+            type: "POST",
+            data: {
+            	docName: docName, 
+            	annotatedText: annotatedText, 
+            	annotationText:annotationText, 
+            	annotationTag: annotationTag,
+            	paragraphId: paragraphId},
+            	url: "saveAnnotation",
+            success: function(data){
+            	console.log("Annotation successful",data);
+            	$('#annotation_text #'+paragraphId).remove();
+				if ($('#annotation_text #paragraph'+pNextIdNum).length){
+					$('#annotation_text #paragraph'+pNextIdNum).before(newHTML);
+			    }else{
+			    	pNextIdNum -= 2;
+			    	$('#annotation_text #paragraph'+pNextIdNum).after(newHTML);
+			    }
+            },
+            error: function(data){
+                alert("Annotation Failed: "+data.message);
+                console.log("upload failed: ",data);
+            }
+        });//ajax
 		
 	}
 	
@@ -68,7 +93,7 @@ $(document).ready(function (){
    			annotating = true;
    			var iconYpos = (ypos+10)+"px";
    			var iconXpos = (xpos+10)+"px";
-	   		$("#annotation_text").append('<div class="annotationTool" style="top:'+iconYpos+';left:'+iconXpos+';"><textarea id="annotationInput" rows="4" cols="30" >BLANK</textarea><br /><textarea id="annotationTag" rows="1" cols="30" >Tags</textarea><br /><button onclick="cancelAnnotation()" type="button" id="button" class="cancelAnn">Cancel</button><button onclick="saveAnnotation()" type="button" class="saveAnn">Save</button></div>');
+	   		$("#annotation_text").append('<div class="annotationTool" style="top:'+iconYpos+';left:'+iconXpos+';"><textarea placeholder="Annotation" id="annotationInput" rows="4" cols="30" ></textarea><br /><textarea placeholder="Tag(s)" id="annotationTag" rows="1" cols="30" ></textarea><br /><button onclick="cancelAnnotation()" type="button" id="button" class="cancelAnn">Cancel</button><button onclick="saveAnnotation()" type="button" class="saveAnn">Save</button></div>');
    		}
    })
 });

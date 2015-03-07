@@ -13,7 +13,7 @@
 
 				</ul>
 			</div>
-			<div id="annotation_text" data="{{$docName}}"> 
+			<div id="annotation_text" data-file="{{$docName}}"> 
 				@foreach($doc as $d =>$value)
 				<p id="paragraph{{$d}}">{{$value[0]}}</p>
 				@endforeach
