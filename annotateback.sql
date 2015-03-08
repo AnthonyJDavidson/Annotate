@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2015 at 12:02 AM
+-- Generation Time: Mar 08, 2015 at 11:05 PM
 -- Server version: 5.5.36
 -- PHP Version: 5.4.25
 
@@ -33,19 +33,21 @@ CREATE TABLE IF NOT EXISTS `annotations` (
   `paragraph_id` varchar(60) NOT NULL,
   `annotation` mediumtext NOT NULL,
   `a_text` varchar(60) NOT NULL,
-  `tags` varchar(60) NOT NULL DEFAULT 'NOTAG',
+  `tags` varchar(60) NOT NULL DEFAULT 'None',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
 
 --
 -- Dumping data for table `annotations`
 --
 
 INSERT INTO `annotations` (`id`, `user_id`, `doc_id`, `paragraph_id`, `annotation`, `a_text`, `tags`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(4, 10, 13, 'paragraph0', '', 'Lorem ipsum dolor sit amet, c', 'NOTAG', '2015-03-07 22:59:26', '2015-03-07 22:59:26', '0000-00-00 00:00:00');
+(4, 10, 13, 'paragraph0', '', 'Lorem ipsum dolor sit amet, c', 'None', '2015-03-07 22:59:26', '2015-03-07 22:59:26', '0000-00-00 00:00:00'),
+(23, 10, 18, 'paragraph27', 'Annotation TEst', 'The Rayo', 'Test', '2015-03-08 20:47:37', '2015-03-08 20:47:37', '0000-00-00 00:00:00'),
+(24, 10, 18, 'paragraph2', 'Annotation ', 'Barca took', 'Text', '2015-03-08 20:56:33', '2015-03-08 20:56:33', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -65,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `documents` (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `storage_name` (`storage_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data for table `documents`
@@ -75,7 +77,8 @@ INSERT INTO `documents` (`id`, `name`, `user_id`, `group_id`, `storage_name`, `f
 (13, 'test', 10, 1, '7TMQpIT4jlbi0o28L94XkZkots9q1sf5qyTvFrhd', 'txt', '2015-02-23 21:24:00', '0000-00-00 00:00:00', '2015-02-23 21:24:00'),
 (15, 'test2', 10, 2, 'g7bcQDiH3c9bzeFaNUiihnrtbaupb5Du79xWCiJ4', 'txt', '2015-02-25 22:04:22', '0000-00-00 00:00:00', '2015-02-25 22:04:22'),
 (16, 'test2', 10, 1, 'PckVA6NZkvzWClk1G6V0NlJPntTKqWFnzq8sTd4K', 'txt', '2015-02-25 22:15:23', '0000-00-00 00:00:00', '2015-02-25 22:15:23'),
-(17, 'test3', 10, 2, 'OUdfXTz5XnYmGDae3ZFJ8RTmVVlaMY49TGTOVtjx', 'txt', '2015-02-26 17:05:05', '0000-00-00 00:00:00', '2015-02-26 17:05:05');
+(17, 'test3', 10, 2, 'OUdfXTz5XnYmGDae3ZFJ8RTmVVlaMY49TGTOVtjx', 'txt', '2015-02-26 17:05:05', '0000-00-00 00:00:00', '2015-02-26 17:05:05'),
+(18, 'barcelona', 10, 1, 'Fw0V20RCLJpJRpbZJgAgW6u9JVQimRGbD3Ipgh33', 'txt', '2015-03-08 17:24:26', '0000-00-00 00:00:00', '2015-03-08 17:24:26');
 
 -- --------------------------------------------------------
 
