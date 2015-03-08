@@ -119,6 +119,7 @@ border: solid;
 border-width: .1em;
 padding-left: 20px;
 padding-right: 20px;
+overflow-y:scroll;
 }
 
 #documentUp{
@@ -129,9 +130,21 @@ padding: 15px;
 	position: absolute;
 left: 0px; top: 24px; width: auto;  z-index: 100;
 background: white; opacity: 0.9; font-family: Arial, sans-serif;
-border: 1px solid #aaaaaa;  visibility: visible;
+border: 1px solid #aaaaaa;  visibility: hidden;
 font-size: 14px; font-weight:normal; text-align: justify;
 overflow: auto; padding: 3px;
+}
+#commentImg{
+	left: 0px; 
+	top: 24px;
+	position: absolute;
+	z-index: 100;
+	overflow: auto;
+	visibility: hidden;
+	background: white;
+}
+#commentImg img:active{
+	background: black;
 }
 
 .annotationInput{

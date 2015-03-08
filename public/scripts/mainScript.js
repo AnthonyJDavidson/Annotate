@@ -1,143 +1,40 @@
 
+var textElement;
+var textElem;
+var highlightedText ="";
 var annotating = false;
 window.onload = init;
 var xpos = 0; var ypos = 0;
 var text ="";
-function getSelectionText() {
-    if (window.getSelection) {
-    	// console.log(window.getSelection());
-        text = window.getSelection().toString();
-    } else if (document.selection && document.selection.type != "Control") {
-        text = document.selection.createRange().text;
-    }
-    return text;
+var textElemSet = false;
+var iconYpos =0;
+var iconXpos =0;
+createToolTips = function(){
+    var annList = $(".annotationL");
 }
 
-
-function createToolTips(){
-    
-}
-
-
-
-function saveAnnotation(){
-	console.log("Saving Annotation");
-	annotating = false;
-	$(".annotationTool").remove();
-	if(window.getSelection().toString() != ""){
-		//create new <p> with a span in the middle as the annotation
-		var textElem = window.getSelection();
-		var prevElemTag;
-		var nextElemTag;
-		if(textElem.baseNode.previousSibling){
-			prevElemTag = textElem.baseNode.previousSibling.tagName;
-		}else if(textElem.baseNode.nextSibling){
-			nextElemTag = textElem.baseNode.nextSibling.tagName;
-		}
-	 	//  first annotation of paragraph
-		var paragraphId = textElem.baseNode.parentElement.id;
-		var pNextIdNum = parseInt(paragraphId.slice(-1)) + 1;
-
-		//Old way, still might be relevant later
-		//var textExtentOffset = textElem.extentOffset;
-		//var textBaseOffset = textElem.baseOffset;
-
-		var annotatedText = textElem.toString();
-		var oldPText = textElem.baseNode.parentNode.outerHTML;
-		var ind = oldPText.indexOf(annotatedText);
-		var htmlHead = oldPText.substring(0,ind);
-		annotateSpan = '<span class="annotation">'+annotatedText+'</span>';
-		var htmlTail = oldPText.substring(ind + annotatedText.length,oldPText.length -1);
-		var newHTML = htmlHead+annotateSpan+htmlTail;
-		var docName = $("#annotation_text").data("file");
-		
-		docName = docName.substring(0,docName.indexOf(".txt"));
-		console.log(docName); 
-		annotationText= $('#annotationInput').text();
-		annotationTag= $('#annotationTag').text();
-		if(annotationTag == "") annotationTag = "None";
-		console.log(annotationTag);
-		$.ajax({
-            type: "POST",
-            data: {
-            	docName: docName, 
-            	annotatedText: annotatedText, 
-            	annotationText:annotationText, 
-            	annotationTag: annotationTag,
-            	paragraphId: paragraphId},
-            	url: "saveAnnotation",
-            success: function(data){
-            	console.log("Annotation successful",data);
-            	$('#annotation_text #'+paragraphId).remove();
-				if ($('#annotation_text #paragraph'+pNextIdNum).length){
-					$('#annotation_text #paragraph'+pNextIdNum).before(newHTML);
-			    }else{
-			    	pNextIdNum -= 2;
-			    	$('#annotation_text #paragraph'+pNextIdNum).after(newHTML);
-			    }
-            },
-            error: function(data){
-                alert("Annotation Failed: "+data.message);
-                console.log("upload failed: ",data);
-            }
-        });//ajax
-		
-	}
-	
-}
-
-function cancelAnnotation(){
-	console.log("cancelAnn");
-	annotating = false;
-	$(".annotationTool").remove();
-}
-
-$(document).ready(function (){
-	
- 	$('#annotation_text').mouseup(function (){
-   		text = getSelectionText();
-   		if(text != "" && annotating == false){
-   			annotating = true;
-   			var iconYpos = (ypos+10)+"px";
-   			var iconXpos = (xpos+10)+"px";
-	   		$("#annotation_text").append('<div class="annotationTool" style="top:'+iconYpos+';left:'+iconXpos+';"><textarea placeholder="Annotation" id="annotationInput" rows="4" cols="30" ></textarea><br /><textarea placeholder="Tag(s)" id="annotationTag" rows="1" cols="30" ></textarea><br /><button onclick="cancelAnnotation()" type="button" id="button" class="cancelAnn">Cancel</button><button onclick="saveAnnotation()" type="button" class="saveAnn">Save</button></div>');
-   		}
-   })
-});
-
-window.onload = function() {
-  createToolTips();
-};
 
 function init() {
-	if (window.Event) {
-		document.captureEvents(Event.MOUSEMOVE);
-	}
-	document.onmousemove = getCursorXY;	    
+    if (window.Event) {
+        document.captureEvents(Event.MOUSEMOVE);
+    }
+    document.onmousemove = getCursorXY;     
+
+
+    window.onload = function() {
+      createToolTips();
+    };
 }
 function getCursorXY(e) {
-	xpos = (window.Event) ? 
-		e.pageX : event.clientX +
-			(document.documentElement.scrollLeft ? 
-				document.documentElement.scrollLeft : document.body.scrollLeft);
-	ypos = (window.Event) ?
-		e.pageY : event.clientY + 
-			(document.documentElement.scrollTop ? 
-				document.documentElement.scrollTop : document.body.scrollTop);
+    xpos = (window.Event) ? 
+        e.pageX : event.clientX +
+            (document.documentElement.scrollLeft ? 
+                document.documentElement.scrollLeft : document.body.scrollLeft);
+    ypos = (window.Event) ?
+        e.pageY : event.clientY + 
+            (document.documentElement.scrollTop ? 
+                document.documentElement.scrollTop : document.body.scrollTop);
 }
-
-
-
-
-
-//Document Upload
-$("#uploadDoc").click(function(e){
-    if (confirm("Accepted extensions: .txt") == false) e.preventDefault();
-});
-
-$("#uploadDoc").change(function(e){
-    uploadDocument(this);
-});//change
 
 uploadDocument = function(scope){
     
@@ -162,7 +59,7 @@ uploadDocument = function(scope){
         }else alert("unsupported filetype, please use .txt");
     }
     function sendDocument(file){
-    	console.log("sending");
+        console.log("sending");
         $.ajax({
             type: "POST",
             data: {file: file.fileText, filetype: file.ext, name: file.fname, group:groupId},
@@ -191,7 +88,7 @@ uploadDocument = function(scope){
 
 
 function sendDocuments(file){
-	console.log("sending");
+    console.log("sending");
     $.ajax({
         type: "POST",
         data: {file: file.fileText, filetype: file.ext, name: file.fname, group:groupId},
@@ -207,3 +104,138 @@ function sendDocuments(file){
         }
     });//ajax
 }
+
+function getSelectionText() {
+    if (window.getSelection) {
+        // console.log(window.getSelection());
+        text = window.getSelection().toString();
+    } else if (document.selection && document.selection.type != "Control") {
+        text = document.selection.createRange().text;
+    }
+    return text;
+}
+
+
+$(document).ready(function (){
+
+$('#annotation_text #commentImg').mousedown(function(){
+    event.stopPropagation();
+    if(textElement.baseNode)textElem = textElement.baseNode;
+
+    $("#annotation_text .annotationTool").css("top",iconYpos);
+    $("#annotation_text .annotationTool").css("left",iconXpos);
+    $("#annotation_text .annotationTool").css("visibility","visible");
+    $('#annotation_text #commentImg').css("visibility","hidden");
+});
+
+$('#annotation_text .annotationTool').mousedown(function(){
+    event.stopPropagation();
+});
+
+$('.annotationTool .saveAnn').click(function(){
+    event.stopPropagation();
+    console.log("Saving Annotation");
+    annotating = false;
+    if(highlightedText != ""){
+        //create new <p> with a span in the middle as the annotation
+        
+        var prevElemTag;
+        var nextElemTag;
+        if(textElem.previousSibling){
+            prevElemTag = textElem.previousSibling.tagName;
+        }else if(textElem.nextSibling){
+            nextElemTag = textElem.nextSibling.tagName;
+        }
+        //  first annotation of paragraph
+        var paragraphId = textElem.parentElement.id;
+        var pIdNum = paragraphId.substring(9,paragraphId.length);
+        var pNextIdNum = parseInt(pIdNum);
+
+        //Old way, still might be relevant later
+        //var textExtentOffset = textElem.extentOffset;
+        //var textBaseOffset = textElem.baseOffset;
+
+        var annotatedText = highlightedText;
+        var oldPText = textElem.parentNode.outerHTML;
+        var ind = oldPText.indexOf(annotatedText);
+        var htmlHead = oldPText.substring(0,ind);
+        annotateSpan = '<span class="annotation">'+annotatedText+'</span>';
+        var htmlTail = oldPText.substring(ind + annotatedText.length,oldPText.length);
+        var newHTML = htmlHead+annotateSpan+htmlTail;
+        var docName = $("#annotation_text").data("file");
+        
+        docName = docName.substring(0,docName.indexOf(".txt"));
+        console.log(docName); 
+        annotationText= $('#annotation_text #annotationInput').val();
+        annotationTag= $('#annotation_text #annotationTag').val();
+        if(!annotationText) return 0;
+        if(annotationTag == "") annotationTag = "None";
+
+        console.log(annotationTag);
+        $.ajax({
+            type: "POST",
+            data: {
+                docName: docName, 
+                annotatedText: annotatedText, 
+                annotationText:annotationText, 
+                annotationTag: annotationTag,
+                paragraphId: paragraphId},
+                url: "saveAnnotation",
+            success: function(data){
+                console.log("Annotation successful",data);
+                $('#annotation_text #'+paragraphId).remove();
+                if ($('#annotation_text #paragraph'+pNextIdNum).length){
+                    $('#annotation_text #paragraph'+pNextIdNum).before(newHTML);
+                }else{
+                    pNextIdNum -= 2;
+                    $('#annotation_text #paragraph'+pNextIdNum).after(newHTML);
+                }
+            },
+            error: function(data){
+                alert("Annotation Failed: "+data.message);
+                console.log("upload failed: ",data);
+            }
+        });//ajax
+        
+    }
+    $(".annotationTool").css("visibility","hidden");
+    $("#annotation_text #commentImg").css("visibility","hidden");
+    highlightedText ="";
+});
+
+$('.annotationTool .cancelAnn').click(function(){
+    console.log("cancelAnn");
+    $(".annotationTool").css("visibility","hidden");
+    highlightedText = "";
+});
+
+$('#annotation_text').mouseup(function (){
+	text = getSelectionText();
+	if(text != "" && annotating == false){
+        highlightedText = text;
+        textElement = window.getSelection();
+    	annotating = true;
+    	iconYpos = (ypos+10)+"px";
+    	iconXpos = (xpos+10)+"px";
+        $("#annotation_text #commentImg").css("top",iconYpos);
+        $("#annotation_text #commentImg").css("left",iconXpos);
+        $("#annotation_text #commentImg").css("visibility","visible");
+    }else{
+        $("#annotation_text #commentImg").css("visibility","hidden");
+        //$("#annotation_text .annotationT").css("visibility","hidden");
+        annotating = false;
+    }
+
+});
+
+//Document Upload
+$("#uploadDoc").click(function(e){
+    if (confirm("Accepted extensions: .txt") == false) e.preventDefault();
+});
+
+$("#uploadDoc").change(function(e){
+    uploadDocument(this);
+});//change
+
+
+});
