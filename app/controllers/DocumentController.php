@@ -67,7 +67,25 @@ class DocumentController extends BaseController {
 			   $arrM[$count] = explode("\r\n",fgets($doc)); 
 			   $count++;
 			}
-			$data = array("doc"=>  $arrM, "docName" =>$d_name);
+
+			$d_sName = substr($d_name, 0, -4);
+			$document = Document::where('storage_name','=',$d_sName)->get()->first();
+			$d_id = $document->id;
+			$ann = Annotation::where('doc_id','=',$d_id)->get();
+			$annotations = array();
+			foreach ($ann as $a) {
+			
+				$annotations[$a->id] = array(
+								"a_id" => $a->id,
+								"a_text" => $a->a_text,
+								"annotation" => $a->annotation,
+								"tags" => $a->tags,
+								"user_id" => $a->user_id,
+								"userFn" => $user->firstnames,
+								"userSn" => $user->surname,
+								"paragraph_id"=>$a->paragraph_id);
+			}
+			$data = array("doc"=>  $arrM, "docName" =>$d_name, "annotations" =>$annotations);
 			return View::make('document',$data);
 
 		}else return Redirect::route('home')->with('global', 'Please Sign In');

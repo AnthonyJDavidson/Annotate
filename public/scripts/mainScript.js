@@ -13,6 +13,13 @@ function getSelectionText() {
     return text;
 }
 
+
+function createToolTips(){
+    
+}
+
+
+
 function saveAnnotation(){
 	console.log("Saving Annotation");
 	annotating = false;
@@ -48,7 +55,7 @@ function saveAnnotation(){
 		console.log(docName); 
 		annotationText= $('#annotationInput').text();
 		annotationTag= $('#annotationTag').text();
-		if(annotationTag == "") annotationTag = "NOTAG";
+		if(annotationTag == "") annotationTag = "None";
 		console.log(annotationTag);
 		$.ajax({
             type: "POST",
@@ -97,6 +104,10 @@ $(document).ready(function (){
    		}
    })
 });
+
+window.onload = function() {
+  createToolTips();
+};
 
 function init() {
 	if (window.Event) {
