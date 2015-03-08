@@ -30,17 +30,17 @@
 			</div>
 
 			@foreach($annotations as $ann)
-			<div class="annotationL" data-paragraph="{{$ann["paragraph_id"]}}">
-				<span data-user="{{$ann["user_id"]}}">{{$ann["userFn"]}} {{$ann["userSn"]}}</span>
+			<div id="ann{{$ann["a_id"]}}" class="annotationL" data-paragraph="{{$ann["paragraph_id"]}}">
+				<span data-user="{{$ann["user_id"]}}" class="annotation_user">{{$ann["userFn"]}} {{$ann["userSn"]}}</span>
 				<br />
 				<span>Annotation: </span>
-				<span id="ann{{$ann["a_id"]}}" class="annotationList">{{$ann["annotation"]}}</span>
+				<span class="annotation_annotation">{{$ann["annotation"]}}</span>
 				<br />
 				<span>Related To: </span>
-				<span id="annotatedText{{$ann["a_id"]}}" class="annotatedText">{{$ann["a_text"]}}</span>
+				<span class="annotation_annotatedText">{{$ann["a_text"]}}</span>
 				<br />
 				<span>Tags: </span>
-				<span id="tags{{$ann["a_id"]}}" class="annotationTag">{{$ann["tags"]}}</span>
+				<span id="tags{{$ann["a_id"]}}" class="annotation_Tag">{{$ann["tags"]}}</span>
 				<br />
 			</div>
 			@endforeach
