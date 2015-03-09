@@ -145,6 +145,7 @@ overflow: auto; padding: 3px;
 }
 #commentImg img:active{
 	background: black;
+	border: 2px #aaaaaa;
 }
 
 .annotationInput{

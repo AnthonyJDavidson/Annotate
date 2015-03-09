@@ -239,7 +239,21 @@ $(document).ready(function (){
             iconYpos = (ypos+10)+"px";
             iconXpos = (xpos+10)+"px";
             $('#annotation_text').prepend('<img id="commentImg" src="images/comment.png" height="20" width="20" alt="comment">');
+            
+            $('#annotation_text #commentImg').mouseenter(function(){
+                event.stopPropagation();
+                $(this).css("background","#FFF500");
+            });
+            $('#annotation_text #commentImg').mouseleave(function(){
+                event.stopPropagation();
+                $(this).css("background","white");
+            });
+
             $('#annotation_text #commentImg').mousedown(function(){
+                event.stopPropagation();
+                $(this).css("background","#4C55A8");
+            });
+            $('#annotation_text #commentImg').mouseup(function(){
                 event.stopPropagation();
                 if(textElement.baseNode)textElem = textElement.baseNode;
                 $("#annotation_text .annotationTool").css("top",iconYpos);
