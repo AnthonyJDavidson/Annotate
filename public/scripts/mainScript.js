@@ -150,7 +150,7 @@ $(document).ready(function (){
         var ann_ann = $('.annotationL#'+annId+' .annotation_annotation').text();
         var tags = $('.annotationL#'+annId+' .annotation_Tag').text();
         console.log(annId,ann_ann,tags);
-        $(this).after('<div class="aToolTip" style="top:'+(ypos+10)+'px;left:'+(xpos+10)+'px"><p class="aToolTip_ann">'+ann_ann+'</p><span class="aToolTip_tags">Tags: '+tags+'</span></div>');
+        $(this).after('<div class="aToolTip" style="top:'+(ypos+10)+'px;left:'+(xpos+10)+'px"><div class="aToolTip_ann">'+ann_ann+'</div><span class="aToolTip_tags">Tags: '+tags+'</span></div>');
 
 
     });
@@ -181,7 +181,7 @@ $(document).ready(function (){
             //  first annotation of paragraph
             var paragraphId = textElem.parentElement.id;
             var pIdNum = paragraphId.substring(9,paragraphId.length);
-            var pNextIdNum = parseInt(pIdNum);
+            var pNextIdNum = parseInt(pIdNum + 1);
 
             //Old way, still might be relevant later
             //var textExtentOffset = textElem.extentOffset;
@@ -217,7 +217,7 @@ $(document).ready(function (){
                         console.log("Annotation successful",data);
                         $('#annotation_text #'+paragraphId).remove();
                         if ($('#annotation_text #paragraph'+pNextIdNum).length){
-                            $('#annotation_text #paragraph'+pNextIdNum).before(newHTML);
+                            $('#annotation_text #paragraph'+pNextIdNum).after(newHTML);
                         }else{
                             pNextIdNum -= 2;
                             $('#annotation_text #paragraph'+pNextIdNum).after(newHTML);

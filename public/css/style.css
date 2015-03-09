@@ -169,9 +169,10 @@ overflow: auto; padding: 3px;
 }
 .aToolTip{
 position: absolute;
-left: 0px; top: 24px; width: auto;  z-index: 100;
-background: white; opacity: 0.9; font-family: Arial, sans-serif;
+left: 0px; top: 24px; max-width: 200px;  z-index: 100;
+background: white; font-family: Arial, sans-serif;
 border: 1px solid #aaaaaa;
-font-size: 14px; font-weight:normal; text-align: justify;
-overflow: auto; padding: 3px;
+font-size: 14px; font-weight:normal; text-align: left;
+overflow: auto; padding: 3px; 
+border-radius: 8px;
 }
