@@ -158,15 +158,6 @@ $(document).ready(function (){
         $('.aToolTip').remove();
      })
 
-    $('#annotation_text #commentImg').mousedown(function(){
-        event.stopPropagation();
-        if(textElement.baseNode)textElem = textElement.baseNode;
-
-        $("#annotation_text .annotationTool").css("top",iconYpos);
-        $("#annotation_text .annotationTool").css("left",iconXpos);
-        $("#annotation_text .annotationTool").css("visibility","visible");
-        $('#annotation_text #commentImg').css("visibility","hidden");
-    });
 
     $('#annotation_text .annotationTool').mousedown(function(){
         event.stopPropagation();
@@ -230,7 +221,6 @@ $(document).ready(function (){
             });//ajax
         }
         $(".annotationTool").css("visibility","hidden");
-        $("#annotation_text #commentImg").css("visibility","hidden");
         highlightedText ="";
     });
 
@@ -248,11 +238,20 @@ $(document).ready(function (){
             annotating = true;
             iconYpos = (ypos+10)+"px";
             iconXpos = (xpos+10)+"px";
+            $('#annotation_text').prepend('<img id="commentImg" src="images/comment.png" height="20" width="20" alt="comment">');
+            $('#annotation_text #commentImg').mousedown(function(){
+                event.stopPropagation();
+                if(textElement.baseNode)textElem = textElement.baseNode;
+                $("#annotation_text .annotationTool").css("top",iconYpos);
+                $("#annotation_text .annotationTool").css("left",iconXpos);
+                $("#annotation_text .annotationTool").css("visibility","visible");
+                $('#commentImg').remove();
+            });
             $("#annotation_text #commentImg").css("top",iconYpos);
             $("#annotation_text #commentImg").css("left",iconXpos);
             $("#annotation_text #commentImg").css("visibility","visible");
         }else{
-            $("#annotation_text #commentImg").css("visibility","hidden");
+            $('#commentImg').remove();
             //$("#annotation_text .annotationT").css("visibility","hidden");
             annotating = false;
         }

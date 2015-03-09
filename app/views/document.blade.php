@@ -25,7 +25,6 @@
 						<button type="button" id="button" class="cancelAnn">Cancel</button>
 						<button type="button" class="saveAnn">Save</button>
 					</div>
-					<img id="commentImg" src="images/comment.png" height="20" width="20" alt="comment">
 				</div>
 			</div>
 
