@@ -20,6 +20,7 @@ function highlightDocument(text,ann,paragraph,a_id){
     var newHTML = htmlHead+annotateSpan+htmlTail;
     $('#annotation_text #'+paragraph).addClass("removeMe");
     $('#annotation_text #'+paragraph).before(newHTML);
+    $('.removeMe').remove();
 }
 function loadAnnotations(){
     var annLists = $(".annotationL");
@@ -144,6 +145,18 @@ $(document).ready(function (){
 
     loadAnnotations();
 
+    $('.annotation').mouseenter(function(){
+        var annId = $(this).data("annotation");
+        var ann_ann = $('.annotationL#'+annId+' .annotation_annotation').text();
+        var tags = $('.annotationL#'+annId+' .annotation_Tag').text();
+        console.log(annId,ann_ann,tags);
+        $(this).after('<div class="aToolTip" style="top:'+(ypos+10)+'px;left:'+(xpos+10)+'px"><p class="aToolTip_ann">'+ann_ann+'</p><span class="aToolTip_tags">Tags: '+tags+'</span></div>');
+
+
+    });
+     $('.annotation').mouseout(function(){
+        $('.aToolTip').remove();
+     })
 
     $('#annotation_text #commentImg').mousedown(function(){
         event.stopPropagation();

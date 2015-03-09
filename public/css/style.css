@@ -163,8 +163,15 @@ overflow: auto; padding: 3px;
 .annotation{
 	background: #FFF500;
 }
-.annotationL
-{
+.annotationL{
 	float:left;
 	clear: both;
+}
+.aToolTip{
+position: absolute;
+left: 0px; top: 24px; width: auto;  z-index: 100;
+background: white; opacity: 0.9; font-family: Arial, sans-serif;
+border: 1px solid #aaaaaa;
+font-size: 14px; font-weight:normal; text-align: justify;
+overflow: auto; padding: 3px;
 }
