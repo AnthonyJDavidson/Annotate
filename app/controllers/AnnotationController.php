@@ -21,8 +21,16 @@ class AnnotationController extends BaseController {
 			$annotation->a_text = $annotatedText;
 			$annotation->tags = $annotationTag;
 			$annotation->save();
+			$newAnn = array(
+				'new_u_id' => $annotation->user_id,
+				'new_p_id' => $annotation->paragraph_id,
+				'new_ann' => $annotation->annotation,
+				'new_a_text' => $annotation->a_text,
+				'new_tags' => $annotation->tags,
+				'new_a_id' => $annotation->id
+							);
 			if($annotation->save()){
-				return Response::json(array('message'=>"Annotation Saved"));
+				return Response::json(array('message'=>"Annotation Saved",'newAnn'=>$newAnn));
 			}else return Response::json(array('message'=>"Annotation not saved"));
 	  
         }else return Redirect::route('home')->with('global', 'Please Sign In');

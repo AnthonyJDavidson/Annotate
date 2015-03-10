@@ -11,6 +11,44 @@ var iconYpos =0;
 var iconXpos =0;
 
 
+function refreshAnnotationJquery(){
+	$('.annotation').mouseenter(function(){
+        var annId = $(this).data("annotation");
+        var ann_ann = $('.annotationL#'+annId+' .annotation_annotation').text();
+        var tags = $('.annotationL#'+annId+' .annotation_Tag').text();
+        console.log(annId,ann_ann,tags);
+        $(this).after('<div class="aToolTip" style="top:'+(ypos+10)+'px;left:'+(xpos+10)+'px"><div class="aToolTip_ann">'+ann_ann+'</div><span class="aToolTip_tags">Tags: '+tags+'</span></div>');
+
+
+    });
+    $('.annotation').mouseout(function(){
+    	$('.aToolTip').remove();
+    });
+}
+
+function refreshCommentImgJquery(){
+	$('#annotation_text #commentImg').mouseenter(function(){
+        event.stopPropagation();
+        $(this).css("background","#FFF500");
+    });
+    $('#annotation_text #commentImg').mouseleave(function(){
+        event.stopPropagation();
+        $(this).css("background","white");
+    });
+
+    $('#annotation_text #commentImg').mousedown(function(){
+        event.stopPropagation();
+        $(this).css("background","#4C55A8");
+    });
+    $('#annotation_text #commentImg').mouseup(function(){
+        event.stopPropagation();
+        if(textElement.baseNode)textElem = textElement.baseNode;
+        $("#annotation_text .annotationTool").css("top",iconYpos);
+        $("#annotation_text .annotationTool").css("left",iconXpos);
+        $("#annotation_text .annotationTool").css("visibility","visible");
+        $('#commentImg').remove();
+    });
+}
 function highlightDocument(text,ann,paragraph,a_id){
     var oldPText = $('#'+paragraph)[0].outerHTML;
     var ind = oldPText.indexOf(text);
@@ -144,20 +182,7 @@ function getSelectionText() {
 $(document).ready(function (){
 
     loadAnnotations();
-
-    $('.annotation').mouseenter(function(){
-        var annId = $(this).data("annotation");
-        var ann_ann = $('.annotationL#'+annId+' .annotation_annotation').text();
-        var tags = $('.annotationL#'+annId+' .annotation_Tag').text();
-        console.log(annId,ann_ann,tags);
-        $(this).after('<div class="aToolTip" style="top:'+(ypos+10)+'px;left:'+(xpos+10)+'px"><div class="aToolTip_ann">'+ann_ann+'</div><span class="aToolTip_tags">Tags: '+tags+'</span></div>');
-
-
-    });
-     $('.annotation').mouseout(function(){
-        $('.aToolTip').remove();
-     })
-
+    refreshAnnotationJquery();
 
     $('#annotation_text .annotationTool').mousedown(function(){
         event.stopPropagation();
@@ -172,11 +197,7 @@ $(document).ready(function (){
             //  first annotation of paragraph
             var paragraphId = textElem.parentElement.id;
             var pIdNum = paragraphId.substring(9,paragraphId.length);
-            var pNextIdNum = parseInt(pIdNum + 1);
-
-            //Old way, still might be relevant later
-            //var textExtentOffset = textElem.extentOffset;
-            //var textBaseOffset = textElem.baseOffset;
+            var pNextIdNum = parseInt(pIdNum) + 1;
 
             var annotatedText = highlightedText;
             var oldPText = textElem.parentNode.outerHTML;
@@ -186,7 +207,6 @@ $(document).ready(function (){
             var htmlTail = oldPText.substring(ind + annotatedText.length,oldPText.length);
             var newHTML = htmlHead+annotateSpan+htmlTail;
             var docName = $("#annotation_text").data("file");
-
             docName = docName.substring(0,docName.indexOf(".txt"));
             console.log(docName); 
             annotationText= $('#annotation_text #annotationInput').val();
@@ -205,14 +225,20 @@ $(document).ready(function (){
                     paragraphId: paragraphId},
                     url: "saveAnnotation",
                     success: function(data){
+
                         console.log("Annotation successful",data);
                         $('#annotation_text #'+paragraphId).remove();
+                        var annotateSpan = '<span class="annotation" data-annotation="ann'+data.newAnn["new_a_id"]+'">'+annotatedText+'</span>';
+						var newHTML = htmlHead+annotateSpan+htmlTail;
                         if ($('#annotation_text #paragraph'+pNextIdNum).length){
-                            $('#annotation_text #paragraph'+pNextIdNum).after(newHTML);
+                            $('#annotation_text #paragraph'+pNextIdNum).before(newHTML);
                         }else{
                             pNextIdNum -= 2;
                             $('#annotation_text #paragraph'+pNextIdNum).after(newHTML);
                         }
+
+                        $('.annotationList').append('<div class="annotationL" id="ann'+data.newAnn["new_a_id"]+'" data-paragraph="'+data.newAnn["new_p_id"]+'"><span data-user="'+data.newAnn["new_u_id"]+'" class="annotation_user">'+$('#nameofUser').text()+'</span><br /><span>Annotation: </span><span class="annotation_annotation">'+data.newAnn["new_ann"]+'</span><br /><span>Related To: </span><span class="annotation_annotatedText">'+data.newAnn["new_a_text"]+'</span><br /><span>Tags: </span><span id="tags'+data.newAnn["new_a_id"]+'" class="annotation_Tag">'+data.newAnn["new_tags"]+'</span><br /></div>');
+                    	refreshAnnotationJquery();
                     },
                     error: function(data){
                         alert("Annotation Failed: "+data.message);
@@ -240,27 +266,7 @@ $(document).ready(function (){
             iconXpos = (xpos+10)+"px";
             $('#annotation_text').prepend('<img id="commentImg" src="images/comment.png" height="20" width="20" alt="comment">');
             
-            $('#annotation_text #commentImg').mouseenter(function(){
-                event.stopPropagation();
-                $(this).css("background","#FFF500");
-            });
-            $('#annotation_text #commentImg').mouseleave(function(){
-                event.stopPropagation();
-                $(this).css("background","white");
-            });
-
-            $('#annotation_text #commentImg').mousedown(function(){
-                event.stopPropagation();
-                $(this).css("background","#4C55A8");
-            });
-            $('#annotation_text #commentImg').mouseup(function(){
-                event.stopPropagation();
-                if(textElement.baseNode)textElem = textElement.baseNode;
-                $("#annotation_text .annotationTool").css("top",iconYpos);
-                $("#annotation_text .annotationTool").css("left",iconXpos);
-                $("#annotation_text .annotationTool").css("visibility","visible");
-                $('#commentImg').remove();
-            });
+            refreshCommentImgJquery();
             $("#annotation_text #commentImg").css("top",iconYpos);
             $("#annotation_text #commentImg").css("left",iconXpos);
             $("#annotation_text #commentImg").css("visibility","visible");
