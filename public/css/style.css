@@ -186,6 +186,12 @@ overflow: auto; padding: 3px;
 	border-radius: 6px;
 	border: 1px solid #D1D1D1;
 }
+.annotation_Tag{
+	font-style: italic;
+	background: #D1D1D1;
+	border-radius: 6px;
+	border: 1px solid #D1D1D1;
+}
 .aToolTip_ann{
 	padding: 1px;
 	padding-bottom: 2px;		
