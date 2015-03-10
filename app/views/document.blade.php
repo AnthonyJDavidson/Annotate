@@ -18,9 +18,11 @@
 				</div>
 				<div id="annotation_text" data-file="{{$docName}}"> 
 					@foreach($doc as $d =>$value)
-						@for($i = 0;$i <= (sizeof($value) -1); $i++)
-							<p id="paragraph{{$d}}">{{$value[$i]}}</p>
-						@endfor
+						<p id="paragraph{{$d}}">
+						@foreach($value[0] as $wID => $w)
+						<span class="word{{$wID}}">{{$w}}</span>
+						@endforeach
+						</p>
 					@endforeach
 					<div class="annotationTool">
 						<textarea id="annotationInput" rows="4" cols="30" placeholder="Annotation"></textarea>
@@ -45,7 +47,6 @@
 				<span class="annotation_annotatedText">{{$ann["a_text"]}}</span>
 				<br />
 				<span>Tags: </span>
-
 				<span id="tags{{$ann["a_id"]}}" class="annotation_Tag">@foreach($ann["tags"] as $tag){{$tag}} @endforeach</span>
 				
 				<br />
