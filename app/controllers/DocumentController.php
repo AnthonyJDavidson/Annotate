@@ -62,8 +62,7 @@ class DocumentController extends BaseController {
 			// Read line by line until end of file
 			$count = 0;
 			while (!feof($doc)) { 
-
-			// Make an array using comma as delimiter
+				// Make an array using return as delimiter
 			   $arrM[$count] = explode("\r\n",fgets($doc)); 
 			   $count++;
 			}
@@ -73,19 +72,47 @@ class DocumentController extends BaseController {
 			$d_id = $document->id;
 			$ann = Annotation::where('doc_id','=',$d_id)->get();
 			$annotations = array();
+
+			$all_tags = array(); // array to store all tags in a document ---MESSY--- New db Table?
+			$all_Tags_index = 0;
 			foreach ($ann as $a) {
-			
+				$ann_tags = array();//tags for current annotation (1 by 1)
+				$tags = $a->tags; //tags in stored format "tag1, tag2" etc
+				$moretags = true;
+				$index = 0;
+				while($moretags == true){
+					$pos = strrpos($tags, ",");
+					if($pos === true){
+						$foundTag = substr($tags, 0, $pos - 1);
+						$ann_tags[$index] = $foundTag;
+						$index++;
+						if(in_array($foundTag, $all_tags) ==false ){
+							$all_tags[$all_Tags_index] = $foundTag;
+							$all_Tags_index++;
+						}
+						$tags = substr($tags, $pos + 2, strlen($tags) - 1);
+					}else{
+						$ann_tags[$index] = $tags;//only 1 tag
+						$moretags = false;
+						if(in_array($tags, $all_tags) == false){
+							$all_tags[$all_Tags_index] = $tags;
+							$all_Tags_index++;
+						}
+					}
+				}
 				$annotations[$a->id] = array(
 								"a_id" => $a->id,
 								"a_text" => $a->a_text,
 								"annotation" => $a->annotation,
-								"tags" => $a->tags,
+								"tags" => $ann_tags,
 								"user_id" => $a->user_id,
 								"userFn" => $user->firstnames,
 								"userSn" => $user->surname,
-								"paragraph_id"=>$a->paragraph_id);
+								"paragraph_id"=>$a->paragraph_id
+								);
 			}
-			$data = array("doc"=>  $arrM, "docName" =>$d_name, "annotations" =>$annotations);
+
+			$data = array("doc"=>  $arrM, "docName" =>$d_name, "annotations" =>$annotations, "tags" => $all_tags);
 			return View::make('document',$data);
 
 		}else return Redirect::route('home')->with('global', 'Please Sign In');

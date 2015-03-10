@@ -5,11 +5,14 @@
 			<div>
 				<div id="left_Col">
 					<ul id="filters">
-						<li>filter 1</li>
-						<li>filter 2</li>
-						<li>filter 3</li>
-						<li>filter 4</li>
-						<li>filter 5</li>
+						<div>Filters</div>
+						<div>-By Annotation</div>
+						@foreach($tags as $t)
+						<li><input type="checkbox" name="show_tag" value="{{$t}}" checked="true">{{$t}}</li>
+						@endforeach
+						<br	/>
+						<div>By User</div>
+						<div>To Be Done</div>
 
 					</ul>
 				</div>
@@ -27,23 +30,25 @@
 					</div>
 				</div>
 			</div>
-			<div class="annotationList">
-				@foreach($annotations as $ann)
-				<div class="annotationL" id="ann{{$ann["a_id"]}}" data-paragraph="{{$ann["paragraph_id"]}}">
-					<span data-user="{{$ann["user_id"]}}" class="annotation_user">{{$ann["userFn"]}} {{$ann["userSn"]}}</span>
-					<br />
-					<span>Annotation: </span>
-					<span class="annotation_annotation">{{$ann["annotation"]}}</span>
-					<br />
-					<span>Related To: </span>
-					<span class="annotation_annotatedText">{{$ann["a_text"]}}</span>
-					<br />
-					<span>Tags: </span>
-					<span id="tags{{$ann["a_id"]}}" class="annotation_Tag">{{$ann["tags"]}}</span>
-					<br />
-				</div>
-				@endforeach
+		</div>
+		<div class="annotationList">
+			@foreach($annotations as $ann)
+			<div class="annotationL" id="ann{{$ann["a_id"]}}" data-paragraph="{{$ann["paragraph_id"]}}">
+				<span data-user="{{$ann["user_id"]}}" class="annotation_user">{{$ann["userFn"]}} {{$ann["userSn"]}}</span>
+				<br />
+				<span>Annotation: </span>
+				<span class="annotation_annotation">{{$ann["annotation"]}}</span>
+				<br />
+				<span>Related To: </span>
+				<span class="annotation_annotatedText">{{$ann["a_text"]}}</span>
+				<br />
+				<span>Tags: </span>
+
+				<span id="tags{{$ann["a_id"]}}" class="annotation_Tag">@foreach($ann["tags"] as $tag){{$tag}} @endforeach</span>
+				
+				<br />
 			</div>
+			@endforeach
 		</div>
 
 @stop

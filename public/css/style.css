@@ -102,9 +102,11 @@ background-color: #C5C9F0;
 height: 80%;
 list-style-type: none;
 }
+
 #left_col ul{
-margin: 10px;
-padding: 0;
+	margin: 5px;
+	padding: 0;
+	overflow: auto;
 }
 
 #filters{
@@ -169,16 +171,30 @@ overflow: auto; padding: 3px;
 	clear: both;
 }
 .aToolTip{
-position: absolute;
-left: 0px; top: 24px; max-width: 200px;  z-index: 100;
-background: white; font-family: Arial, sans-serif;
-border: 1px solid #aaaaaa;
-font-size: 14px; font-weight:normal; text-align: left;
-overflow: auto; padding: 3px; 
-border-radius: 8px;
+	position: absolute;
+	left: 0px; top: 24px; max-width: 200px;  z-index: 100;
+	background: white; font-family: Arial, sans-serif;
+	border: 1px solid #aaaaaa;
+	font-size: 14px; font-weight:normal; text-align: left;
+	overflow: auto; padding: 3px; 
+	border-radius: 8px;
 }
 .aToolTip_tags{
+	font-style: italic;
+	padding: 1px;
 	background: #D1D1D1;
 	border-radius: 6px;
 	border: 1px solid #D1D1D1;
+}
+.aToolTip_ann{
+	padding: 1px;
+	padding-bottom: 2px;		
+}
+.annotationL{
+	border: solid;
+	border-width: .1em;
+	text-align: center;
+	background: #C5C9F0;
+	padding: 20px;
+	float: center;
 }
