@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.9
+-- version 4.1.6
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Mar 10, 2015 at 01:56 PM
--- Server version: 5.6.14
--- PHP Version: 5.5.6
+-- Host: 127.0.0.1
+-- Generation Time: Mar 10, 2015 at 10:45 PM
+-- Server version: 5.5.36
+-- PHP Version: 5.4.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `annotateBack`
+-- Database: `annotateback`
 --
 
 -- --------------------------------------------------------
@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `annotations` (
   `user_id` int(10) unsigned NOT NULL,
   `doc_id` int(11) NOT NULL,
   `paragraph_id` varchar(60) NOT NULL,
+  `wordNums` varchar(60) NOT NULL,
   `annotation` mediumtext NOT NULL,
   `a_text` varchar(60) NOT NULL,
   `tags` varchar(60) NOT NULL DEFAULT 'None',
@@ -38,27 +39,23 @@ CREATE TABLE IF NOT EXISTS `annotations` (
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
 
 --
 -- Dumping data for table `annotations`
 --
 
-INSERT INTO `annotations` (`id`, `user_id`, `doc_id`, `paragraph_id`, `annotation`, `a_text`, `tags`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(4, 10, 13, 'paragraph0', '', 'Lorem ipsum dolor sit amet, c', 'None', '2015-03-07 22:59:26', '2015-03-07 22:59:26', '0000-00-00 00:00:00'),
-(23, 10, 18, 'paragraph27', 'Annotation TEst', 'The Rayo', 'Test', '2015-03-08 20:47:37', '2015-03-08 20:47:37', '0000-00-00 00:00:00'),
-(24, 10, 18, 'paragraph2', 'Annotation ', 'Barca took', 'Text', '2015-03-08 20:56:33', '2015-03-08 20:56:33', '0000-00-00 00:00:00'),
-(25, 10, 18, 'paragraph9', 'defender', 'Dani Alves ', 'tag', '2015-03-10 10:27:55', '2015-03-10 10:27:55', '0000-00-00 00:00:00'),
-(26, 10, 18, 'paragraph11', 'table', 'top scorers', 'scores', '2015-03-10 10:28:50', '2015-03-10 10:28:50', '0000-00-00 00:00:00'),
-(27, 10, 18, 'paragraph0', 'rampant', 'rampant', 'english', '2015-03-10 10:32:58', '2015-03-10 10:32:58', '0000-00-00 00:00:00'),
-(28, 10, 18, 'paragraph41', 'Coach', 'Luis Enrique', 'Good Coach', '2015-03-10 10:45:02', '2015-03-10 10:45:02', '0000-00-00 00:00:00'),
-(29, 10, 18, 'paragraph11', 'Football', '2014-15', 'season', '2015-03-10 10:47:45', '2015-03-10 10:47:45', '0000-00-00 00:00:00'),
-(30, 10, 18, 'paragraph37', 'Penalty', 'spot-kick', 'set-piece', '2015-03-10 10:48:31', '2015-03-10 10:48:31', '0000-00-00 00:00:00'),
-(31, 10, 18, 'paragraph2', 'Former Liverpool Player', 'Luis Suarez', 'bites', '2015-03-10 10:49:22', '2015-03-10 10:49:22', '0000-00-00 00:00:00'),
-(32, 10, 18, 'paragraph6', 'Also known as a "spot kick"', 'penalty', 'set-piece', '2015-03-10 10:50:14', '2015-03-10 10:50:14', '0000-00-00 00:00:00'),
-(33, 10, 18, 'paragraph8', 'equates to a red card', 'second yellow card', 'foul', '2015-03-10 10:51:21', '2015-03-10 10:51:21', '0000-00-00 00:00:00'),
-(34, 10, 18, 'paragraph31', 'poor performance', 'anonymous', 'description', '2015-03-10 10:53:22', '2015-03-10 10:53:22', '0000-00-00 00:00:00'),
-(35, 10, 18, 'paragraph42', 'plan', 'objective', 'description', '2015-03-10 10:55:18', '2015-03-10 10:55:18', '0000-00-00 00:00:00');
+INSERT INTO `annotations` (`id`, `user_id`, `doc_id`, `paragraph_id`, `wordNums`, `annotation`, `a_text`, `tags`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(25, 10, 18, 'paragraph27', '', 'Spanish League', 'La Liga', 'football', '2015-03-09 20:32:30', '2015-03-09 20:32:30', '0000-00-00 00:00:00'),
+(26, 10, 18, 'paragraph41', '', 'Good Coach', 'Luis Enrique', 'Coach', '2015-03-09 20:33:45', '2015-03-09 20:33:45', '0000-00-00 00:00:00'),
+(27, 10, 18, 'paragraph28', '', 'La Liga', 'league', 'spanish', '2015-03-09 21:27:37', '2015-03-09 21:27:37', '0000-00-00 00:00:00'),
+(28, 10, 18, 'paragraph4', '', 'Former Liverpool player', 'Suarez', 'liverpool', '2015-03-09 21:28:26', '2015-03-09 21:28:26', '0000-00-00 00:00:00'),
+(29, 10, 18, 'paragraph29', '', 'present in large numbers or quantities; plentiful.', 'prolific', 'definition', '2015-03-09 21:29:30', '2015-03-09 21:29:30', '0000-00-00 00:00:00'),
+(30, 10, 18, 'paragraph14', '', 'Messi''s main rival', 'Cristiano Ronaldo', 'rival', '2015-03-09 21:31:11', '2015-03-09 21:31:11', '0000-00-00 00:00:00'),
+(31, 10, 18, 'paragraph11', '', 'info on top scores', 'Reigning in Spain - La Liga''s top scorers 2014-15', 'box', '2015-03-09 21:31:56', '2015-03-09 21:31:56', '0000-00-00 00:00:00'),
+(32, 10, 18, 'paragraph43', '', 'last line check', 'I have ', 'lsat', '2015-03-09 21:33:52', '2015-03-09 21:33:52', '0000-00-00 00:00:00'),
+(33, 10, 18, 'paragraph4', '', 'Pique', 'Gerard Pique', 'tag', '2015-03-09 22:44:59', '2015-03-09 22:44:59', '0000-00-00 00:00:00'),
+(34, 7, 18, 'paragraph0', '', 'Top Spanish club', 'Barcelona', 'footbal', '2015-03-10 13:48:36', '2015-03-10 13:48:36', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -143,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`id`, `permission_level`, `email`, `firstnames`, `surname`, `password`, `password_temp`, `code`, `active`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (7, 1, 'adavidsonFYPROJECT@gmail.com', 'Anthony James', 'Davidson', '$2y$10$omnapbGwaFSFsY8xjV/KGOEa1cekCourar6d8ZbTTxJuOacrpk.5S', '', '', 1, 'Me5AW0sblVWOtLJOlVx8ZP53kv5zeNBZAKDT0qrZjOfuLxs4rIafoWomnnsM', '2014-12-11 20:19:28', '2015-02-25 22:10:05', '0000-00-00 00:00:00'),
-(10, 2, 'anthony.davidson.2011@nuim.ie', 'A', 'Davidson', '$2y$10$h7PaMtFeOS83LdHTrnGrceJi2pSUeO8IKZJ0zO/DGL2p8yOobvueC', '', '', 1, 'IQPVXZgSkxVJUc5N2Uay6tVFh5KreC8BXAyfNqDz1oNfTTr8MFY7WwD2t0fg', '2014-12-12 14:28:58', '2015-02-27 15:36:54', '0000-00-00 00:00:00');
+(10, 2, 'anthony.davidson.2011@nuim.ie', 'A', 'Davidson', '$2y$10$h7PaMtFeOS83LdHTrnGrceJi2pSUeO8IKZJ0zO/DGL2p8yOobvueC', '', '', 1, '7OCM6lDVvLGyXvGHxcrAbZeno9YUweX1wJU2O13b3ukGcAHOC15AHgSb6GYQ', '2014-12-12 14:28:58', '2015-03-10 21:37:43', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
