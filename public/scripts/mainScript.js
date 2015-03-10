@@ -33,7 +33,7 @@ function refreshCommentImgJquery(){
     });
     $('#annotation_text #commentImg').mouseleave(function(){
         event.stopPropagation();
-        $(this).css("background","white");
+        $(this).css("background","none");
     });
 
     $('#annotation_text #commentImg').mousedown(function(){
@@ -49,6 +49,7 @@ function refreshCommentImgJquery(){
         $('#commentImg').remove();
     });
 }
+
 function highlightDocument(text,ann,paragraph,a_id){
     var oldPText = $('#'+paragraph)[0].outerHTML;
     var ind = oldPText.indexOf(text);
@@ -60,6 +61,7 @@ function highlightDocument(text,ann,paragraph,a_id){
     $('#annotation_text #'+paragraph).before(newHTML);
     $('.removeMe').remove();
 }
+
 function loadAnnotations(){
     var annLists = $(".annotationL");
     console.log(annLists);
@@ -257,7 +259,8 @@ $(document).ready(function (){
     });
 
     $('#annotation_text').mouseup(function (){
-        text = getSelectionText();
+        textSelection = window.getSelection();
+        text = textSelection.toString();
         if(text != "" && annotating == false){
             highlightedText = text;
             textElement = window.getSelection();

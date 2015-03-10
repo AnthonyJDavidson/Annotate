@@ -143,11 +143,11 @@ overflow: auto; padding: 3px;
 	z-index: 100;
 	overflow: auto;
 	visibility: hidden;
-	background: white;
 }
 #commentImg img:active{
 	background: black;
 	border: 2px #aaaaaa;
+	border-radius: 4px;
 }
 
 .annotationInput{
