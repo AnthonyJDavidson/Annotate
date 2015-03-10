@@ -181,7 +181,7 @@ function getSelectionText() {
 
 $(document).ready(function (){
 
-    loadAnnotations();
+    //loadAnnotations();
     refreshAnnotationJquery();
 
     $('#annotation_text .annotationTool').mousedown(function(){

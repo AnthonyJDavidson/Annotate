@@ -63,8 +63,16 @@ class DocumentController extends BaseController {
 			$count = 0;
 			while (!feof($doc)) { 
 				// Make an array using return as delimiter
-			   $arrM[$count] = explode("\r\n",fgets($doc)); 
-			   $count++;
+				$arrM[$count] = explode("\r\n",fgets($doc));
+				$wordCount = 0;
+				$noMorewords = false;
+				while($noMorewords != true){
+					$arrM[$count][$wordCount] = strstr($arrM[$count][0], ' ', true);
+					if($arrM[$count][$wordCount] == NULL) $noMorewords = true;
+					$wordCount++;
+				}
+
+				$count++;
 			}
 
 			$d_sName = substr($d_name, 0, -4);

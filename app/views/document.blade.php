@@ -18,7 +18,9 @@
 				</div>
 				<div id="annotation_text" data-file="{{$docName}}"> 
 					@foreach($doc as $d =>$value)
-					<p id="paragraph{{$d}}">{{$value[0]}}</p>
+						@for($i = 0;$i <= (sizeof($value) -1); $i++)
+							<p id="paragraph{{$d}}">{{$value[$i]}}</p>
+						@endfor
 					@endforeach
 					<div class="annotationTool">
 						<textarea id="annotationInput" rows="4" cols="30" placeholder="Annotation"></textarea>
