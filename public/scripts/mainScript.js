@@ -17,7 +17,7 @@ function refreshAnnotationJquery(){
         var ann_ann = $('.annotationL#'+annId+' .annotation_annotation').text();
         var tags = $('.annotationL#'+annId+' .annotation_Tag').text();
         console.log(annId,ann_ann,tags);
-        $(this).after('<div class="aToolTip" style="top:'+(ypos+10)+'px;left:'+(xpos+10)+'px"><div class="aToolTip_ann">'+ann_ann+'</div><span class="aToolTip_tags">Tags: '+tags+'</span></div>');
+        $(this).after('<div class="aToolTip" style="top:'+(ypos+10)+'px;left:'+(xpos+10)+'px"><div class="aToolTip_ann">'+ann_ann+'</div><span class="aToolTip_tags">'+tags+'</span></div>');
 
 
     });

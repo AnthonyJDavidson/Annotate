@@ -177,3 +177,8 @@ font-size: 14px; font-weight:normal; text-align: left;
 overflow: auto; padding: 3px; 
 border-radius: 8px;
 }
+.aToolTip_tags{
+	background: #D1D1D1;
+	border-radius: 6px;
+	border: 1px solid #D1D1D1;
+}
