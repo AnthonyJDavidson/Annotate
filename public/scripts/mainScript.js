@@ -42,7 +42,7 @@ function refreshCommentImgJquery(){
     });
     $('#annotation_text #commentImg').mouseup(function(){
         event.stopPropagation();
-        if(textElement.baseNode)textElem = textElement.baseNode;
+        if(textElement.baseNode)textElem = textElement;
         $("#annotation_text .annotationTool").css("top",iconYpos);
         $("#annotation_text .annotationTool").css("left",iconXpos);
         $("#annotation_text .annotationTool").css("visibility","visible");
@@ -189,6 +189,9 @@ $(document).ready(function (){
     $('#annotation_text .annotationTool').mousedown(function(){
         event.stopPropagation();
     });
+    $('#annotation_text .annotationTool').mouseup(function(){
+        event.stopPropagation();
+    });
 
     $('.annotationTool .saveAnn').click(function(){
         event.stopPropagation();
@@ -197,20 +200,26 @@ $(document).ready(function (){
         if(highlightedText != ""){
             //create new <p> with a span in the middle as the annotation
             //  first annotation of paragraph
-            var paragraphId = textElem.parentElement.id;
-            var pIdNum = paragraphId.substring(9,paragraphId.length);
-            var pNextIdNum = parseInt(pIdNum) + 1;
-
-            var annotatedText = highlightedText;
-            var oldPText = textElem.parentNode.outerHTML;
-            var ind = oldPText.indexOf(annotatedText);
-            var htmlHead = oldPText.substring(0,ind);
-            var annotateSpan = '<span class="annotation">'+annotatedText+'</span>';
-            var htmlTail = oldPText.substring(ind + annotatedText.length,oldPText.length);
-            var newHTML = htmlHead+annotateSpan+htmlTail;
+            var paragraphId = textElem.anchorNode.parentElement.parentElement.id;
+            var firstWord = "";
+            if(textElem.anchorNode.parentElement.classList[0] == "wordSpan"){
+            	firstWord =  textElem.anchorNode.parentElement.nextSibling.classList[0];
+            }else firstWord = textElem.anchorNode.parentElement.classList[0];
+            var lastWord = "";
+            if(textElem.focusNode.parentElement.classList[0] == "wordSpan"){
+            	lastWord =  textElem.focusNode.parentElement.previousSibling.classList[0];
+            }else lastWord = textElem.focusNode.parentElement.classList[0];
+            //keep track of all annotated words
+            var fWordNum = parseInt(firstWord.substring(4));
+            var lWordNum = parseInt(lastWord.substring(4));
+            var count = fWordNum;
+            var wordsCovered = "";
+           	while(count <= lWordNum){
+           		wordsCovered = wordsCovered+count+',';
+           		count++;
+           	}
             var docName = $("#annotation_text").data("file");
             docName = docName.substring(0,docName.indexOf(".txt"));
-            console.log(docName); 
             annotationText= $('#annotation_text #annotationInput').val();
             annotationTag= $('#annotation_text #annotationTag').val();
             if(!annotationText) return 0;
@@ -224,22 +233,16 @@ $(document).ready(function (){
                     annotatedText: annotatedText, 
                     annotationText:annotationText, 
                     annotationTag: annotationTag,
-                    paragraphId: paragraphId},
+                    paragraphId: paragraphId,
+                	wordsCovered: wordsCovered}, 
                     url: "saveAnnotation",
                     success: function(data){
-
+                    	var wordsByNum= wordsCovered.split(/\W+/);
+                    	for (var i = 0; i <= wordsByNum.length -1; i++){
+                    		$('#annotation_text #'+paragraphId+' .word'+wordsByNum[i]).addClass("annotation");	
+                    	}
+                  		
                         console.log("Annotation successful",data);
-                        $('#annotation_text #'+paragraphId).remove();
-                        var annotateSpan = '<span class="annotation" data-annotation="ann'+data.newAnn["new_a_id"]+'">'+annotatedText+'</span>';
-						var newHTML = htmlHead+annotateSpan+htmlTail;
-                        if ($('#annotation_text #paragraph'+pNextIdNum).length){
-                            $('#annotation_text #paragraph'+pNextIdNum).before(newHTML);
-                        }else{
-                            pNextIdNum -= 2;
-                            $('#annotation_text #paragraph'+pNextIdNum).after(newHTML);
-                        }
-
-                        $('.annotationList').append('<div class="annotationL" id="ann'+data.newAnn["new_a_id"]+'" data-paragraph="'+data.newAnn["new_p_id"]+'"><span data-user="'+data.newAnn["new_u_id"]+'" class="annotation_user">'+$('#nameofUser').text()+'</span><br /><span>Annotation: </span><span class="annotation_annotation">'+data.newAnn["new_ann"]+'</span><br /><span>Related To: </span><span class="annotation_annotatedText">'+data.newAnn["new_a_text"]+'</span><br /><span>Tags: </span><span id="tags'+data.newAnn["new_a_id"]+'" class="annotation_Tag">'+data.newAnn["new_tags"]+'</span><br /></div>');
                     	refreshAnnotationJquery();
                     },
                     error: function(data){
@@ -259,8 +262,7 @@ $(document).ready(function (){
     });
 
     $('#annotation_text').mouseup(function (){
-        textSelection = window.getSelection();
-        text = textSelection.toString();
+        text = getSelectionText();
         if(text != "" && annotating == false){
             highlightedText = text;
             textElement = window.getSelection();
@@ -275,7 +277,6 @@ $(document).ready(function (){
             $("#annotation_text #commentImg").css("visibility","visible");
         }else{
             $('#commentImg').remove();
-            //$("#annotation_text .annotationT").css("visibility","hidden");
             annotating = false;
         }
 
