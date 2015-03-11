@@ -13,16 +13,13 @@ var iconXpos =0;
 
 
 function refreshAnnotationJquery(){
-    $('.annotation').mouseenter(function(){
-        var annId = $(this).data("annotation");
-        var ann_ann = $('.annotationL#'+annId+' .annotation_annotation').text();
-        var tags = $('.annotationL#'+annId+' .annotation_Tag').text();
-        console.log(annId,ann_ann,tags);
-        $(this).after('<div class="aToolTip" style="top:'+(ypos+10)+'px;left:'+(xpos+10)+'px"><div class="aToolTip_ann">'+ann_ann+'</div><span class="aToolTip_tags">'+tags+'</span></div>');
-
+    $('.annotation').mouseover(function(){
+    	event.stopPropagation();
+    	alert($(this).data("annotation"));
 
     });
     $('.annotation').mouseout(function(){
+    	event.stopPropagation();
         $('.aToolTip').remove();
     });
 }
@@ -53,32 +50,34 @@ function refreshCommentImgJquery(){
         $('#commentImg').remove();
     });
 }
-function highlightDocument(text,ann,paragraph,a_id){
-    var oldPText = $('#'+paragraph)[0].outerHTML;
-    var ind = oldPText.indexOf(text);
-    var htmlHead = oldPText.substring(0,ind);
-    var annotateSpan = '<span class="annotation" data-annotation='+a_id+'>'+text+'</span>';
-    var htmlTail = oldPText.substring(ind + text.length,oldPText.length);
-    var newHTML = htmlHead+annotateSpan+htmlTail;
-    $('#annotation_text #'+paragraph).addClass("removeMe");
-    $('#annotation_text #'+paragraph).before(newHTML);
-    $('.removeMe').remove();
-}
+
 function loadAnnotations(){
     var annLists = $(".annotationL");
     console.log(annLists);
     for (var i = 0; i < annLists.length; i++) {
         console.log(annLists[i].id+ " loaded");
-        var ann_text = $('#'+annLists[i].id+' .annotation_annotatedText').text();
+        //Annotated text
+        //not needed anymore?
+        //var ann_text = $('#'+annLists[i].id+' .annotation_annotatedText').text();
+        //Annotation
         var ann_ann = $('#'+annLists[i].id+' .annotation_annotation').text();
+        //paragraph id
         var ann_paragraph = $('#'+annLists[i].id).data("paragraph");
-        highlightDocument(ann_text,ann_ann,ann_paragraph,annLists[i].id);
+        //which words to highlight
+        var ann_words =$('#'+annLists[i].id).data("words");
+        //call function to highlight
+        highlightDocument(ann_ann,ann_paragraph,annLists[i].id,ann_words);
     }
-     $('.removeMe').remove();
 }
 
-createToolTips = function(){
-    var annList = $(".annotationL");
+function highlightDocument(ann,paragraph,a_id,words){
+	var wordSplitArray = words.split(',');
+	for (var i = 0; i<words.length -1 ;i++) {
+		$('#annotation_text #'+paragraph+' .word'+wordSplitArray[i]).addClass("annotation");
+		var curData = $('#annotation_text #'+paragraph+' .word'+wordSplitArray[i]).data("annotation");
+		$('#annotation_text #'+paragraph+' .word'+wordSplitArray[i]).data("annotation",curData+a_id+',');
+
+	}
 }
 
 function init() {
@@ -86,11 +85,6 @@ function init() {
         document.captureEvents(Event.MOUSEMOVE);
     }
     document.onmousemove = getCursorXY;     
-
-
-    window.onload = function() {
-      createToolTips();
-    };
 }
 function getCursorXY(e) {
     xpos = (window.Event) ? 
@@ -185,7 +179,7 @@ function getSelectionText() {
 
 $(document).ready(function (){
 
-    //loadAnnotations();
+    loadAnnotations();
     refreshAnnotationJquery();
 
     $('#annotation_text .annotationTool').mousedown(function(){
@@ -239,11 +233,13 @@ $(document).ready(function (){
                     wordsCovered: wordsCovered}, 
                     url: "saveAnnotation",
                     success: function(data){
-                        for (var i = 0; i <= wordsByNum.length -1; i++){
-                            $('#annotation_text #'+paragraphId+' .word'+wordsByNum[i]).addClass("annotation");  
-                        }
-                        
                         console.log("Annotation successful",data);
+                        for (var i = 0; i <= wordsByNum.length -1; i++){
+                            $('#annotation_text #'+paragraphId+' .word'+wordsByNum[i]).addClass("annotation");
+                            var curData = $('#annotation_text #'+paragraphId+' .word'+wordsByNum[i]).data("annotation");
+                            $('#annotation_text #'+paragraphId+' .word'+wordsByNum[i]).data("annotation",curData+'ann'+data.newAnn["new_a_id"]+',');
+                        }
+                        $('.annotationList').append('<div class="annotationL" id="ann'+data.newAnn["new_a_id"]+'" data-paragraph="'+data.newAnn["new_p_id"]+'"><span data-user="'+data.newAnn["new_u_id"]+'" class="annotation_user">'+$('#nameofUser').text()+'</span><br /><span>Annotation: </span><span class="annotation_annotation">'+data.newAnn["new_ann"]+'</span><br /><span>Related To: </span><span class="annotation_annotatedText">'+data.newAnn["new_a_text"]+'</span><br /><span>Tags: </span><span id="tags'+data.newAnn["new_a_id"]+'" class="annotation_Tag">'+data.newAnn["new_tags"]+'</span><br /></div>');
                         refreshAnnotationJquery();
                     },
                     error: function(data){

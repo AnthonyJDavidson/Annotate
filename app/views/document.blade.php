@@ -19,7 +19,7 @@
 				<div id="annotation_text" data-file="{{$docName}}"> 
 					@foreach($doc as $d =>$value)
 						<p id="paragraph{{$d}}">
-						@foreach($value[0] as $wID => $w)<span class="word{{$wID}}">{{$w}}</span><span class="wordSpace word{{$wID}}"> </span>@endforeach</p>
+						@foreach($value[0] as $wID => $w)<span class="word{{$wID}}" data-annotation="" >{{$w}}</span><span class="wordSpace word{{$wID}}" data-annotation=""> </span>@endforeach</p>
 					@endforeach
 					<div class="annotationTool">
 						<textarea id="annotationInput" rows="4" cols="30" placeholder="Annotation"></textarea>
@@ -34,7 +34,7 @@
 		</div>
 		<div class="annotationList">
 			@foreach($annotations as $ann)
-			<div class="annotationL" id="ann{{$ann["a_id"]}}" data-paragraph="{{$ann["paragraph_id"]}}">
+			<div class="annotationL" id="ann{{$ann["a_id"]}}" data-paragraph="{{$ann["paragraph_id"]}}" data-words="{{$ann["wordsData"]}}">
 				<span data-user="{{$ann["user_id"]}}" class="annotation_user">{{$ann["userFn"]}} {{$ann["userSn"]}}</span>
 				<br />
 				<span>Annotation: </span>

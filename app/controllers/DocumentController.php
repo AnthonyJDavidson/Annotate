@@ -112,7 +112,8 @@ class DocumentController extends BaseController {
 								"user_id" => $a->user_id,
 								"userFn" => $user->firstnames,
 								"userSn" => $user->surname,
-								"paragraph_id"=>$a->paragraph_id
+								"paragraph_id"=>$a->paragraph_id,
+								"wordsData"=>$a->words_Covered
 								);
 			}
 
