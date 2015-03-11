@@ -1,6 +1,7 @@
 
 var textElement;
-var textElem;
+var textElemAnchorNode;
+var textElemFocusNode;
 var highlightedText ="";
 var annotating = false;
 window.onload = init;
@@ -12,7 +13,7 @@ var iconXpos =0;
 
 
 function refreshAnnotationJquery(){
-	$('.annotation').mouseenter(function(){
+    $('.annotation').mouseenter(function(){
         var annId = $(this).data("annotation");
         var ann_ann = $('.annotationL#'+annId+' .annotation_annotation').text();
         var tags = $('.annotationL#'+annId+' .annotation_Tag').text();
@@ -22,18 +23,18 @@ function refreshAnnotationJquery(){
 
     });
     $('.annotation').mouseout(function(){
-    	$('.aToolTip').remove();
+        $('.aToolTip').remove();
     });
 }
 
 function refreshCommentImgJquery(){
-	$('#annotation_text #commentImg').mouseenter(function(){
+    $('#annotation_text #commentImg').mouseenter(function(){
         event.stopPropagation();
         $(this).css("background","#FFF500");
     });
     $('#annotation_text #commentImg').mouseleave(function(){
         event.stopPropagation();
-        $(this).css("background","none");
+        $(this).css("background","white");
     });
 
     $('#annotation_text #commentImg').mousedown(function(){
@@ -42,14 +43,16 @@ function refreshCommentImgJquery(){
     });
     $('#annotation_text #commentImg').mouseup(function(){
         event.stopPropagation();
-        if(textElement.baseNode)textElem = textElement;
+        if(textElement.baseNode){
+        	textElemAnchorNode = textElement.anchorNode;
+        	textElemFocusNode = textElement.focusNode;
+        }
         $("#annotation_text .annotationTool").css("top",iconYpos);
         $("#annotation_text .annotationTool").css("left",iconXpos);
         $("#annotation_text .annotationTool").css("visibility","visible");
         $('#commentImg').remove();
     });
 }
-
 function highlightDocument(text,ann,paragraph,a_id){
     var oldPText = $('#'+paragraph)[0].outerHTML;
     var ind = oldPText.indexOf(text);
@@ -61,7 +64,6 @@ function highlightDocument(text,ann,paragraph,a_id){
     $('#annotation_text #'+paragraph).before(newHTML);
     $('.removeMe').remove();
 }
-
 function loadAnnotations(){
     var annLists = $(".annotationL");
     console.log(annLists);
@@ -189,9 +191,6 @@ $(document).ready(function (){
     $('#annotation_text .annotationTool').mousedown(function(){
         event.stopPropagation();
     });
-    $('#annotation_text .annotationTool').mouseup(function(){
-        event.stopPropagation();
-    });
 
     $('.annotationTool .saveAnn').click(function(){
         event.stopPropagation();
@@ -200,32 +199,35 @@ $(document).ready(function (){
         if(highlightedText != ""){
             //create new <p> with a span in the middle as the annotation
             //  first annotation of paragraph
-            var paragraphId = textElem.anchorNode.parentElement.parentElement.id;
+            var paragraphId = textElemAnchorNode.parentElement.parentElement.id;
             var firstWord = "";
-            if(textElem.anchorNode.parentElement.classList[0] == "wordSpan"){
-            	firstWord =  textElem.anchorNode.parentElement.nextSibling.classList[0];
-            }else firstWord = textElem.anchorNode.parentElement.classList[0];
+            if(textElemAnchorNode.parentElement.classList[0] == "wordSpan"){
+                firstWord =  textElemAnchorNode.parentElement.nextSibling.classList[0];
+            }else firstWord = textElemAnchorNode.parentElement.classList[0];
             var lastWord = "";
-            if(textElem.focusNode.parentElement.classList[0] == "wordSpan"){
-            	lastWord =  textElem.focusNode.parentElement.previousSibling.classList[0];
-            }else lastWord = textElem.focusNode.parentElement.classList[0];
+            if(textElemFocusNode.parentElement.classList[0] == "wordSpan"){
+                lastWord =  textElemFocusNode.parentElement.previousSibling.classList[0];
+            }else lastWord = textElemFocusNode.parentElement.classList[0];
             //keep track of all annotated words
             var fWordNum = parseInt(firstWord.substring(4));
             var lWordNum = parseInt(lastWord.substring(4));
             var count = fWordNum;
             var wordsCovered = "";
-           	while(count <= lWordNum){
-           		wordsCovered = wordsCovered+count+',';
-           		count++;
-           	}
+            while(count <= lWordNum){
+                wordsCovered = wordsCovered+count+',';
+                count++;
+            }
             var docName = $("#annotation_text").data("file");
             docName = docName.substring(0,docName.indexOf(".txt"));
             annotationText= $('#annotation_text #annotationInput').val();
             annotationTag= $('#annotation_text #annotationTag').val();
             if(!annotationText) return 0;
             if(annotationTag == "") annotationTag = "None";
-
-            console.log(annotationTag);
+            var wordsByNum= wordsCovered.split(/\W+/);
+            var annotatedText = "";
+            for (var i = 0; i <= wordsByNum.length -1; i++){
+                annotatedText = annotatedText+$('#annotation_text #'+paragraphId+' .word'+wordsByNum[i]).text();
+            }
             $.ajax({
                 type: "POST",
                 data: {
@@ -234,16 +236,15 @@ $(document).ready(function (){
                     annotationText:annotationText, 
                     annotationTag: annotationTag,
                     paragraphId: paragraphId,
-                	wordsCovered: wordsCovered}, 
+                    wordsCovered: wordsCovered}, 
                     url: "saveAnnotation",
                     success: function(data){
-                    	var wordsByNum= wordsCovered.split(/\W+/);
-                    	for (var i = 0; i <= wordsByNum.length -1; i++){
-                    		$('#annotation_text #'+paragraphId+' .word'+wordsByNum[i]).addClass("annotation");	
-                    	}
-                  		
+                        for (var i = 0; i <= wordsByNum.length -1; i++){
+                            $('#annotation_text #'+paragraphId+' .word'+wordsByNum[i]).addClass("annotation");  
+                        }
+                        
                         console.log("Annotation successful",data);
-                    	refreshAnnotationJquery();
+                        refreshAnnotationJquery();
                     },
                     error: function(data){
                         alert("Annotation Failed: "+data.message);
@@ -277,6 +278,7 @@ $(document).ready(function (){
             $("#annotation_text #commentImg").css("visibility","visible");
         }else{
             $('#commentImg').remove();
+            //$("#annotation_text .annotationT").css("visibility","hidden");
             annotating = false;
         }
 

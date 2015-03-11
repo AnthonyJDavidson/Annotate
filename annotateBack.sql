@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 10, 2015 at 01:56 PM
+-- Generation Time: Mar 11, 2015 at 04:26 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -32,33 +32,41 @@ CREATE TABLE IF NOT EXISTS `annotations` (
   `doc_id` int(11) NOT NULL,
   `paragraph_id` varchar(60) NOT NULL,
   `annotation` mediumtext NOT NULL,
+  `words_Covered` varchar(60) NOT NULL,
   `a_text` varchar(60) NOT NULL,
   `tags` varchar(60) NOT NULL DEFAULT 'None',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=47 ;
 
 --
 -- Dumping data for table `annotations`
 --
 
-INSERT INTO `annotations` (`id`, `user_id`, `doc_id`, `paragraph_id`, `annotation`, `a_text`, `tags`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(4, 10, 13, 'paragraph0', '', 'Lorem ipsum dolor sit amet, c', 'None', '2015-03-07 22:59:26', '2015-03-07 22:59:26', '0000-00-00 00:00:00'),
-(23, 10, 18, 'paragraph27', 'Annotation TEst', 'The Rayo', 'Test', '2015-03-08 20:47:37', '2015-03-08 20:47:37', '0000-00-00 00:00:00'),
-(24, 10, 18, 'paragraph2', 'Annotation ', 'Barca took', 'Text', '2015-03-08 20:56:33', '2015-03-08 20:56:33', '0000-00-00 00:00:00'),
-(25, 10, 18, 'paragraph9', 'defender', 'Dani Alves ', 'tag', '2015-03-10 10:27:55', '2015-03-10 10:27:55', '0000-00-00 00:00:00'),
-(26, 10, 18, 'paragraph11', 'table', 'top scorers', 'scores', '2015-03-10 10:28:50', '2015-03-10 10:28:50', '0000-00-00 00:00:00'),
-(27, 10, 18, 'paragraph0', 'rampant', 'rampant', 'english', '2015-03-10 10:32:58', '2015-03-10 10:32:58', '0000-00-00 00:00:00'),
-(28, 10, 18, 'paragraph41', 'Coach', 'Luis Enrique', 'Good Coach', '2015-03-10 10:45:02', '2015-03-10 10:45:02', '0000-00-00 00:00:00'),
-(29, 10, 18, 'paragraph11', 'Football', '2014-15', 'season', '2015-03-10 10:47:45', '2015-03-10 10:47:45', '0000-00-00 00:00:00'),
-(30, 10, 18, 'paragraph37', 'Penalty', 'spot-kick', 'set-piece', '2015-03-10 10:48:31', '2015-03-10 10:48:31', '0000-00-00 00:00:00'),
-(31, 10, 18, 'paragraph2', 'Former Liverpool Player', 'Luis Suarez', 'bites', '2015-03-10 10:49:22', '2015-03-10 10:49:22', '0000-00-00 00:00:00'),
-(32, 10, 18, 'paragraph6', 'Also known as a "spot kick"', 'penalty', 'set-piece', '2015-03-10 10:50:14', '2015-03-10 10:50:14', '0000-00-00 00:00:00'),
-(33, 10, 18, 'paragraph8', 'equates to a red card', 'second yellow card', 'foul', '2015-03-10 10:51:21', '2015-03-10 10:51:21', '0000-00-00 00:00:00'),
-(34, 10, 18, 'paragraph31', 'poor performance', 'anonymous', 'description', '2015-03-10 10:53:22', '2015-03-10 10:53:22', '0000-00-00 00:00:00'),
-(35, 10, 18, 'paragraph42', 'plan', 'objective', 'description', '2015-03-10 10:55:18', '2015-03-10 10:55:18', '0000-00-00 00:00:00');
+INSERT INTO `annotations` (`id`, `user_id`, `doc_id`, `paragraph_id`, `annotation`, `words_Covered`, `a_text`, `tags`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(4, 10, 13, 'paragraph0', '', '', 'Lorem ipsum dolor sit amet, c', 'None', '2015-03-07 22:59:26', '2015-03-07 22:59:26', '0000-00-00 00:00:00'),
+(23, 10, 18, 'paragraph27', 'Annotation TEst', '', 'The Rayo', 'Test', '2015-03-08 20:47:37', '2015-03-08 20:47:37', '0000-00-00 00:00:00'),
+(24, 10, 18, 'paragraph2', 'Annotation ', '', 'Barca took', 'Text', '2015-03-08 20:56:33', '2015-03-08 20:56:33', '0000-00-00 00:00:00'),
+(25, 10, 18, 'paragraph9', 'defender', '', 'Dani Alves ', 'tag', '2015-03-10 10:27:55', '2015-03-10 10:27:55', '0000-00-00 00:00:00'),
+(26, 10, 18, 'paragraph11', 'table', '', 'top scorers', 'scores', '2015-03-10 10:28:50', '2015-03-10 10:28:50', '0000-00-00 00:00:00'),
+(27, 10, 18, 'paragraph0', 'rampant', '', 'rampant', 'english', '2015-03-10 10:32:58', '2015-03-10 10:32:58', '0000-00-00 00:00:00'),
+(28, 10, 18, 'paragraph41', 'Coach', '', 'Luis Enrique', 'Good Coach', '2015-03-10 10:45:02', '2015-03-10 10:45:02', '0000-00-00 00:00:00'),
+(29, 10, 18, 'paragraph11', 'Football', '', '2014-15', 'season', '2015-03-10 10:47:45', '2015-03-10 10:47:45', '0000-00-00 00:00:00'),
+(30, 10, 18, 'paragraph37', 'Penalty', '', 'spot-kick', 'set-piece', '2015-03-10 10:48:31', '2015-03-10 10:48:31', '0000-00-00 00:00:00'),
+(31, 10, 18, 'paragraph2', 'Former Liverpool Player', '', 'Luis Suarez', 'bites', '2015-03-10 10:49:22', '2015-03-10 10:49:22', '0000-00-00 00:00:00'),
+(32, 10, 18, 'paragraph6', 'Also known as a "spot kick"', '', 'penalty', 'set-piece', '2015-03-10 10:50:14', '2015-03-10 10:50:14', '0000-00-00 00:00:00'),
+(33, 10, 18, 'paragraph8', 'equates to a red card', '', 'second yellow card', 'foul', '2015-03-10 10:51:21', '2015-03-10 10:51:21', '0000-00-00 00:00:00'),
+(34, 10, 18, 'paragraph31', 'poor performance', '', 'anonymous', 'description', '2015-03-10 10:53:22', '2015-03-10 10:53:22', '0000-00-00 00:00:00'),
+(35, 10, 18, 'paragraph42', 'plan', '', 'objective', 'description', '2015-03-10 10:55:18', '2015-03-10 10:55:18', '0000-00-00 00:00:00'),
+(36, 10, 18, 'paragraph39', 'Barcelona''s home group', '', 'Nou Camp', 'football', '2015-03-10 16:01:28', '2015-03-10 16:01:28', '0000-00-00 00:00:00'),
+(37, 10, 18, 'paragraph8', 'annotation', '', 'finished', 'tag', '2015-03-10 16:40:14', '2015-03-10 16:40:14', '0000-00-00 00:00:00'),
+(38, 10, 18, 'paragraph0', '3 goals in 1', '', 'hat-trick', 'description', '2015-03-11 13:32:16', '2015-03-11 13:32:16', '0000-00-00 00:00:00'),
+(39, 10, 18, 'paragraph18', 'testing', '', 'Antoine Griezmann', 'test', '2015-03-11 13:47:09', '2015-03-11 13:47:09', '0000-00-00 00:00:00'),
+(40, 10, 18, '', 'A', '', 'Lionel Messi ', 'A', '2015-03-11 14:46:02', '2015-03-11 14:46:02', '0000-00-00 00:00:00'),
+(45, 10, 18, 'paragraph9', '80th Minute', '', '10 minutes ', 'football', '2015-03-11 15:05:06', '2015-03-11 15:05:06', '0000-00-00 00:00:00'),
+(46, 10, 18, 'paragraph6', 'A', '0,1,2,3,4,', 'He scored a twice-taken penalty, ', 'A', '2015-03-11 15:25:21', '2015-03-11 15:25:21', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 

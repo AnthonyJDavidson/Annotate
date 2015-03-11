@@ -10,6 +10,7 @@ class AnnotationController extends BaseController {
 			$annotationText =  Input::get('annotationText');
 			$annotationTag = Input::get('annotationTag');
 			$paragraphId = Input::get('paragraphId');
+			$wordsCovered = Input::get('wordsCovered');
 
 			$document = Document::where('storage_name','=',$docName)->get()->first(); 
 			$docId = $document->id;
@@ -17,6 +18,7 @@ class AnnotationController extends BaseController {
 			$annotation->user_id= $user->id;
 			$annotation->doc_id = $docId;
 			$annotation->paragraph_id = $paragraphId;
+			$annotation->words_Covered = $wordsCovered;
 			$annotation->annotation = $annotationText;
 			$annotation->a_text = $annotatedText;
 			$annotation->tags = $annotationTag;
