@@ -204,3 +204,8 @@ overflow: auto; padding: 3px;
 	padding: 20px;
 	float: center;
 }
+.aToolTip_a{
+	border: solid;
+	border-width: .1em;
+	padding: 2px;
+}

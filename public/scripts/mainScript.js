@@ -13,11 +13,21 @@ var iconXpos =0;
 
 
 function refreshAnnotationJquery(){
+	$('.annotation').off();
     $('.annotation').mouseover(function(){
     	event.stopPropagation();
-    	alert($(this).data("annotation"));
+    	var annotation_ids = $(this).data("annotation").split(',');
 
-    });
+    	$(this).after('<div class="aToolTip" style="top:'+(ypos+10)+'px;left:'+(xpos+10)+'px"></div>');
+    	for (var i = 0; i < annotation_ids.length -1;i++) {
+    		if(annotation_ids[0]!=""){
+    			var ann_ann = $('.annotationL#'+annotation_ids[i]+' .annotation_annotation').text();
+        		var tags = $('.annotationL#'+annotation_ids[i]+' .annotation_Tag').text();
+    			$('.aToolTip').append('<div class="aToolTip_a"><div class="aToolTip_ann">'+ann_ann+'</div><span class="aToolTip_tags">'+tags+'</span></div>');
+    		}
+		}
+	});
+
     $('.annotation').mouseout(function(){
     	event.stopPropagation();
         $('.aToolTip').remove();
@@ -241,6 +251,8 @@ $(document).ready(function (){
                         }
                         $('.annotationList').append('<div class="annotationL" id="ann'+data.newAnn["new_a_id"]+'" data-paragraph="'+data.newAnn["new_p_id"]+'"><span data-user="'+data.newAnn["new_u_id"]+'" class="annotation_user">'+$('#nameofUser').text()+'</span><br /><span>Annotation: </span><span class="annotation_annotation">'+data.newAnn["new_ann"]+'</span><br /><span>Related To: </span><span class="annotation_annotatedText">'+data.newAnn["new_a_text"]+'</span><br /><span>Tags: </span><span id="tags'+data.newAnn["new_a_id"]+'" class="annotation_Tag">'+data.newAnn["new_tags"]+'</span><br /></div>');
                         refreshAnnotationJquery();
+                        $('#annotation_text #annotationInput').val("");
+        				$('#annotation_text #annotationTag').val("");
                     },
                     error: function(data){
                         alert("Annotation Failed: "+data.message);
@@ -256,6 +268,8 @@ $(document).ready(function (){
         console.log("cancelAnn");
         $(".annotationTool").css("visibility","hidden");
         highlightedText = "";
+        $('#annotation_text #annotationInput').val("");
+        $('#annotation_text #annotationTag').val("");
     });
 
     $('#annotation_text').mouseup(function (){
