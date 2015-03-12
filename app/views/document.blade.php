@@ -48,7 +48,8 @@
 				<br />
 				<span>Tags: </span>
 				<div id="tags{{$ann["a_id"]}}" >@foreach($ann["tags"] as $tag)<span class="annotation_Tag">{{$tag}} </span>@endforeach</div>
-				
+				<button type="button" class="editAnn">Edit</button>
+				<button type="button" class="deleteAnn">Delete</button>
 				<br />
 			</div>
 			@endforeach

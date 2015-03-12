@@ -37,4 +37,16 @@ class AnnotationController extends BaseController {
 	  
         }else return Redirect::route('home')->with('global', 'Please Sign In');
 	}
+
+	public function deleteAnn(){
+		if (Auth::check()){
+			$user = User::find(Auth::user()->id);
+			$annID = Input::get('annID');
+			$annotation = Annotation::where('id','=',$annID)->get()->first();
+			if($annotation->user_id == $user->id){
+				$annotation->delete();
+				return Response::json(array('message'=>"Annotation deleted"));
+			}else Redirect::route('home')->with('global', 'Incorrect User id');
+		}else return Redirect::route('home')->with('global', 'Please Sign In');
+	}
 }

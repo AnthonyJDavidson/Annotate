@@ -17,14 +17,15 @@ function refreshAnnotationJquery(){
     $('.annotation').mouseover(function(){
     	event.stopPropagation();
     	var annotation_ids = $(this).data("annotation").split(',');
-
-    	$(this).after('<div class="aToolTip" style="top:'+(ypos+10)+'px;left:'+(xpos+10)+'px"></div>');
-    	for (var i = 0; i < annotation_ids.length -1;i++) {
-    		if(annotation_ids[0]!=""){
-    			var ann_ann = $('.annotationL#'+annotation_ids[i]+' .annotation_annotation').text();
-        		var tags = $('.annotationL#'+annotation_ids[i]+' .annotation_Tag').text();
-    			$('.aToolTip').append('<div class="aToolTip_a"><div class="aToolTip_ann">'+ann_ann+'</div><span class="aToolTip_tags">'+tags+'</span></div>');
-    		}
+    	if(annotation_ids != ""){
+	    	$(this).after('<div class="aToolTip" style="top:'+(ypos+10)+'px;left:'+(xpos+10)+'px"></div>');
+	    	for (var i = 0; i < annotation_ids.length -1;i++) {
+	    		if(annotation_ids[0]!=""){
+	    			var ann_ann = $('.annotationL#'+annotation_ids[i]+' .annotation_annotation').text();
+	        		var tags = $('.annotationL#'+annotation_ids[i]+' .annotation_Tag').text();
+	    			$('.aToolTip').append('<div class="aToolTip_a"><div class="aToolTip_ann">'+ann_ann+'</div><span class="aToolTip_tags">'+tags+'</span></div>');
+	    		}
+			}
 		}
 	});
 
@@ -250,6 +251,9 @@ $(document).ready(function (){
                             var curData = $('#annotation_text #'+paragraphId+' .word'+wordsByNum[i]).data("annotation");
                             $('#annotation_text #'+paragraphId+' .word'+wordsByNum[i]).data("annotation",curData+'ann'+data.newAnn["new_a_id"]+',');
                         }
+                        //create annotation in list -- tags added in a few lines
+                        $('.annotationList').append('<div class="annotationL" id="ann'+data.newAnn["new_a_id"]+'" data-paragraph="'+data.newAnn["new_p_id"]+'"><span data-user="'+data.newAnn["new_u_id"]+'" class="annotation_user">'+$('#nameofUser').text()+'</span><br /><span>Annotation: </span><span class="annotation_annotation">'+data.newAnn["new_ann"]+'</span><br /><span>Related To: </span><span class="annotation_annotatedText">'+data.newAnn["new_a_text"]+'</span><br /><span>Tags: </span><div id="tags'+data.newAnn["new_a_id"]+'"></div><br /><button type="button" class="editAnn">Edit</button><button type="button" class="deleteAnn">Delete</button></div>');
+                        
                         //update filter list
                         var tagsList = annotationTag.split(/\W+/);
                         var curTags = new Array();
@@ -258,13 +262,16 @@ $(document).ready(function (){
                         	curTags[indexTags] = $(this).text();
                         	indexTags++;
                         });
+                        
                         for (var i = 0 ; i < tagsList.length; i++) {
                         	if(curTags.indexOf(tagsList[i]) == -1){
                         		 $('#left_Col #tagsFilter').append('<li><input type="checkbox" name="show_tag" value="'+tagsList[i]+'" checked="true">'+tagsList[i]+'</li>');
                         	}
+                        	//add tag to annotation in list
+                        	$('.annotationList #ann'+data.newAnn["new_a_id"]+' .tags'+data.newAnn["new_a_id"]).append('<span class="annotation_Tag>'+tagsList[i]+'</span>');
                      	}
 
-                        $('.annotationList').append('<div class="annotationL" id="ann'+data.newAnn["new_a_id"]+'" data-paragraph="'+data.newAnn["new_p_id"]+'"><span data-user="'+data.newAnn["new_u_id"]+'" class="annotation_user">'+$('#nameofUser').text()+'</span><br /><span>Annotation: </span><span class="annotation_annotation">'+data.newAnn["new_ann"]+'</span><br /><span>Related To: </span><span class="annotation_annotatedText">'+data.newAnn["new_a_text"]+'</span><br /><span>Tags: </span><span id="tags'+data.newAnn["new_a_id"]+'" class="annotation_Tag">'+data.newAnn["new_tags"]+'</span><br /></div>');
+                        
                         refreshAnnotationJquery();
                         $('#annotation_text #annotationInput').val("");
         				$('#annotation_text #annotationTag').val("");
@@ -286,6 +293,51 @@ $(document).ready(function (){
         $('#annotation_text #annotationInput').val("");
         $('#annotation_text #annotationTag').val("");
     });
+
+
+    $('.annotationL .deleteAnn').click(function(){
+    	//find ann id (ann_id will be in the form annNUM and we want NUM only)
+    	var annID_all = $(this)[0].parentElement.id; 
+    	var annID_id = annID_all.substring(annID_all.length, 3);
+    	//delete ann (ajax)
+    	$.ajax({
+            type: "POST",
+            data: {annID: annID_id},
+            url: "deleteAnn",
+            success: function(data){
+            	//"unhighlight" words for each data-word
+		    	//"data-123".replace('data-','');
+		    	var par = $(this)[0].parentElement.dataset["paragraph"];
+		    	var annWords = $(this)[0].parentElement.dataset["words"];
+		    	annWords = annWords.split(',');
+		    	for(var i = 0; i<annWords.length;i++){
+		    		element = $('#annotation_text #'+par+' .word'+annWords[i]);
+		    		elementSpace = $('#annotation_text #'+par+' .word'+annWords[i]+':nth-child(2)');
+		    		oldData = element.data("annotation");//word not space
+		    		if(oldData){
+		    			newData = oldData.replace(annID_all+',','');
+		    			element.data("annotation",newData);
+		    			elementSpace.data("annotation",newData);
+		    			if(element.data("annotation") == ""){
+		    				element.removeClass("annotation");
+		    				elementSpace.removeClass("annotation");
+		    			}else{
+		    				//TODO
+		    				//remove some background colour
+		    			}
+		    		}
+		    	}
+                console.log("Annotation Deleted",data);
+            },
+            error: function(data){
+                alert(data.message);
+                console.log("delete failed: ",data);
+            }
+        });//ajax	
+
+    });
+
+    $('.annotationL .editAnn').click(function(){});
 
     $('#annotation_text').mouseup(function (){
         text = getSelectionText();
