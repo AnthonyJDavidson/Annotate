@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 11, 2015 at 10:00 PM
+-- Generation Time: Mar 12, 2015 at 07:52 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `annotations` (
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=74 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=94 ;
 
 --
 -- Dumping data for table `annotations`
@@ -57,10 +57,16 @@ INSERT INTO `annotations` (`id`, `user_id`, `doc_id`, `paragraph_id`, `annotatio
 (67, 10, 18, 'paragraph2', '3 annotations', '3,4,5,6,', 'advantage of Real Madrid''s ', 'annotation', '2015-03-11 19:06:39', '2015-03-11 19:06:39', '0000-00-00 00:00:00'),
 (68, 10, 18, 'paragraph6', 'long annotation test', '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,', 'scored a twice-taken penalty, tapped in the fourth and added', 'annotation', '2015-03-11 19:11:41', '2015-03-11 19:11:41', '0000-00-00 00:00:00'),
 (69, 10, 18, 'paragraph9', 'long annotation test', '0,1,2,3,', 'Barca defender Dani Alves ', 'annotation', '2015-03-11 19:12:06', '2015-03-11 19:12:06', '0000-00-00 00:00:00'),
-(70, 10, 18, 'paragraph2', 'long Annotation Test', '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,', 'Barca took full advantage of Real Madrid''s defeat by Athleti', 'annotation', '2015-03-11 19:19:20', '2015-03-11 19:19:20', '0000-00-00 00:00:00'),
 (71, 10, 18, 'paragraph8', 'Teams usually have 11 players', '4,5,', '10 men ', 'football', '2015-03-11 19:23:09', '2015-03-11 19:23:09', '0000-00-00 00:00:00'),
 (72, 10, 18, 'paragraph14', 'Real Madrid forward', '0,1,', 'Cristiano Ronaldo ', 'football', '2015-03-11 19:24:15', '2015-03-11 19:24:15', '0000-00-00 00:00:00'),
-(73, 10, 18, 'paragraph16', 'Young Barcelona player from Brazil', '0,', 'Neymar ', 'football, Brazil', '2015-03-11 19:25:04', '2015-03-11 19:25:04', '0000-00-00 00:00:00');
+(73, 10, 18, 'paragraph16', 'Young Barcelona player from Brazil', '0,', 'Neymar ', 'football, annotation, tag', '2015-03-11 19:25:04', '2015-03-11 19:25:04', '0000-00-00 00:00:00'),
+(74, 10, 18, 'paragraph27', 'One-on-one shot with the keeper', '5,', 'penalty ', 'football', '2015-03-12 13:37:40', '2015-03-12 13:37:40', '0000-00-00 00:00:00'),
+(75, 10, 18, 'paragraph9', '80th minute', '7,8,', '10 minutes ', 'football', '2015-03-12 13:38:25', '2015-03-12 13:38:25', '0000-00-00 00:00:00'),
+(76, 10, 18, 'paragraph18', 'Next best team after Barca and Real', '2,3,', '(Atletico Madrid)\n ', 'football', '2015-03-12 13:45:00', '2015-03-12 13:45:00', '0000-00-00 00:00:00'),
+(77, 10, 18, 'paragraph41', 'Good Coach', '2,3,', 'Luis Enrique:\n ', 'coach', '2015-03-12 13:45:28', '2015-03-12 13:45:28', '0000-00-00 00:00:00'),
+(78, 10, 18, 'paragraph37', 'When a defender is closer than the rules allow on a kick off, corner kick, goal kick, free kick or PK', '16,', 'encroachment ', 'definition, football', '2015-03-12 13:47:47', '2015-03-12 13:47:47', '0000-00-00 00:00:00'),
+(79, 7, 18, 'paragraph2', 'Forer Liverpool player', '12,13,', 'Luis Suarez ', 'football', '2015-03-12 15:27:12', '2015-03-12 15:27:12', '0000-00-00 00:00:00'),
+(93, 7, 18, 'paragraph0', 'flourishing or spreading unchecked.', '12,', 'rampant ', 'definition, TagTest', '2015-03-12 17:54:10', '2015-03-12 17:54:10', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -144,8 +150,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `permission_level`, `email`, `firstnames`, `surname`, `password`, `password_temp`, `code`, `active`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(7, 1, 'adavidsonFYPROJECT@gmail.com', 'Anthony James', 'Davidson', '$2y$10$omnapbGwaFSFsY8xjV/KGOEa1cekCourar6d8ZbTTxJuOacrpk.5S', '', '', 1, 'Me5AW0sblVWOtLJOlVx8ZP53kv5zeNBZAKDT0qrZjOfuLxs4rIafoWomnnsM', '2014-12-11 20:19:28', '2015-02-25 22:10:05', '0000-00-00 00:00:00'),
-(10, 2, 'anthony.davidson.2011@nuim.ie', 'A', 'Davidson', '$2y$10$h7PaMtFeOS83LdHTrnGrceJi2pSUeO8IKZJ0zO/DGL2p8yOobvueC', '', '', 1, 'IQPVXZgSkxVJUc5N2Uay6tVFh5KreC8BXAyfNqDz1oNfTTr8MFY7WwD2t0fg', '2014-12-12 14:28:58', '2015-02-27 15:36:54', '0000-00-00 00:00:00');
+(7, 1, 'adavidsonFYPROJECT@gmail.com', 'Anthony James', 'Davidson', '$2y$10$omnapbGwaFSFsY8xjV/KGOEa1cekCourar6d8ZbTTxJuOacrpk.5S', '', '', 1, 'A0neJYYDNbtDtKWGEbfyTtP3r727o8jGWg6GSYEJg0gfmWonTzINMQRHnd7t', '2014-12-11 20:19:28', '2015-03-12 18:45:22', '0000-00-00 00:00:00'),
+(10, 2, 'anthony.davidson.2011@nuim.ie', 'A', 'Davidson', '$2y$10$h7PaMtFeOS83LdHTrnGrceJi2pSUeO8IKZJ0zO/DGL2p8yOobvueC', '', '', 1, 'b3tRXqv7GoLkycAHGjH2RiCU9VV1Hd07g5imaGvhjKWXzk550mzYmg5VmnXR', '2014-12-12 14:28:58', '2015-03-12 15:26:26', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
