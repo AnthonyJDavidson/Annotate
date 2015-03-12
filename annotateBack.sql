@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 12, 2015 at 07:52 PM
+-- Generation Time: Mar 12, 2015 at 09:50 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `annotations` (
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=94 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=99 ;
 
 --
 -- Dumping data for table `annotations`
@@ -47,7 +47,6 @@ CREATE TABLE IF NOT EXISTS `annotations` (
 
 INSERT INTO `annotations` (`id`, `user_id`, `doc_id`, `paragraph_id`, `annotation`, `words_Covered`, `a_text`, `tags`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (4, 10, 13, 'paragraph0', '', '', 'Lorem ipsum dolor sit amet, c', 'None', '2015-03-07 22:59:26', '2015-03-07 22:59:26', '0000-00-00 00:00:00'),
-(58, 10, 18, 'paragraph0', 'Good Footballer', '0,1,', 'Lionel Messi ', 'football', '2015-03-11 18:54:37', '2015-03-11 18:54:37', '0000-00-00 00:00:00'),
 (59, 10, 18, 'paragraph0', 'Spanish League', '8,9,', 'La Liga ', 'football', '2015-03-11 18:55:06', '2015-03-11 18:55:06', '0000-00-00 00:00:00'),
 (61, 10, 18, 'paragraph0', 'With Barcelona', '', '', 'football', '2015-03-11 18:56:52', '2015-03-11 18:56:52', '0000-00-00 00:00:00'),
 (62, 10, 18, 'paragraph0', 'Football Team', '13,', 'Barcelona ', 'football', '2015-03-11 18:58:18', '2015-03-11 18:58:18', '0000-00-00 00:00:00'),
@@ -66,7 +65,11 @@ INSERT INTO `annotations` (`id`, `user_id`, `doc_id`, `paragraph_id`, `annotatio
 (77, 10, 18, 'paragraph41', 'Good Coach', '2,3,', 'Luis Enrique:\n ', 'coach', '2015-03-12 13:45:28', '2015-03-12 13:45:28', '0000-00-00 00:00:00'),
 (78, 10, 18, 'paragraph37', 'When a defender is closer than the rules allow on a kick off, corner kick, goal kick, free kick or PK', '16,', 'encroachment ', 'definition, football', '2015-03-12 13:47:47', '2015-03-12 13:47:47', '0000-00-00 00:00:00'),
 (79, 7, 18, 'paragraph2', 'Forer Liverpool player', '12,13,', 'Luis Suarez ', 'football', '2015-03-12 15:27:12', '2015-03-12 15:27:12', '0000-00-00 00:00:00'),
-(93, 7, 18, 'paragraph0', 'flourishing or spreading unchecked.', '12,', 'rampant ', 'definition, TagTest', '2015-03-12 17:54:10', '2015-03-12 17:54:10', '0000-00-00 00:00:00');
+(93, 7, 18, 'paragraph0', 'flourishing or spreading unchecked.', '12,', 'rampant ', 'definition, TagTest', '2015-03-12 17:54:10', '2015-03-12 17:54:10', '0000-00-00 00:00:00'),
+(94, 10, 18, 'paragraph0', 'Good Footballer', '0,1,', 'Lionel Messi ', 'football', '2015-03-12 20:33:45', '2015-03-12 20:33:45', '0000-00-00 00:00:00'),
+(96, 10, 18, 'paragraph8', 'equates to red', '11,12,', 'second yellow ', 'football, definition', '2015-03-12 20:36:33', '2015-03-12 20:36:33', '0000-00-00 00:00:00'),
+(97, 10, 18, 'paragraph0', '3 goals in a game', '5,', 'hat-trick ', 'football', '2015-03-12 20:45:38', '2015-03-12 20:45:38', '0000-00-00 00:00:00'),
+(98, 10, 18, 'paragraph9', 'foul', '13,', 'tripping ', 'football', '2015-03-12 20:46:39', '2015-03-12 20:46:39', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
