@@ -59,6 +59,18 @@ class DocumentController extends BaseController {
 		if (Auth::check()){
 			$user = User::find(Auth::user()->id); 
 			$doc = fopen('documents/'.$d_name, "r");
+
+			//get users for current document
+			$document = Document::where('storage_name','=',substr($d_name,0, -4))->get()->first();
+			$group = $document->group_id;
+			$userGroup = UserGroup::where('group_id','=',$group)->get();
+			$userNamesIds = array();
+			foreach ($userGroup as $uG) $userNamesIds[$uG->id] = $uG->user_id;
+			$userNames = array();
+			foreach($userNamesIds as $uNI){ 
+				$userRow = User::where('id','=',$uNI)->get()->first();
+				$userNames[$userRow->id] = array('id' => $userRow->id,'name' => (($userRow->firstnames).' '.($userRow->surname)));
+			}
 			// Read line by line until end of file
 			$count = 0;
 			while (!feof($doc)) { 
@@ -105,20 +117,42 @@ class DocumentController extends BaseController {
 						$tags = substr($tags, $pos+2, strlen($tags));
 					}
 				}
+				while($moretags == true){
+					$pos = stripos($tags, ',');
+					if($pos === false){
+						$ann_tags[$index] = $tags;//only 1 tag
+						$moretags = false;
+						if(in_array($tags, $all_tags) == false){
+							$all_tags[$all_Tags_index] = $tags;
+							$all_Tags_index++;
+						}						
+					}else{
+						$foundTag = substr($tags, 0, $pos);
+						$ann_tags[$index] = $foundTag;
+						$index++;
+						//check for duplicate tags
+						if(in_array($foundTag, $all_tags) ==false ){
+							$all_tags[$all_Tags_index] = $foundTag;
+							$all_Tags_index++;
+						}
+						$tags = substr($tags, $pos+2, strlen($tags));
+					}
+				}
+
+				$userN = $userNames[$a->user_id]['name'];
 				$annotations[$a->id] = array(
 								"a_id" => $a->id,
 								"a_text" => $a->a_text,
 								"annotation" => $a->annotation,
 								"tags" => $ann_tags,
 								"user_id" => $a->user_id,
-								"userFn" => $user->firstnames,
-								"userSn" => $user->surname,
+								"userN" => $userN,
 								"paragraph_id"=>$a->paragraph_id,
 								"wordsData"=>$a->words_Covered
 								);
 			}
 
-			$data = array("doc"=>  $arrM, "docName" =>$d_name, "annotations" =>$annotations, "tags" => $all_tags);
+			$data = array("doc"=>  $arrM, "docName" =>$d_name, "annotations" =>$annotations, "tags" => $all_tags, "userNames" => $userNames);
 			return View::make('document',$data);
 
 		}else return Redirect::route('home')->with('global', 'Please Sign In');

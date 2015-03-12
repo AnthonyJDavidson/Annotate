@@ -5,16 +5,18 @@
 			<div>
 				<div id="left_Col">
 					<ul class="filters" id="tagsFilter">
-						<div>Filters</div>
-						<div>-By Annotation</div>
+						<div>Annotation Filters</div>
+						<div><input type="checkbox" name="hideAnnotations" value="hideAnn">Hide all</div>
+						<div>-By Tag</div>
 						@foreach($tags as $t)
 						<li><input type="checkbox" name="show_tag" value="{{$t}}" checked="true">{{$t}}</li>
 						@endforeach
 					</ul>
-					<ul class="filters">
-						<div>By User</div>
-						<div>To Be Done</div>
-
+					<ul class="filters"  id="userNameFilter">
+						<div>-By User</div>
+						@foreach($userNames as $uN)
+						<li><input type="checkbox" name="show_tag" value="{{$uN["id"]}}" checked="true">{{$uN["name"]}}</li>
+						@endforeach
 					</ul>
 				</div>
 				<div id="annotation_text" data-file="{{$docName}}"> 
@@ -36,7 +38,7 @@
 		<div class="annotationList">
 			@foreach($annotations as $ann)
 			<div class="annotationL" id="ann{{$ann["a_id"]}}" data-paragraph="{{$ann["paragraph_id"]}}" data-words="{{$ann["wordsData"]}}">
-				<span data-user="{{$ann["user_id"]}}" class="annotation_user">{{$ann["userFn"]}} {{$ann["userSn"]}}</span>
+				<span data-user="{{$ann["user_id"]}}" class="annotation_user">{{$ann["userN"]}}</span>
 				<br />
 				<span>Annotation: </span>
 				<span class="annotation_annotation">{{$ann["annotation"]}}</span>

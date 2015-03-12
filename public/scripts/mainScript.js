@@ -205,11 +205,11 @@ $(document).ready(function (){
             //  first annotation of paragraph
             var paragraphId = textElemAnchorNode.parentElement.parentElement.id;
             var firstWord = "";
-            if(textElemAnchorNode.parentElement.classList[0] == "wordSpan"){
+            if(textElemAnchorNode.parentElement.classList[0] == "wordSpace"){
                 firstWord =  textElemAnchorNode.parentElement.nextSibling.classList[0];
             }else firstWord = textElemAnchorNode.parentElement.classList[0];
             var lastWord = "";
-            if(textElemFocusNode.parentElement.classList[0] == "wordSpan"){
+            if(textElemFocusNode.parentElement.classList[0] == "wordSpace"){
                 lastWord =  textElemFocusNode.parentElement.previousSibling.classList[0];
             }else lastWord = textElemFocusNode.parentElement.classList[0];
             //keep track of all annotated words
@@ -253,22 +253,21 @@ $(document).ready(function (){
                         //update filter list
                         var tagsList = annotationTag.split(/\W+/);
                         var curTags = new Array();
-                        var indexTags = 0
-                        $('#left_Col .filters#tagsFilter li').each(function(){
+                        var indexTags = 0;
+                        $('#left_Col #tagsFilter li').each(function(){
                         	curTags[indexTags] = $(this).text();
                         	indexTags++;
                         });
-                        console.log(curTags);
-                        for (var i = 0 ; i <= tagsList.length; i++) {
+                        for (var i = 0 ; i < tagsList.length; i++) {
                         	if(curTags.indexOf(tagsList[i]) == -1){
-                        		 $('#left_Col .filters#tagsFilter ul').append('<li><input type="checkbox" name="show_tag" value="'+tagsList[i]+'" checked="true">tagsList[i]</li>');
+                        		 $('#left_Col #tagsFilter').append('<li><input type="checkbox" name="show_tag" value="'+tagsList[i]+'" checked="true">'+tagsList[i]+'</li>');
                         	}
                      	}
 
                         $('.annotationList').append('<div class="annotationL" id="ann'+data.newAnn["new_a_id"]+'" data-paragraph="'+data.newAnn["new_p_id"]+'"><span data-user="'+data.newAnn["new_u_id"]+'" class="annotation_user">'+$('#nameofUser').text()+'</span><br /><span>Annotation: </span><span class="annotation_annotation">'+data.newAnn["new_ann"]+'</span><br /><span>Related To: </span><span class="annotation_annotatedText">'+data.newAnn["new_a_text"]+'</span><br /><span>Tags: </span><span id="tags'+data.newAnn["new_a_id"]+'" class="annotation_Tag">'+data.newAnn["new_tags"]+'</span><br /></div>');
                         refreshAnnotationJquery();
-                        $('#annotation_text #annotationInput').val("Annotation");
-        				$('#annotation_text #annotationTag').val("Tag1, tag2, etc.");
+                        $('#annotation_text #annotationInput').val("");
+        				$('#annotation_text #annotationTag').val("");
                     },
                     error: function(data){
                         alert("Annotation Failed: "+data.message);
