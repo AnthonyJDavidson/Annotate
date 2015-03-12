@@ -85,23 +85,24 @@ class DocumentController extends BaseController {
 				$moretags = true;
 				$index = 0;
 				while($moretags == true){
-					$pos = strrpos($tags, ",");
-					if($pos === true){
-						$foundTag = substr($tags, 0, $pos - 1);
-						$ann_tags[$index] = $foundTag;
-						$index++;
-						if(in_array($foundTag, $all_tags) ==false ){
-							$all_tags[$all_Tags_index] = $foundTag;
-							$all_Tags_index++;
-						}
-						$tags = substr($tags, $pos + 2, strlen($tags) - 1);
-					}else{
+					$pos = stripos($tags, ',');
+					if($pos === false){
 						$ann_tags[$index] = $tags;//only 1 tag
 						$moretags = false;
 						if(in_array($tags, $all_tags) == false){
 							$all_tags[$all_Tags_index] = $tags;
 							$all_Tags_index++;
+						}						
+					}else{
+						$foundTag = substr($tags, 0, $pos);
+						$ann_tags[$index] = $foundTag;
+						$index++;
+						//check for duplicate tags
+						if(in_array($foundTag, $all_tags) ==false ){
+							$all_tags[$all_Tags_index] = $foundTag;
+							$all_Tags_index++;
 						}
+						$tags = substr($tags, $pos+2, strlen($tags));
 					}
 				}
 				$annotations[$a->id] = array(

@@ -109,7 +109,7 @@ list-style-type: none;
 	overflow: auto;
 }
 
-#filters{
+.filters{
 list-style-type: none;
 }
 #annotation_text{
@@ -191,6 +191,7 @@ overflow: auto; padding: 3px;
 	background: #D1D1D1;
 	border-radius: 6px;
 	border: 1px solid #D1D1D1;
+	padding: 2px;
 }
 .aToolTip_ann{
 	padding: 1px;

@@ -4,13 +4,14 @@
 		<div class="page-content">
 			<div>
 				<div id="left_Col">
-					<ul id="filters">
+					<ul class="filters" id="tagsFilter">
 						<div>Filters</div>
 						<div>-By Annotation</div>
 						@foreach($tags as $t)
 						<li><input type="checkbox" name="show_tag" value="{{$t}}" checked="true">{{$t}}</li>
 						@endforeach
-						<br	/>
+					</ul>
+					<ul class="filters">
 						<div>By User</div>
 						<div>To Be Done</div>
 
@@ -24,7 +25,7 @@
 					<div class="annotationTool">
 						<textarea id="annotationInput" rows="4" cols="30" placeholder="Annotation"></textarea>
 						<br />
-						<textarea id="annotationTag" rows="1" cols="30" placeholder="Tag(s)" ></textarea>
+						<textarea id="annotationTag" rows="1" cols="30" placeholder="Tag1, tag2, etc." ></textarea>
 						<br />
 						<button type="button" id="button" class="cancelAnn">Cancel</button>
 						<button type="button" class="saveAnn">Save</button>
@@ -44,7 +45,7 @@
 				<span class="annotation_annotatedText">{{$ann["a_text"]}}</span>
 				<br />
 				<span>Tags: </span>
-				<span id="tags{{$ann["a_id"]}}" class="annotation_Tag">@foreach($ann["tags"] as $tag){{$tag}} @endforeach</span>
+				<div id="tags{{$ann["a_id"]}}" >@foreach($ann["tags"] as $tag)<span class="annotation_Tag">{{$tag}} </span>@endforeach</div>
 				
 				<br />
 			</div>

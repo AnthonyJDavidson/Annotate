@@ -41,7 +41,7 @@ function refreshCommentImgJquery(){
     });
     $('#annotation_text #commentImg').mouseleave(function(){
         event.stopPropagation();
-        $(this).css("background","white");
+        $(this).css("background","none");
     });
 
     $('#annotation_text #commentImg').mousedown(function(){
@@ -227,7 +227,7 @@ $(document).ready(function (){
             annotationTag= $('#annotation_text #annotationTag').val();
             if(!annotationText) return 0;
             if(annotationTag == "") annotationTag = "None";
-            var wordsByNum= wordsCovered.split(/\W+/);
+            var wordsByNum= wordsCovered.split(/\W+/);//split by word character
             var annotatedText = "";
             for (var i = 0; i <= wordsByNum.length -1; i++){
                 annotatedText = annotatedText+$('#annotation_text #'+paragraphId+' .word'+wordsByNum[i]).text();
@@ -244,15 +244,31 @@ $(document).ready(function (){
                     url: "saveAnnotation",
                     success: function(data){
                         console.log("Annotation successful",data);
+                        //get words to hihglight
                         for (var i = 0; i <= wordsByNum.length -1; i++){
                             $('#annotation_text #'+paragraphId+' .word'+wordsByNum[i]).addClass("annotation");
                             var curData = $('#annotation_text #'+paragraphId+' .word'+wordsByNum[i]).data("annotation");
                             $('#annotation_text #'+paragraphId+' .word'+wordsByNum[i]).data("annotation",curData+'ann'+data.newAnn["new_a_id"]+',');
                         }
+                        //update filter list
+                        var tagsList = annotationTag.split(/\W+/);
+                        var curTags = new Array();
+                        var indexTags = 0
+                        $('#left_Col .filters#tagsFilter li').each(function(){
+                        	curTags[indexTags] = $(this).text();
+                        	indexTags++;
+                        });
+                        console.log(curTags);
+                        for (var i = 0 ; i <= tagsList.length; i++) {
+                        	if(curTags.indexOf(tagsList[i]) == -1){
+                        		 $('#left_Col .filters#tagsFilter ul').append('<li><input type="checkbox" name="show_tag" value="'+tagsList[i]+'" checked="true">tagsList[i]</li>');
+                        	}
+                     	}
+
                         $('.annotationList').append('<div class="annotationL" id="ann'+data.newAnn["new_a_id"]+'" data-paragraph="'+data.newAnn["new_p_id"]+'"><span data-user="'+data.newAnn["new_u_id"]+'" class="annotation_user">'+$('#nameofUser').text()+'</span><br /><span>Annotation: </span><span class="annotation_annotation">'+data.newAnn["new_ann"]+'</span><br /><span>Related To: </span><span class="annotation_annotatedText">'+data.newAnn["new_a_text"]+'</span><br /><span>Tags: </span><span id="tags'+data.newAnn["new_a_id"]+'" class="annotation_Tag">'+data.newAnn["new_tags"]+'</span><br /></div>');
                         refreshAnnotationJquery();
-                        $('#annotation_text #annotationInput').val("");
-        				$('#annotation_text #annotationTag').val("");
+                        $('#annotation_text #annotationInput').val("Annotation");
+        				$('#annotation_text #annotationTag').val("Tag1, tag2, etc.");
                     },
                     error: function(data){
                         alert("Annotation Failed: "+data.message);
