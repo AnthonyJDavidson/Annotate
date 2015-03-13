@@ -72,16 +72,17 @@ class DocumentController extends BaseController {
 				$userNames[$userRow->id] = array('id' => $userRow->id,'name' => (($userRow->firstnames).' '.($userRow->surname)));
 			}
 			// Read line by line until end of file
-			$count = 0;
-			while (!feof($doc)) { 
-				// Make an array using return as delimiter
-				$arrM[$count] = explode("\r\n",fgets($doc)); 
-
-				$noMoreWords = false;
-				$parString = $arrM[$count][0];
-				$arrM[$count][0] = explode(' ', $arrM[$count][0]);
-				$count++;
+			$parArray = explode("//",fread($doc,filesize('documents/'.$d_name)));
+			$lineArray = array();
+			$wordArray = array();
+			foreach ($parArray as $p => $value) {
+				$lineArray[$p] = explode("\r\n",$value);
+					foreach ($lineArray[$p] as $lA => $val) {
+						$wordArray[$p][$lA] = explode(" ",$val);
+					}
 			}
+			
+			
 
 			$d_sName = substr($d_name, 0, -4);
 			$document = Document::where('storage_name','=',$d_sName)->get()->first();
@@ -148,11 +149,12 @@ class DocumentController extends BaseController {
 								"user_id" => $a->user_id,
 								"userN" => $userN,
 								"paragraph_id"=>$a->paragraph_id,
+								"line_id" =>$a->line_id,
 								"wordsData"=>$a->words_Covered
 								);
 			}
-
-			$data = array("doc"=>  $arrM, "docName" =>$d_name, "annotations" =>$annotations, "tags" => $all_tags, "userNames" => $userNames);
+			fclose($doc);
+			$data = array("nameofDoc" => $document->name, "doc" => $wordArray, "docName" =>$d_name, "annotations" =>$annotations, "tags" => $all_tags, "userNames" => $userNames);
 			return View::make('document',$data);
 
 		}else return Redirect::route('home')->with('global', 'Please Sign In');

@@ -6,101 +6,101 @@ body{
 }
 
 .header{
-background-color: #707EFF;
-margin-bottom: 5px;
+	background-color: #707EFF;
+	margin-bottom: 5px;
 }
 #title{
-color: black;
-font-size: 4em;
-font-style: bold;
-padding: 20px;
+	color: black;
+	font-size: 4em;
+	font-style: bold;
+	padding: 20px;
 }
 
 #title_descrip{
-float: right;
-font-size: 2em;
-font-style: italic;
-padding: 20px;
+	float: right;
+	font-size: 2em;
+	font-style: italic;
+	padding: 20px;
 }
 #nav_menu{
-margin: 0;
-padding: 0;
-background-color: #4C55A8;
+	margin: 0;
+	padding: 0;
+	background-color: #4C55A8;
 }
 
 #navigation li{
-background-color: #4C55A8;
-float: left;
-width: 33%;
-color: #FFFFFF;
-font-size: 2em;
-text-align: center;
-margin-bottom: 5px;
+	background-color: #4C55A8;
+	float: left;
+	width: 33%;
+	color: #FFFFFF;
+	font-size: 2em;
+	text-align: center;
+	margin-bottom: 5px;
 }
 #navigation a:link{
-text-decoration:none;
-color: #fff;
+	text-decoration:none;
+	color: #fff;
 }
 #navigation a:visited{
-text-decoration:none;
-color: #fff;
+	text-decoration:none;
+	color: #fff;
 }
 #navigation a:hover{
-color: #EDE29D;
+	color: #EDE29D;
 }
 #navigation a:active {
-text-decoration:none;
-color: #4C55A8;
+	text-decoration:none;
+	color: #4C55A8;
 }
 #footer{
-clear: both;
-background-color: #707EFF;
-padding: 10px; 
+	clear: both;
+	background-color: #707EFF;
+	padding: 10px; 
 }
 
 .page-content{
-clear: both;
-background-color: #C5C9F0;
-margin-bottom: 5px;
+	clear: both;
+	background-color: #C5C9F0;
+	margin-bottom: 5px;
 }
 
 /* home */
 
 #homepage{
-padding: 15px;
+	padding: 15px;
 }
 
 /* Login */
 
 #loginBase{
-text-align: center;
+	text-align: center;
 }
 #loginTitle{
-font-size: 3em;
-font-style: bold;
+	font-size: 3em;
+	font-style: bold;
 }
 #loginBase ul{
-margin: 0;
-padding: 0;
-padding-bottom: 5px;
+	margin: 0;
+	padding: 0;
+	padding-bottom: 5px;
 }
 #loginBase li{
-margin-top: 5px;
-list-style-type: none;
+	margin-top: 5px;
+	list-style-type: none;
 }
 
 /* literatue */
 
 #left_col{
-clear: both;
-border: solid;
-border-width: .1em;
-max-width: 15%;
-max-height: 100%;
-float: left;
-background-color: #C5C9F0;
-height: 80%;
-list-style-type: none;
+	clear: both;
+	border: solid;
+	border-width: .1em;
+	max-width: 15%;
+	max-height: 100%;
+	float: left;
+	background-color: #C5C9F0;
+	height: 80%;
+	list-style-type: none;
 }
 
 #left_col ul{
@@ -110,17 +110,17 @@ list-style-type: none;
 }
 
 .filters{
-list-style-type: none;
+	list-style-type: none;
 }
 #annotation_text{
-background-color: #C5C9F0;
-height: 80%;
-float: left;
-width: 82%;
-border: solid;
-border-width: .1em;
-padding-left: 20px;
-padding-right: 20px;
+	background-color: #C5C9F0;
+	height: 80%;
+	float: left;
+	width: 82%;
+	border: solid;
+	border-width: .1em;
+	padding-left: 20px;
+	padding-right: 20px;
 overflow-y:scroll;
 }
 
@@ -130,11 +130,19 @@ padding: 15px;
 
 .annotationTool { 
 	position: absolute;
-left: 0px; top: 24px; width: auto;  z-index: 100;
-background: white; opacity: 0.9; font-family: Arial, sans-serif;
-border: 1px solid #aaaaaa;  visibility: hidden;
-font-size: 14px; font-weight:normal; text-align: justify;
-overflow: auto; padding: 3px;
+	left: 0px; 
+	top: 24px; 
+	width: auto;  
+	z-index: 100;
+	background: white; 
+	opacity: 0.9; 
+	font-family: Arial, sans-serif;
+	border: 1px solid #aaaaaa;  
+	visibility: hidden;
+	font-size: 14px; font-weight:normal; 
+	text-align: justify;
+	overflow: auto; 
+	padding: 3px;
 }
 #commentImg{
 	left: 0px; 
@@ -172,10 +180,16 @@ overflow: auto; padding: 3px;
 }
 .aToolTip{
 	position: absolute;
-	left: 0px; top: 24px; max-width: 200px;  z-index: 100;
-	background: white; font-family: Arial, sans-serif;
+	left: 0px; 
+	top: 24px; 
+	max-width: 200px;  
+	z-index: 100;
+	background: white; 
+	font-family: Arial, sans-serif;
 	border: 1px solid #aaaaaa;
-	font-size: 14px; font-weight:normal; text-align: left;
+	font-size: 14px; 
+	font-weight:normal; 
+	text-align: left;
 	overflow: auto; padding: 3px; 
 	border-radius: 8px;
 }

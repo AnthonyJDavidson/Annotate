@@ -20,9 +20,14 @@
 					</ul>
 				</div>
 				<div id="annotation_text" data-file="{{$docName}}"> 
-					@foreach($doc as $d =>$value)
-						<p id="paragraph{{$d}}">
-						@foreach($value[0] as $wID => $w)<span class="word{{$wID}}" data-annotation="" >{{$w}}</span><span class="wordSpace word{{$wID}}" data-annotation=""> </span>@endforeach</p>
+					<br />
+					@foreach($doc as $paragraph =>$lines)
+						<div id="paragraph{{$paragraph}}">
+						@foreach($lines as $l => $words)
+							<div class="line{{$l}}" data-linewordcount="{{sizeof($words)}}">@foreach($words as $w =>$word)<span class="word{{$w}}" data-annotation="" >{{$word}}</span><span class="wordSpace word{{$w}}" data-annotation=""> </span>@endforeach</div>
+						@endforeach
+						</div>
+						<br />
 					@endforeach
 					<div class="annotationTool">
 						<textarea id="annotationInput" rows="4" cols="30" placeholder="Annotation"></textarea>
@@ -37,13 +42,13 @@
 		</div>
 		<div class="annotationList">
 			@foreach($annotations as $ann)
-			<div class="annotationL" id="ann{{$ann["a_id"]}}" data-paragraph="{{$ann["paragraph_id"]}}" data-words="{{$ann["wordsData"]}}">
+			<div class="annotationL" id="ann{{$ann["a_id"]}}" data-paragraph="{{$ann["paragraph_id"]}}" data-line="{{$ann["line_id"]}}" data-words="{{$ann["wordsData"]}}">
 				<span data-user="{{$ann["user_id"]}}" class="annotation_user">{{$ann["userN"]}}</span>
 				<br />
 				<span>Annotation: </span>
 				<span class="annotation_annotation">{{$ann["annotation"]}}</span>
 				<br />
-				<span>Related To: </span>
+				<div>Related To: </div>
 				<span class="annotation_annotatedText">{{$ann["a_text"]}}</span>
 				<br />
 				<span>Tags: </span>

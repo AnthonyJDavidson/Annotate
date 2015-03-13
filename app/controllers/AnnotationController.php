@@ -10,6 +10,7 @@ class AnnotationController extends BaseController {
 			$annotationText =  Input::get('annotationText');
 			$annotationTag = Input::get('annotationTag');
 			$paragraphId = Input::get('paragraphId');
+			$line_id = Input::get('lineId');
 			$wordsCovered = Input::get('wordsCovered');
 
 			$document = Document::where('storage_name','=',$docName)->get()->first(); 
@@ -18,6 +19,7 @@ class AnnotationController extends BaseController {
 			$annotation->user_id= $user->id;
 			$annotation->doc_id = $docId;
 			$annotation->paragraph_id = $paragraphId;
+			$annotation->line_id = $line_id;
 			$annotation->words_Covered = $wordsCovered;
 			$annotation->annotation = $annotationText;
 			$annotation->a_text = $annotatedText;
@@ -26,10 +28,12 @@ class AnnotationController extends BaseController {
 			$newAnn = array(
 				'new_u_id' => $annotation->user_id,
 				'new_p_id' => $annotation->paragraph_id,
+				'new_l_id' => $annotation->line_id,
 				'new_ann' => $annotation->annotation,
 				'new_a_text' => $annotation->a_text,
 				'new_tags' => $annotation->tags,
-				'new_a_id' => $annotation->id
+				'new_a_id' => $annotation->id,
+				'new_words' => $annotation->words_Covered
 							);
 			if($annotation->save()){
 				return Response::json(array('message'=>"Annotation Saved",'newAnn'=>$newAnn));

@@ -76,19 +76,32 @@ function loadAnnotations(){
         var ann_paragraph = $('#'+annLists[i].id).data("paragraph");
         //which words to highlight
         var ann_words =$('#'+annLists[i].id).data("words");
+        //which lines
+        var ann_lines =$('#'+annLists[i].id).data("line");
         //call function to highlight
-        highlightDocument(ann_ann,ann_paragraph,annLists[i].id,ann_words);
+        highlightDocument(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines);
+
+
+
     }
 }
 
-function highlightDocument(ann,paragraph,a_id,words){
-	var wordSplitArray = words.split(',');
-	for (var i = 0; i<words.length -1 ;i++) {
-		$('#annotation_text #'+paragraph+' .word'+wordSplitArray[i]).addClass("annotation");
-		var curData = $('#annotation_text #'+paragraph+' .word'+wordSplitArray[i]).data("annotation");
-		$('#annotation_text #'+paragraph+' .word'+wordSplitArray[i]).data("annotation",curData+a_id+',');
-
-	}
+function highlightDocument(ann,paragraph,a_id,words,lines){
+    //basically copy paste of saveAnn success functionality
+    var lines_Back = lines;
+    var linesArray = lines_Back.split(',');
+    var words_Back = words;
+    var wordsArray = words_Back.split(':');
+    var count = 0;
+    while(count<wordsArray.length){
+        var curWords = wordsArray[count].split(',');
+        for (var i = 0; i < curWords.length - 1; i++) {
+            $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation");
+            var curData = $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).data("annotation");
+            $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).data("annotation",curData+a_id+',');
+        }
+        count++;
+    }
 }
 
 function init() {
@@ -119,7 +132,7 @@ uploadDocument = function(scope){
     function findDocument(file){
         console.log("uploadingDocument");
         file.ext = (file.name.substring(file.name.lastIndexOf('.') + 1)).toLowerCase();
-        file.fname = (file.name.substring(0, file.name.lastIndexOf('.'))).toLowerCase();
+        file.fname = file.name.substring(0, file.name.lastIndexOf('.'));
         if(/*file.ext == "doc" || file.ext == "docx" || */file.ext == "txt"){
             var reader = new FileReader();
             reader.onload = function(e) {
@@ -204,7 +217,18 @@ $(document).ready(function (){
         if(highlightedText != ""){
             //create new <p> with a span in the middle as the annotation
             //  first annotation of paragraph
-            var paragraphId = textElemAnchorNode.parentElement.parentElement.id;
+            var paragraphId = textElemAnchorNode.parentElement.parentElement.parentElement.id;
+            var firstLine = textElemAnchorNode.parentElement.parentElement.className;
+            var firstLineNum = parseInt(firstLine.substring(4));
+            var firstLineNumOfWords = textElemAnchorNode.parentElement.parentElement.dataset["linewordcount"];
+            var lastLine = textElemFocusNode.parentElement.parentElement.className;
+            var lastLineNum = parseInt(lastLine.substring(4));
+            var overLappingOfLinesLengthArray = [];
+            for (var i = firstLineNum; i != lastLineNum; i++) {
+                overLappingOfLinesLengthArray[i] = $('#annotation_text #'+paragraphId+' .line'+i).data("linewordcount");
+            };
+
+            
             var firstWord = "";
             if(textElemAnchorNode.parentElement.classList[0] == "wordSpace"){
                 firstWord =  textElemAnchorNode.parentElement.nextSibling.classList[0];
@@ -213,15 +237,45 @@ $(document).ready(function (){
             if(textElemFocusNode.parentElement.classList[0] == "wordSpace"){
                 lastWord =  textElemFocusNode.parentElement.previousSibling.classList[0];
             }else lastWord = textElemFocusNode.parentElement.classList[0];
+
+
             //keep track of all annotated words
+            var linesCovered = firstLine+',';
             var fWordNum = parseInt(firstWord.substring(4));
             var lWordNum = parseInt(lastWord.substring(4));
-            var count = fWordNum;
-            var wordsCovered = "";
-            while(count <= lWordNum){
-                wordsCovered = wordsCovered+count+',';
-                count++;
+            if(overLappingOfLinesLengthArray.length > 0){
+                var wordsCovered = "";
+                //remaining words on line 1
+                for (var i = fWordNum; i < overLappingOfLinesLengthArray[firstLineNum]; i++) {
+                    wordsCovered = wordsCovered+i+',';
+                }
+                wordsCovered = wordsCovered+':';//new line
+                //get rest of middle lines
+                var count = firstLineNum + 1;
+                while(overLappingOfLinesLengthArray[count]){
+                    for (var i = 0; i < overLappingOfLinesLengthArray[count]; i++) {
+                        wordsCovered = wordsCovered+i+',';
+                    }
+                    wordsCovered = wordsCovered+':';//new Line
+                    linesCovered = linesCovered+'line'+count+',';
+                    count++;
+                }
+                //get last line
+                for (var i = 0; i <= lWordNum; i++) {
+                    wordsCovered = wordsCovered+i+',';   
+                }
+                linesCovered = linesCovered+lastLine+',';
+                console.log(wordsCovered);
+                //get
+            }else{
+                var count = fWordNum;
+                var wordsCovered = "";
+                while(count <= lWordNum){
+                    wordsCovered = wordsCovered+count+',';
+                    count++;
+                }
             }
+            
             var docName = $("#annotation_text").data("file");
             docName = docName.substring(0,docName.indexOf(".txt"));
             annotationText= $('#annotation_text #annotationInput').val();
@@ -229,10 +283,7 @@ $(document).ready(function (){
             if(!annotationText) return 0;
             if(annotationTag == "") annotationTag = "None";
             var wordsByNum= wordsCovered.split(/\W+/);//split by word character
-            var annotatedText = "";
-            for (var i = 0; i <= wordsByNum.length -1; i++){
-                annotatedText = annotatedText+$('#annotation_text #'+paragraphId+' .word'+wordsByNum[i]).text();
-            }
+            var annotatedText = highlightedText;
             $.ajax({
                 type: "POST",
                 data: {
@@ -241,19 +292,29 @@ $(document).ready(function (){
                     annotationText:annotationText, 
                     annotationTag: annotationTag,
                     paragraphId: paragraphId,
+                    lineId: linesCovered,
                     wordsCovered: wordsCovered}, 
                     url: "saveAnnotation",
                     success: function(data){
                         console.log("Annotation successful",data);
                         //get words to hihglight
-                        for (var i = 0; i <= wordsByNum.length -1; i++){
-                            $('#annotation_text #'+paragraphId+' .word'+wordsByNum[i]).addClass("annotation");
-                            var curData = $('#annotation_text #'+paragraphId+' .word'+wordsByNum[i]).data("annotation");
-                            $('#annotation_text #'+paragraphId+' .word'+wordsByNum[i]).data("annotation",curData+'ann'+data.newAnn["new_a_id"]+',');
+                        var lines_Back = data.newAnn["new_l_id"];
+                        var linesArray = lines_Back.split(',');
+                        var words_Back = data.newAnn["new_words"];
+                        var wordsArray = words_Back.split(':');
+                        var count = 0;
+                        while(count<wordsArray.length){
+                            var curWords = wordsArray[count].split(',');
+                            for (var i = 0; i < curWords.length - 1; i++) {
+                                $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation");
+                                var curData = $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).data("annotation");
+                                $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).data("annotation",curData+'ann'+data.newAnn["new_a_id"]+',');
+                            }
+                            count++;
                         }
+
                         //create annotation in list -- tags added in a few lines
-                        $('.annotationList').append('<div class="annotationL" id="ann'+data.newAnn["new_a_id"]+'" data-paragraph="'+data.newAnn["new_p_id"]+'"><span data-user="'+data.newAnn["new_u_id"]+'" class="annotation_user">'+$('#nameofUser').text()+'</span><br /><span>Annotation: </span><span class="annotation_annotation">'+data.newAnn["new_ann"]+'</span><br /><span>Related To: </span><span class="annotation_annotatedText">'+data.newAnn["new_a_text"]+'</span><br /><span>Tags: </span><div id="tags'+data.newAnn["new_a_id"]+'"></div><br /><button type="button" class="editAnn">Edit</button><button type="button" class="deleteAnn">Delete</button></div>');
-                        
+                        $('.annotationList').append('<div class="annotationL" id="ann'+data.newAnn["new_a_id"]+'" data-paragraph="'+data.newAnn["new_p_id"]+'" data-line="'+lines_Back+'" data-words="'+words_Back+'"><span data-user="'+data.newAnn["new_u_id"]+'" class="annotation_user">'+$('#nameofUser').text()+'</span><br /><span>Annotation: </span><span class="annotation_annotation">'+data.newAnn["new_ann"]+'</span><br /><span>Related To: </span><span class="annotation_annotatedText">'+data.newAnn["new_a_text"]+'</span><br /><span>Tags: </span><div id="tags'+data.newAnn["new_a_id"]+'"></div><button type="button" class="editAnn">Edit</button><button type="button" class="deleteAnn">Delete</button></div>');
                         //update filter list
                         var tagsList = annotationTag.split(/\W+/);
                         var curTags = new Array();
@@ -268,7 +329,8 @@ $(document).ready(function (){
                         		 $('#left_Col #tagsFilter').append('<li><input type="checkbox" name="show_tag" value="'+tagsList[i]+'" checked="true">'+tagsList[i]+'</li>');
                         	}
                         	//add tag to annotation in list
-                        	$('.annotationList #ann'+data.newAnn["new_a_id"]+' .tags'+data.newAnn["new_a_id"]).append('<span class="annotation_Tag>'+tagsList[i]+'</span>');
+                            console.log();
+                        	$('.annotationList #ann'+data.newAnn["new_a_id"]+' #tags'+data.newAnn["new_a_id"]).append('<span class="annotation_Tag">'+tagsList[i]+'</span>');
                      	}
 
                         
@@ -299,6 +361,7 @@ $(document).ready(function (){
     	//find ann id (ann_id will be in the form annNUM and we want NUM only)
     	var annID_all = $(this)[0].parentElement.id; 
     	var annID_id = annID_all.substring(annID_all.length, 3);
+        var el = $(this);
     	//delete ann (ajax)
     	$.ajax({
             type: "POST",
@@ -307,8 +370,8 @@ $(document).ready(function (){
             success: function(data){
             	//"unhighlight" words for each data-word
 		    	//"data-123".replace('data-','');
-		    	var par = $(this)[0].parentElement.dataset["paragraph"];
-		    	var annWords = $(this)[0].parentElement.dataset["words"];
+		    	var par = el[0].parentElement.dataset["paragraph"];
+		    	var annWords = el[0].parentElement.dataset["words"];
 		    	annWords = annWords.split(',');
 		    	for(var i = 0; i<annWords.length;i++){
 		    		element = $('#annotation_text #'+par+' .word'+annWords[i]);
@@ -327,6 +390,7 @@ $(document).ready(function (){
 		    			}
 		    		}
 		    	}
+                el[0].parentElement.remove();
                 console.log("Annotation Deleted",data);
             },
             error: function(data){
@@ -355,7 +419,6 @@ $(document).ready(function (){
             $("#annotation_text #commentImg").css("visibility","visible");
         }else{
             $('#commentImg').remove();
-            //$("#annotation_text .annotationT").css("visibility","hidden");
             annotating = false;
         }
 
