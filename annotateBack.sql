@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2015 at 03:46 PM
+-- Generation Time: Mar 13, 2015 at 07:28 PM
 -- Server version: 5.5.36
 -- PHP Version: 5.4.25
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `annotations` (
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=129 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=138 ;
 
 --
 -- Dumping data for table `annotations`
@@ -53,9 +53,6 @@ INSERT INTO `annotations` (`id`, `user_id`, `doc_id`, `paragraph_id`, `line_id`,
 (111, 10, 19, 'paragraph5', 'line1,', 'nested test', '3,', 'moth-breath', 'test', '2015-03-13 03:25:43', '2015-03-13 13:47:22', '2015-03-13 13:47:22'),
 (112, 10, 19, 'paragraph6', 'line1,line2,', 'AAA', '3,4,5,6,7,8,9,:0,1,2,', 'I stumble from bed, cow-heavy and floral\nIn my Victorian', 'Test', '2015-03-13 03:31:23', '2015-03-13 03:31:23', '0000-00-00 00:00:00'),
 (113, 10, 19, 'paragraph6', 'line1,', 'silly description', '7,8,9,', 'cow-heavy and floral', 'description', '2015-03-13 12:03:53', '2015-03-13 12:03:53', '0000-00-00 00:00:00'),
-(114, 10, 19, 'paragraph6', 'line1,', 'what does this mean...', '7,', 'cow-heavy', 'description', '2015-03-13 12:04:08', '2015-03-13 12:04:08', '0000-00-00 00:00:00'),
-(115, 10, 19, 'paragraph6', 'line1,', 'more', '7,', 'cow-heavy', 'Test', '2015-03-13 12:09:51', '2015-03-13 12:09:51', '0000-00-00 00:00:00'),
-(116, 10, 19, 'paragraph6', 'line1,', 'more', '7,', 'cow-heavy', 'test', '2015-03-13 12:10:03', '2015-03-13 12:10:03', '0000-00-00 00:00:00'),
 (117, 10, 19, 'paragraph1', 'line1,line2,', 'Annotation', '0,1,2,3,4,5,6,7,8,:0,1,2,3,4,5,', 'The midwife slapped your footsoles, and your bald cry\nTook its place among the elements', 'Annnnn', '2015-03-13 12:13:30', '2015-03-13 14:01:59', '0000-00-00 00:00:00'),
 (118, 10, 19, 'paragraph1', 'line2,', 'description?', '0,1,2,3,4,5,', 'Took its place among the elements.', 'description', '2015-03-13 12:13:48', '2015-03-13 12:13:48', '0000-00-00 00:00:00'),
 (119, 10, 19, 'paragraph1', 'line2,', 'testing', '2,3,4,5,', 'place among the elements.', 'test', '2015-03-13 12:14:25', '2015-03-13 12:14:25', '0000-00-00 00:00:00'),
@@ -67,7 +64,16 @@ INSERT INTO `annotations` (`id`, `user_id`, `doc_id`, `paragraph_id`, `line_id`,
 (125, 10, 19, 'paragraph3', 'line1,', 'descrip', '2,3,', 'drafty museum,', 'description', '2015-03-13 13:50:57', '2015-03-13 13:51:04', '2015-03-13 13:51:04'),
 (126, 10, 19, 'paragraph2', 'line1,', 'new', '0,1,2,', 'Our voices echo', 'new', '2015-03-13 14:03:24', '2015-03-13 14:03:24', '0000-00-00 00:00:00'),
 (127, 10, 19, 'paragraph2', 'line1,', 'new nested', '1,2,', 'voices echo,', 'new', '2015-03-13 14:03:37', '2015-03-13 14:10:29', '0000-00-00 00:00:00'),
-(128, 7, 19, 'paragraph3', 'line3,', 'great poetry writing', '4,5,6,', 'blankly as walls', 'description', '2015-03-13 14:23:44', '2015-03-13 14:23:44', '0000-00-00 00:00:00');
+(128, 7, 19, 'paragraph3', 'line3,', 'great poetry writing', '4,5,6,', 'blankly as walls', 'description', '2015-03-13 14:23:44', '2015-03-13 14:23:44', '0000-00-00 00:00:00'),
+(129, 7, 19, 'paragraph3', 'line2,', 'choose a tag check', '0,1,2,', 'Shadows our safety.', 'description', '2015-03-13 16:34:32', '2015-03-13 16:34:32', '0000-00-00 00:00:00'),
+(130, 7, 19, 'paragraph4', 'line1,', 'check', '0,1,2,3,4,', 'I''m no more your mother', 'description', '2015-03-13 16:35:07', '2015-03-13 16:35:07', '0000-00-00 00:00:00'),
+(131, 7, 19, 'paragraph4', 'line3,', 'What', '0,', 'Effacement', 'word', '2015-03-13 16:35:32', '2015-03-13 16:35:32', '0000-00-00 00:00:00'),
+(132, 7, 19, 'paragraph2', 'line1,', 'making bigger', '3,', 'magnifying', 'description', '2015-03-13 16:36:39', '2015-03-13 16:36:39', '0000-00-00 00:00:00'),
+(133, 7, 19, 'paragraph3', 'line1,', 'shocking writing', '2,3,', 'drafty museum', 'description', '2015-03-13 16:38:46', '2015-03-13 16:38:46', '0000-00-00 00:00:00'),
+(134, 7, 19, 'paragraph0', 'line0,', 'WHILE HIDDEN', '0,1,2,', 'Love set you', 'hidden', '2015-03-13 17:41:52', '2015-03-13 17:41:52', '0000-00-00 00:00:00'),
+(135, 7, 19, 'paragraph6', 'line1,', 'AAAA', '7,', 'cow-heavy', 'hidden', '2015-03-13 17:43:09', '2015-03-13 17:43:09', '0000-00-00 00:00:00'),
+(136, 7, 19, 'paragraph2', 'line2,', 'statue test', '1,2,', 'New statue.', 'test', '2015-03-13 18:27:06', '2015-03-13 18:27:06', '0000-00-00 00:00:00'),
+(137, 7, 19, 'paragraph3', 'line1,', 'Annnnnnnn test', '0,1,2,3,4,5,', 'In a drafty museum, your nakedness', 'Annnnn', '2015-03-13 18:27:28', '2015-03-13 18:27:28', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 

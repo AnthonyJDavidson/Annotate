@@ -44,8 +44,8 @@ function refreshAnnotationJquery(){
         var oldAnnotationID = $(this)[0].parentElement.id;
         var oldAnnotation = $(this)[0].parentElement.children[3].innerText;
         var oldTag = $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)).text();
-        $('.annotationL#'+oldAnnotationID+ ' .editAnn').css("display","none");
-        $('.annotationL#'+oldAnnotationID+ ' .deleteAnn').css("display","none");
+        $('.annotationL#'+oldAnnotationID+ ' .editAnn').toggle();
+        $('.annotationL#'+oldAnnotationID+ ' .deleteAnn').toggle();
         $('.annotationL#'+oldAnnotationID+ ' .editAnn').before('<button type="button" class="editConfirm">Save</button>');
         $('.annotationL#'+oldAnnotationID+ ' .editAnn').after('<button type="button" class="editCancel">Cancel</button>');
         $('.annotationL#'+oldAnnotationID+ ' .annotation_annotation').after('<textArea rows="1" cols="30" id="tempTextAreaAnn" class="textArea_editAn" contenteditable>'+oldAnnotation+'</textArea>');
@@ -58,9 +58,9 @@ function refreshAnnotationJquery(){
             newAnnotation = $('.annotationL#'+oldAnnotationID+ ' #tempTextAreaAnn').val();
             newTag = $('.annotationL#'+oldAnnotationID+ ' #tempTextAreaTag').val();
             $('.annotationL#'+oldAnnotationID+ ' .textArea_editAn').remove();
-            $("#ui-scenePane ul #uiEditState").css("display","block");
-            $("#ui-scenePane ul #uiDeleteState").css("display","block");
-            $('.annotationL#'+oldAnnotationID+ '.editConfirm').remove();
+            $('.annotationL#'+oldAnnotationID+ ' .editAnn').toggle();
+            $('.annotationL#'+oldAnnotationID+ ' .deleteAnn').toggle();
+            $('.annotationL#'+oldAnnotationID+ ' .editConfirm').remove();
             $('.annotationL#'+oldAnnotationID+ ' .editCancel').remove();  
             
             $.ajax({
@@ -79,14 +79,14 @@ function refreshAnnotationJquery(){
             });//ajax
 
         });
-        $("#ui-scenePane ul #editCancel").click(function(){
+        $('.annotationL#'+oldAnnotationID+ ' .editCancel').click(function(){
             $('.annotationL#'+oldAnnotationID+ ' .annotation_annotation').text(oldAnnotation);
             $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)+' .annotation_Tag').text(oldTag);
-            $("#ui-scenePane ul #textArea_editAn").remove();
-            $("#ui-scenePane ul .editConfirm").remove();
-            $("#ui-scenePane ul .editCancel").remove();
-            $("#ui-scenePane ul .editAnn").css("display","block");
-            $("#ui-scenePane ul .deleteAnn").css("display","block");
+            $('.annotationL#'+oldAnnotationID+ ' .textArea_editAn').remove();
+            $('.annotationL#'+oldAnnotationID+ ' .editAnn').toggle();
+            $('.annotationL#'+oldAnnotationID+ ' .deleteAnn').toggle();
+            $('.annotationL#'+oldAnnotationID+ ' .editConfirm').remove();
+            $('.annotationL#'+oldAnnotationID+ ' .editCancel').remove();
         });
     });
     $('.annotationL .deleteAnn').click(function(){
@@ -162,6 +162,14 @@ function refreshCommentImgJquery(){
     $('#annotation_text #commentImg').mousedown(function(){
         event.stopPropagation();
         $(this).css("background","#4C55A8");
+        $('.annotationTool #tagSelection').empty();
+        $('#left_Col #tagsFilter li').each(function(){
+            $('.annotationTool #tagSelection').append('<option class="tagS" value="'+$(this).text()+'">'+$(this).text()+'</option>');
+        });
+        $('.annotationTool #tagSelection').mouseup(function(){
+            event.stopPropagation();
+            $('.annotationTool #annotationTag').val($('.annotationTool #tagSelection option:selected').text());
+        });
     });
     $('#annotation_text #commentImg').mouseup(function(){
         event.stopPropagation();
@@ -473,7 +481,7 @@ $(document).ready(function (){
                             }
                             //add tag to annotation in list
                             console.log();
-                            $('.annotationList #ann'+data.newAnn["new_a_id"]+' #tags'+data.newAnn["new_a_id"]).append('<span class="annotation_Tag">'+tagsList[i]+'</span>');
+                            $('.annotationList #ann'+data.newAnn["new_a_id"]+' #tags'+data.newAnn["new_a_id"]).append('<span>'+tagsList[i]+'</span>');
                         }
 
                         
