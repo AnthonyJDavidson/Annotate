@@ -15,8 +15,11 @@ var iconXpos =0;
 function refreshAnnotationJquery(){
     $('.annotation').off();
     $('.annotationL .editAnn').off();
+
+
     $('.annotation').mouseover(function(){
         event.stopPropagation();
+
         var annotation_ids = $(this).data("annotation").split(',');
         if(annotation_ids != ""){
             $(this).after('<div class="aToolTip" style="top:'+(ypos+10)+'px;left:'+(xpos+10)+'px"></div>');
@@ -24,7 +27,8 @@ function refreshAnnotationJquery(){
                 if(annotation_ids[0]!=""){
                     var ann_ann = $('.annotationL#'+annotation_ids[i]+' .annotation_annotation').text();
                     var tags = $('.annotationL#'+annotation_ids[i]+' .annotation_Tag').text();
-                    $('.aToolTip').append('<div class="aToolTip_a"><div class="aToolTip_ann">'+ann_ann+'</div><span class="aToolTip_tags">'+tags+'</span></div>');
+                    var name = $('.annotationL#'+annotation_ids[i]+' #userNameAnnotation').text();
+                    $('.aToolTip').append('<div class="aToolTip_a"><div class="aToolTip_ann">'+ann_ann+'</div><div><span class="aToolTip_tags">'+tags+'</span>  <span class="aToolTip_user">'+name+'</span></div></div>');
                 }
             }
         }
@@ -453,7 +457,7 @@ $(document).ready(function (){
                         }
 
                         //create annotation in list -- tags added in a few lines
-                        $('.annotationList').append('<div class="annotationL" id="ann'+data.newAnn["new_a_id"]+'" data-paragraph="'+data.newAnn["new_p_id"]+'" data-line="'+lines_Back+'" data-words="'+words_Back+'"><span data-user="'+data.newAnn["new_u_id"]+'" class="annotation_user">'+$('#nameofUser').text()+'</span><br /><span>Annotation: </span><span class="annotation_annotation">'+data.newAnn["new_ann"]+'</span><br /><span>Related To: </span><span class="annotation_annotatedText">'+data.newAnn["new_a_text"]+'</span><br /><span>Tag: </span><span id="tags'+data.newAnn["new_a_id"]+'" class="annotation_Tag"></span><br /><button type="button" class="editAnn">Edit</button><button type="button" class="deleteAnn">Delete</button></div>');
+                        $('.annotationList').append('<div class="annotationL" id="ann'+data.newAnn["new_a_id"]+'" data-paragraph="'+data.newAnn["new_p_id"]+'" data-line="'+lines_Back+'" data-words="'+words_Back+'"><span data-user="'+data.newAnn["new_u_id"]+'" class="annotation_user" id="userNameAnnotation">'+$('#nameofUser').text()+'</span><br /><span>Annotation: </span><span class="annotation_annotation">'+data.newAnn["new_ann"]+'</span><br /><span>Related To: </span><span class="annotation_annotatedText">'+data.newAnn["new_a_text"]+'</span><br /><span>Tag: </span><span id="tags'+data.newAnn["new_a_id"]+'" class="annotation_Tag"></span><br /><button type="button" class="editAnn">Edit</button><button type="button" class="deleteAnn">Delete</button></div>');
                         //update filter list
                         var tagsList = annotationTag.split(/\W+/);
                         var curTags = new Array();

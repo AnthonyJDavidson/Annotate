@@ -182,12 +182,12 @@ padding: 15px;
 	position: absolute;
 	left: 0px; 
 	top: 24px; 
-	max-width: 200px;  
+	max-width: 300px;  
 	z-index: 100;
 	background: white; 
 	font-family: Arial, sans-serif;
 	border: 1px solid #aaaaaa;
-	font-size: 14px; 
+	font-size: 12px; 
 	font-weight:normal; 
 	text-align: left;
 	overflow: auto; padding: 3px; 
@@ -200,10 +200,11 @@ padding: 15px;
 	border-radius: 6px;
 	border: 1px solid #D1D1D1;
 }
-.annotation_Tag{
-	font-style: italic;
-	border-radius: 6px;
-	padding: 2px;
+.aToolTip_user{
+	font-size: 12px;
+	float: right;
+	font-style: none;
+	color: gray;
 }
 .aToolTip_ann{
 	padding: 1px;
