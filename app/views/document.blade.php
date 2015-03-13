@@ -20,7 +20,7 @@
 					</ul>
 				</div>
 				<div id="annotation_text" data-file="{{$docName}}"> 
-					<br />
+					<h3>{{$nameofDoc}}</h3>
 					@foreach($doc as $paragraph =>$lines)
 						<div id="paragraph{{$paragraph}}">
 						@foreach($lines as $l => $words)
@@ -32,7 +32,7 @@
 					<div class="annotationTool">
 						<textarea id="annotationInput" rows="4" cols="30" placeholder="Annotation"></textarea>
 						<br />
-						<textarea id="annotationTag" rows="1" cols="30" placeholder="Tag1, tag2, etc." ></textarea>
+						<textarea id="annotationTag" rows="1" cols="30" placeholder="Tag"></textarea>
 						<br />
 						<button type="button" id="button" class="cancelAnn">Cancel</button>
 						<button type="button" class="saveAnn">Save</button>
@@ -51,8 +51,8 @@
 				<div>Related To: </div>
 				<span class="annotation_annotatedText">{{$ann["a_text"]}}</span>
 				<br />
-				<span>Tags: </span>
-				<div id="tags{{$ann["a_id"]}}" >@foreach($ann["tags"] as $tag)<span class="annotation_Tag">{{$tag}} </span>@endforeach</div>
+				<span>Tag:</span>
+				<span id="tags{{$ann["a_id"]}}" >@foreach($ann["tags"] as $tag)<span class="annotation_Tag">{{$tag}} </span>@endforeach</span><br />
 				<button type="button" class="editAnn">Edit</button>
 				<button type="button" class="deleteAnn">Delete</button>
 				<br />

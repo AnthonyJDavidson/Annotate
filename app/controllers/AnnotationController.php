@@ -53,4 +53,20 @@ class AnnotationController extends BaseController {
 			}else Redirect::route('home')->with('global', 'Incorrect User id');
 		}else return Redirect::route('home')->with('global', 'Please Sign In');
 	}
+
+	public function editAnnotation(){
+		if (Auth::check()){
+			$user = User::find(Auth::user()->id);
+			$annID = Input::get('annChanged');
+			$newAnn = Input::get('newAnnotation');
+			$newT = Input::get('newTag');
+			$annotation = Annotation::where('id','=',$annID)->get()->first();
+			if($annotation->user_id == $user->id){
+				$annotation->annotation = $newAnn;
+				$annotation->tags = $newT;
+				$annotation->save();
+				return Response::json(array('message'=>"Annotation Edited"));
+			}else Redirect::route('home')->with('global', 'Incorrect User id');
+		}else return Redirect::route('home')->with('global', 'Please Sign In');
+	}
 }
