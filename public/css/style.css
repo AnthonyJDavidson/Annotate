@@ -172,7 +172,7 @@ padding: 15px;
 	float: right;
 }
 .annotation{
-	background-color: rgba(255,254,39,.2);
+	background-color: rgba(255,254,39,0.2);
 }
 .annotationL{
 	float:left;

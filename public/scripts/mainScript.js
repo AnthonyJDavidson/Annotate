@@ -195,7 +195,7 @@ function refreshCommentImgJquery(){
     });
 }
 
-function loadAnnotations(){
+function loadAnnotations(reload){
     var annLists = $(".annotationL");
     console.log(annLists);
     for (var i = 0; i < annLists.length; i++) {
@@ -212,10 +212,8 @@ function loadAnnotations(){
         //which lines
         var ann_lines =$('#'+annLists[i].id).data("line");
         //call function to highlight
-        highlightDocument(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines);
-
-
-
+        if(reload) highlightDocumentAgain(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines);
+        else highlightDocument(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines);
     }
 }
 
@@ -247,6 +245,37 @@ function highlightDocument(ann,paragraph,a_id,words,lines){
         count++;
     }
 }
+
+function highlightDocumentAgain(ann,paragraph,a_id,words,lines){
+    //basically copy paste of saveAnn success functionality
+    var lines_Back = lines;
+    var linesArray = lines_Back.split(',');
+    var words_Back = words;
+    var wordsArray = words_Back.split(':');
+    var count = 0;
+    while(count<wordsArray.length){
+        var curWords = wordsArray[count].split(',');
+        for (var i = 0; i < curWords.length - 1; i++) {
+            if($('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).hasClass("annotation")){
+                var oldOp = $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color").split(',');
+                if(oldOp.length == 4){ // has alpha < 1
+                    var olOpNum = parseFloat(oldOp[3].substring(2,4));
+                    olOpNum+=0.2;
+                    var rgba = oldOp[0]+','+oldOp[1]+','+oldOp[2]+','+olOpNum+')';
+                    $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color",rgba);
+                }
+            }else{
+                $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation");
+                $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color","rgba(255,254,39,0.2)");
+            }
+            var curData = $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).data("annotation");
+            $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).data("annotation",curData+a_id+',');
+        }
+        count++;
+    }
+}
+
+
 
 function init() {
     if (window.Event) {
@@ -351,14 +380,25 @@ $(document).ready(function (){
      $('#left_Col #hideAnnotations').change(function() {
         if($(this).is(":checked")) {//checked
             //remove all highlights and annotations (front only)
-            alert("hide all todo");
+            $('.annotation').each(function(){
+                $(this).removeClass("annotation");
+                $(this).addClass("filtered");
+                $(this).css("background","none");
+                $(this).data("annotation","");
+            });
         }else{ // unchecked
-            //basically refresh all annotations
-            alert("show all todo");
+            $('.annotation').each(function(){
+                $(this).removeClass("annotation");
+                $(this).css("background","none");
+                $(this).data("annotation","");
+            });
+            $('.filtered').each(function(){$(this).removeClass("filtered")});
+            loadAnnotations(true);
+            refreshAnnotationJquery();
         }       
     });
 
-    loadAnnotations();
+    loadAnnotations(false);
     refreshAnnotationJquery();
 
     $('#annotation_text .annotationTool').mousedown(function(){
@@ -473,6 +513,10 @@ $(document).ready(function (){
 
                                     }
                                 }else{
+                                    if($('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).hasClass("filtered")){
+                                        $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color","rgba(255,254,39,0.2)");
+                                        $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).removeClass("filtered");
+                                    }
                                     $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation");   
                                 }
                                 var curData = $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).data("annotation");
