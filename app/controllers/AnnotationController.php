@@ -37,7 +37,7 @@ class AnnotationController extends BaseController {
 							);
 			if($annotation->save()){
 				return Response::json(array('message'=>"Annotation Saved",'newAnn'=>$newAnn));
-			}else return Response::json(array('message'=>"Annotation not saved"));
+			}else return Response::json("You are not the correct user", 500);
 	  
         }else return Redirect::route('home')->with('global', 'Please Sign In');
 	}
@@ -47,10 +47,12 @@ class AnnotationController extends BaseController {
 			$user = User::find(Auth::user()->id);
 			$annID = Input::get('annID');
 			$annotation = Annotation::where('id','=',$annID)->get()->first();
-			if($annotation->user_id == $user->id){
+			if($annotation->user_id == Auth::user()->id){
 				$annotation->delete();
 				return Response::json(array('message'=>"Annotation deleted"));
-			}else Redirect::route('home')->with('global', 'Incorrect User id');
+			}else {
+				Redirect::route('home')->with('global', 'Wrong User');
+			}
 		}else return Redirect::route('home')->with('global', 'Please Sign In');
 	}
 
