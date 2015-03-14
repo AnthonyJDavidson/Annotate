@@ -11,6 +11,10 @@ var textElemSet = false;
 var iconYpos =0;
 var iconXpos =0;
 var filteredArray = [""];
+$(".page-content").mCustomScrollbar({
+    axis:"y"
+});
+
 
 function refreshAnnotationJquery(){
     $('.annotation').off();
