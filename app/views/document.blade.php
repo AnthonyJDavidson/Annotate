@@ -34,8 +34,8 @@
 	            </div>
             </div>
 	    </div>
-	    <h4 style="text-align: center">Annotation List</h4>
-	    <div class="annotationList">
+	    <div class="annotationList ">
+	    	<h4 style="text-align: center">Annotation List</h4>
             @foreach($annotations as $ann)
             <div class="annotationL" id="ann{{$ann["a_id"]}}" data-paragraph="{{$ann["paragraph_id"]}}" data-line="{{$ann["line_id"]}}" data-words="{{$ann["wordsData"]}}">
                 <span data-user="{{$ann["user_id"]}}" class="annotation_user" id="userNameAnnotation">{{$ann["userN"]}}</span>
