@@ -38,8 +38,8 @@
                         <br />
                         <textarea id="annotationTag" rows="1" cols="30" placeholder="Add a new Tag"></textarea>
                         <br />
-                        <button type="button" id="button" class="cancelAnn">Cancel</button>
-                        <button type="button" class="saveAnn">Save</button>
+                        <button type="button" id="button" class="cancelAnn btn btn-danger">Cancel</button>
+                        <button type="button" class="saveAnn btn btn-success">Save</button>
                     </div>
                 </div>
             </div>
