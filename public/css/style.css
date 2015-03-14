@@ -1,23 +1,6 @@
 /*	css page will be broekn up via large description ascii lettering  */
 
 
-
-::-webkit-scrollbar-track {
-      background-color: #b46868;
-} /* the new scrollbar will have a flat appearance with the set background color */
- 
-::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.2); 
-} /* this will style the thumb, ignoring the track */
- 
-::-webkit-scrollbar-button {
-      background-color: #7c2929;
-} /* optionally, you can style the top and the bottom buttons (left and right for horizontal bars) */
- 
-::-webkit-scrollbar-corner {
-      background-color: black;
-}
-
 body{
 	background: white;
 	margin:5px 20px;
@@ -92,7 +75,7 @@ body{
 }
 
 .page-content{
-	padding: 5px;
+	padding: 10px;
 	clear: both;
 	width: 100%;
 	background-color: #A6ABB6;
@@ -122,12 +105,13 @@ body{
 	border: solid;
 	border-width: .1em;
 	width: 11%;
-	max-height: 80%;
 	float: left;
 	background-color: white;
-	height: 80%;
 	list-style-type: none;
-	margin-right: 15px;
+	margin-right: .5%;
+	height: 600px;
+	max-height: 80%;
+	overflow-y: auto;
 }
 
 #left_col ul{
@@ -141,19 +125,23 @@ body{
 	list-style-type: none;
 }
 #annotationDiv{
-	margin: 0 auto;
+	margin: 0 0 5px 0;
 }
 #annotation_text{
+	height: 600px;
+	text-align: center;
 	background-color: white;
-	height: 80%;
-	width: 87%;
+	width: 88.5%;
 	border: solid;
 	border-width: .1em;
 	padding-left: 20px;
 	padding-right: 20px;
-	margin-left: 15px;
+	margin-left: 1%;
+	overflow-y: auto;
 }
-
+#myProfile{
+	background: white;
+}
 #documentUp{
 padding: 15px;
 }
@@ -236,19 +224,30 @@ padding: 15px;
 	padding: 1px;
 	padding-bottom: 2px;		
 }
-.annotationList{}
+.annotationList{
+	background: #A6ABB6;
+	padding: 0 10px 10px;
+	width: 100%;
+	background-color: #A6ABB6;
+	float: left;
+}
+
 
 .annotationL{
-	width: 20%;
+	display: inline;
+	max-width: 15%;
 	border: solid;
 	border-width: .1em;
-	text-align: center;
-	background: white;
-	padding: 10px;
-	float:left;
+	padding: 10px 10px 10px 10px;
 	overflow-y: auto;
-	overflow-x: auto;
 	height: 18%;
+	text-align: center;
+	margin: 2px;
+	background: white;
+	float: left;
+}
+.annotation_annotatedText{
+	text-align: justify;
 }
 .aToolTip_a{
 	border: solid;

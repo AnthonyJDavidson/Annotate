@@ -2,8 +2,8 @@
 
 @section('content')
         <div class="page-content">
-            <div>
-                <div id="left_Col">
+            <div id="annotationsDiv">
+                <div id="left_Col" class="mCustomScrollbar">
                     <ul class="filters" id="tagsFilter">
                         <h3>Annotation Filters</h3>
                         <div><input type="checkbox" id="hideAnnotations" value="hideAnn">Hide all</div>
@@ -20,7 +20,7 @@
                     </ul>
                 </div>
                 <div id="annotationDiv">
-	                <div id="annotation_text" class="mCustomScrollbar" data-mcs-theme="3d-dark" data-file="{{$docName}}"> 
+	                <div id="annotation_text"  class="mCustomScrollbar" data-file="{{$docName}}"> 
 	                    <h3>{{$nameofDoc}}</h3>
 	                    @foreach($doc as $paragraph =>$lines)
 	                        <div id="paragraph{{$paragraph}}">
@@ -30,41 +30,41 @@
 	                        </div>
 	                        <br />
 	                    @endforeach
-	                    <div class="annotationTool">
-	                        <textarea id="annotationInput" rows="4" cols="30" placeholder="Annotation"></textarea>
-	                        <br />
-	                        Choose A Tag
-	                        <select id="tagSelection">
-	                        </select>
-	                        <br />
-	                        <textarea id="annotationTag" rows="1" cols="30" placeholder="Add a new Tag"></textarea>
-	                        <br />
-	                        <button type="button" id="button" class="cancelAnn btn btn-danger">Cancel</button>
-	                        <button type="button" class="saveAnn btn btn-success">Save</button>
-	                    </div>
 	                </div>
 	            </div>
             </div>
-            <div class="annotationList">
-            @foreach($annotations as $ann)
-	            <div class="annotationL" id="ann{{$ann["a_id"]}}" data-paragraph="{{$ann["paragraph_id"]}}" data-line="{{$ann["line_id"]}}" data-words="{{$ann["wordsData"]}}">
-	                <span data-user="{{$ann["user_id"]}}" class="annotation_user" id="userNameAnnotation">{{$ann["userN"]}}</span>
-	                <br />
-	                <span>Annotation: </span>
-	                <span class="annotation_annotation">{{$ann["annotation"]}}</span>
-	                <br />
-	                <div>Related To: </div>
-	                <span class="annotation_annotatedText">{{$ann["a_text"]}}</span>
-	                <br />
-	                <span>Tag:</span>
-	                <span id="tags{{$ann["a_id"]}}" >@foreach($ann["tags"] as $tag)<span class="annotation_Tag">{{$tag}}</span>@endforeach</span><br />
-	                <button type="button" class="editAnn">Edit</button>
-	                <button type="button" class="deleteAnn">Delete</button>
-	                <br />
-	            </div>
-	            @endforeach
-	        </div>
 	    </div>
-        
+	    <h4 style="text-align: center">Annotation List</h4>
+	    <div class="annotationList">
+            @foreach($annotations as $ann)
+            <div class="annotationL" id="ann{{$ann["a_id"]}}" data-paragraph="{{$ann["paragraph_id"]}}" data-line="{{$ann["line_id"]}}" data-words="{{$ann["wordsData"]}}">
+                <span data-user="{{$ann["user_id"]}}" class="annotation_user" id="userNameAnnotation">{{$ann["userN"]}}</span>
+                <br />
+                <span>Annotation: </span>
+                <span class="annotation_annotation">{{$ann["annotation"]}}</span>
+                <br />
+                <div>Related To: </div>
+                <span class="annotation_annotatedText">{{$ann["a_text"]}}</span>
+                <br />
+                <span>Tag:</span>
+                <span id="tags{{$ann["a_id"]}}" >@foreach($ann["tags"] as $tag)<span class="annotation_Tag">{{$tag}}</span>@endforeach</span><br />
+                <button type="button" class="editAnn">Edit</button>
+                <button type="button" class="deleteAnn">Delete</button>
+            </div>
+            @endforeach
+	       </div>
+	    <div class="annotationTool">
+	        <textarea id="annotationInput" rows="4" cols="30" placeholder="Annotation"></textarea>
+	        <br />
+	        Choose A Tag
+	        <select id="tagSelection">
+	        </select>
+	        <br />
+	        <textarea id="annotationTag" rows="1" cols="30" placeholder="Add a new Tag"></textarea>
+	        <br />
+	        <button type="button" id="button" class="cancelAnn btn btn-danger">Cancel</button>
+	        <button type="button" class="saveAnn btn btn-success">Save</button>
+	    </div>
+
 
 @stop

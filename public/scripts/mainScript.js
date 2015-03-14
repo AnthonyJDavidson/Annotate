@@ -58,7 +58,7 @@ function refreshAnnotationJquery(){
 
         var annotation_ids = $(this).data("annotation").split(',');
         if(annotation_ids != ""){
-            $(this).after('<div class="aToolTip" style="top:'+(ypos+10)+'px;left:'+(xpos+10)+'px"></div>');
+            $('.page-content').after('<div class="aToolTip" style="top:'+(ypos+10)+'px;left:'+(xpos+10)+'px"></div>');
             for (var i = 0; i < annotation_ids.length -1;i++) {
                 if(annotation_ids[0]!=""){
                     var ann_ann = $('.annotationL#'+annotation_ids[i]+' .annotation_annotation').text();
@@ -229,9 +229,9 @@ function refreshCommentImgJquery(){
             textElemAnchorNode = textElement.anchorNode;
             textElemFocusNode = textElement.focusNode;
         }
-        $("#annotation_text .annotationTool").css("top",iconYpos);
-        $("#annotation_text .annotationTool").css("left",iconXpos);
-        $("#annotation_text .annotationTool").css("visibility","visible");
+        $(".annotationTool").css("top",parseInt(iconYpos));
+        $(".annotationTool").css("left",parseInt(iconXpos));
+        $(".annotationTool").css("visibility","visible");
         $('#commentImg').remove();
     });
 }
@@ -462,7 +462,7 @@ $(document).ready(function (){
     loadAnnotations(false,filteredArray);
     refreshAnnotationJquery();
 
-    $('#annotation_text .annotationTool').mousedown(function(){
+    $('.annotationTool').mousedown(function(){
         event.stopPropagation();
     });
 
