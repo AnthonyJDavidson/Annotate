@@ -234,7 +234,7 @@ padding: 15px;
 
 .annotationL{
 	display: inline;
-	max-width: 15%;
+	max-width: 240px;
 	border: solid;
 	border-width: .1em;
 	padding: 10px 10px 10px 10px;

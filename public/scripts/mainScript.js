@@ -533,8 +533,8 @@ $(document).ready(function (){
             
             var docName = $("#annotation_text").data("file");
             docName = docName.substring(0,docName.indexOf(".txt"));
-            annotationText= $('#annotation_text #annotationInput').val();
-            annotationTag= $('#annotation_text #annotationTag').val();
+            annotationText= $('.annotationTool #annotationInput').val();
+            annotationTag= $('.annotationTool #annotationTag').val();
             if(!annotationText) return 0;
             if(annotationTag == "") annotationTag = "None";
             var wordsByNum= wordsCovered.split(/\W+/);//split by word character
@@ -607,8 +607,8 @@ $(document).ready(function (){
 
                         
                         refreshAnnotationJquery();
-                        $('#annotation_text #annotationInput').val("");
-                        $('#annotation_text #annotationTag').val("");
+                        $('.annotationTool #annotationInput').val("");
+                        $('.annotationTool #annotationTag').val("");
                     },
                     error: function(data){
                         alert("Annotation Failed: "+data.message);
