@@ -437,7 +437,6 @@ function getSelectionText() {
 
 $(document).ready(function (){
 
-
      $('#left_Col #hideAnnotations').change(function() {
         if($(this).is(":checked")) {//checked
             //remove all highlights and annotations (front only)

@@ -109,9 +109,8 @@ body{
 	background-color: white;
 	list-style-type: none;
 	margin-right: .5%;
-	height: 600px;
-	max-height: 80%;
 	overflow-y: auto;
+	height: 70%;
 }
 
 #left_col ul{
@@ -128,7 +127,7 @@ body{
 	margin: 0 0 5px 0;
 }
 #annotation_text{
-	height: 600px;
+	height: 70%;
 	text-align: center;
 	background-color: white;
 	width: 88.5%;
@@ -240,7 +239,7 @@ padding: 15px;
 	border-width: .1em;
 	padding: 10px 10px 10px 10px;
 	overflow-y: auto;
-	height: 18%;
+	height: 180px;
 	text-align: center;
 	margin: 2px;
 	background: white;
