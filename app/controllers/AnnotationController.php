@@ -51,7 +51,7 @@ class AnnotationController extends BaseController {
 				$annotation->delete();
 				return Response::json(array('message'=>"Annotation deleted"));
 			}else {
-				Redirect::route('home')->with('global', 'Wrong User');
+				return Response::json(array('message'=>"Annotation not deleted"));
 			}
 		}else return Redirect::route('home')->with('global', 'Please Sign In');
 	}
@@ -68,7 +68,7 @@ class AnnotationController extends BaseController {
 				$annotation->tags = $newT;
 				$annotation->save();
 				return Response::json(array('message'=>"Annotation Edited"));
-			}else Redirect::route('home')->with('global', 'Incorrect User id');
+			}else return Response::json(array('message'=>"Annotation not Edited"));
 		}else return Redirect::route('home')->with('global', 'Please Sign In');
 	}
 }

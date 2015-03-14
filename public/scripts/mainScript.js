@@ -10,12 +10,43 @@ var text ="";
 var textElemSet = false;
 var iconYpos =0;
 var iconXpos =0;
-
+var filteredArray = [""];
 
 function refreshAnnotationJquery(){
     $('.annotation').off();
     $('.annotationL .deleteAnn').off();
     $('.annotationL .editAnn').off();
+    $('.filter .byTag').off();
+    $('.hideMe').off();
+
+
+    $('.hideMe').change(function(){
+        if(!($(this).is(":checked"))) {//unchecked
+            //remove all highlights and annotations (front only)
+            $('.annotation').each(function(){
+                $(this).removeClass("annotation");
+                $(this).addClass("filtered");
+                $(this).css("background","none");
+                $(this).data("annotation","");
+            });
+            //add this tag to filtered array
+            filteredArray.push($(this).val());
+            loadAnnotations(true,filteredArray);
+        }else{ // unchecked
+            $('.annotation').each(function(){
+                $(this).removeClass("annotation");
+                $(this).css("background","none");
+                $(this).data("annotation","");
+            });
+            $('.filtered').each(function(){$(this).removeClass("filtered")});
+            var indexofFilter = filteredArray.indexOf($(this).val());
+            if (indexofFilter > -1) {
+                filteredArray.splice(indexofFilter, 1);
+            }
+            loadAnnotations(true,filteredArray);
+            refreshAnnotationJquery();
+        }  
+    });
 
 
     $('.annotation').mouseover(function(){
@@ -69,9 +100,15 @@ function refreshAnnotationJquery(){
                 data: {annChanged: oldAnnotationID.substring(3),newAnnotation:newAnnotation, newTag:newTag},
                 url: "editAnnotation",
                 success: function(data){
-                    console.log("Annotation Edited");
-                    $('.annotationL#'+oldAnnotationID+ ' .annotation_annotation').text(newAnnotation);
-                    $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)+' .annotation_Tag').text(newTag);
+                    if(data.message == "Annotation not Edited"){
+                        alert("incorrect user id, dont edit others' annotations");
+                        $('.annotationL#'+oldAnnotationID+ ' .annotation_annotation').text(oldAnnotation);
+                        $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)+' .annotation_Tag').text(oldTag);
+                    }else{
+                        console.log("Annotation Edited");
+                        $('.annotationL#'+oldAnnotationID+ ' .annotation_annotation').text(newAnnotation);
+                        $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)+' .annotation_Tag').text(newTag);
+                    }
                 },
                 error: function(data){
                     alert("Annotation edit Failed: "+data.message);
@@ -147,7 +184,7 @@ function refreshAnnotationJquery(){
                     }
 
                     el[0].parentElement.remove();
-                    console.log("Annotation Deleted",data);
+                    console.log("Annotation Deleted",data.message);
                     refreshAnnotationJquery();
                 }
             },
@@ -195,25 +232,45 @@ function refreshCommentImgJquery(){
     });
 }
 
-function loadAnnotations(reload){
+function loadAnnotations(reload,fArray){
     var annLists = $(".annotationL");
     console.log(annLists);
     for (var i = 0; i < annLists.length; i++) {
         console.log(annLists[i].id+ " loaded");
-        //Annotated text
-        //not needed anymore?
-        //var ann_text = $('#'+annLists[i].id+' .annotation_annotatedText').text();
-        //Annotation
-        var ann_ann = $('#'+annLists[i].id+' .annotation_annotation').text();
-        //paragraph id
-        var ann_paragraph = $('#'+annLists[i].id).data("paragraph");
-        //which words to highlight
-        var ann_words =$('#'+annLists[i].id).data("words");
-        //which lines
-        var ann_lines =$('#'+annLists[i].id).data("line");
-        //call function to highlight
-        if(reload) highlightDocumentAgain(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines);
-        else highlightDocument(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines);
+        if(fArray.length > 1){
+            tagOfAnn = $('#'+annLists[i].id+' .annotation_Tag').text();
+            if(fArray.indexOf(tagOfAnn) == -1 ){
+                //Annotated text
+                //not needed anymore?
+                //var ann_text = $('#'+annLists[i].id+' .annotation_annotatedText').text();
+                //Annotation
+                var ann_ann = $('#'+annLists[i].id+' .annotation_annotation').text();
+                //paragraph id
+                var ann_paragraph = $('#'+annLists[i].id).data("paragraph");
+                //which words to highlight
+                var ann_words =$('#'+annLists[i].id).data("words");
+                //which lines
+                var ann_lines =$('#'+annLists[i].id).data("line");
+                //call function to highlight
+                if(reload) highlightDocumentAgain(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines);
+                else highlightDocument(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines);
+            }
+        }else{
+            //Annotated text
+            //not needed anymore?
+            //var ann_text = $('#'+annLists[i].id+' .annotation_annotatedText').text();
+            //Annotation
+            var ann_ann = $('#'+annLists[i].id+' .annotation_annotation').text();
+            //paragraph id
+            var ann_paragraph = $('#'+annLists[i].id).data("paragraph");
+            //which words to highlight
+            var ann_words =$('#'+annLists[i].id).data("words");
+            //which lines
+            var ann_lines =$('#'+annLists[i].id).data("line");
+            //call function to highlight
+            if(reload) highlightDocumentAgain(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines);
+            else highlightDocument(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines);
+        }
     }
 }
 
@@ -246,7 +303,7 @@ function highlightDocument(ann,paragraph,a_id,words,lines){
     }
 }
 
-function highlightDocumentAgain(ann,paragraph,a_id,words,lines){
+function highlightDocumentAgain(ann,paragraph,a_id,words,lines,fArray){
     //basically copy paste of saveAnn success functionality
     var lines_Back = lines;
     var linesArray = lines_Back.split(',');
@@ -393,12 +450,12 @@ $(document).ready(function (){
                 $(this).data("annotation","");
             });
             $('.filtered').each(function(){$(this).removeClass("filtered")});
-            loadAnnotations(true);
+            loadAnnotations(true,filteredArray);
             refreshAnnotationJquery();
         }       
     });
 
-    loadAnnotations(false);
+    loadAnnotations(false,filteredArray);
     refreshAnnotationJquery();
 
     $('#annotation_text .annotationTool').mousedown(function(){
@@ -538,7 +595,7 @@ $(document).ready(function (){
                         
                         for (var i = 0 ; i < tagsList.length; i++) {
                             if(curTags.indexOf(tagsList[i]) == -1){
-                                 $('#left_Col #tagsFilter').append('<li><input type="checkbox" name="show_tag" value="'+tagsList[i]+'" checked="true">'+tagsList[i]+'</li>');
+                                 $('#left_Col #tagsFilter').append('<li><input type="checkbox" class="hideMe" value="'+tagsList[i]+'" checked="true">'+tagsList[i]+'</li>');
                             }
                             //add tag to annotation in list
                             console.log();

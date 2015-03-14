@@ -9,13 +9,13 @@
                         <div><input type="checkbox" id="hideAnnotations" value="hideAnn">Hide all</div>
                         <div>-By Tag</div>
                         @foreach($tags as $t)
-                        <li><input type="checkbox" name="show_tag" value="{{$t}}" checked="true">{{$t}}</li>
+                        <li><input type="checkbox" class="hideMe" value="{{$t}}" checked="true">{{$t}}</li>
                         @endforeach
                     </ul>
                     <ul class="filters"  id="userNameFilter">
                         <div>-By User</div>
                         @foreach($userNames as $uN)
-                        <li><input type="checkbox" name="show_tag" value="{{$uN["id"]}}" checked="true">{{$uN["name"]}}</li>
+                        <li><input type="checkbox" class="hideUser" value="{{$uN["id"]}}" checked="true">{{$uN["name"]}}</li>
                         @endforeach
                     </ul>
                 </div>
@@ -56,7 +56,7 @@
                 <span class="annotation_annotatedText">{{$ann["a_text"]}}</span>
                 <br />
                 <span>Tag:</span>
-                <span id="tags{{$ann["a_id"]}}" >@foreach($ann["tags"] as $tag)<span class="annotation_Tag">{{$tag}} </span>@endforeach</span><br />
+                <span id="tags{{$ann["a_id"]}}" >@foreach($ann["tags"] as $tag)<span class="annotation_Tag">{{$tag}}</span>@endforeach</span><br />
                 <button type="button" class="editAnn">Edit</button>
                 <button type="button" class="deleteAnn">Delete</button>
                 <br />
