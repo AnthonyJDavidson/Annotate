@@ -21,7 +21,7 @@
                 </div>
                 <div id="annotationDiv">
 	                <div id="annotation_text"  class="mCustomScrollbar" data-file="{{$docName}}"> 
-	                    <h3>{{$nameofDoc}}</h3>
+	                    <h3 id="nameOfText">{{$nameofDoc}}</h3>
 	                    @foreach($doc as $paragraph =>$lines)
 	                        <div id="paragraph{{$paragraph}}">
 	                        @foreach($lines as $l => $words)

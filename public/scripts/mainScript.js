@@ -12,7 +12,8 @@ var iconYpos =0;
 var iconXpos =0;
 var filteredArray = [""];
 $(".page-content").mCustomScrollbar({
-    axis:"y"
+    axis:"y",
+    mouseWheel:{ normalizeDelta: false }
 });
 
 
