@@ -80,6 +80,7 @@ body{
 	clear: both;
 	width: 100%;
 	background-color: #A6ABB6;
+	color: black;
 }
 .page-content a{
 	text-decoration: none;
@@ -180,19 +181,26 @@ body{
 .cP_field{
 	margin: 2px 0px;
 }
+#editGroup{
+	text-align: center;
+	color: black;
+	padding: 5px;
+	background: white;
+}
+#createUser{
 
-
-
-
-
+}
 #nameOfText{
 	font-size: 2em;
 	text-decoration: underline;
 }
 #documentUp{
-padding: 15px;
+	padding: 15px;
 }
-
+.uploadDoc{
+	text-align:inherit;
+	display: inherit;
+}
 .annotationTool { 
 	position: absolute;
 	left: 0px; 
@@ -310,4 +318,3 @@ padding: 15px;
 	margin: 1px 0px;
 	border-radius: 5px;
 }
-

@@ -3,6 +3,7 @@
 @section('content')
 <div class="page-content">
 	<div id="myProfile" class="mCustomScrollbar">
+		<br />
 		<div class="homeTitle myProfileTitle">My Groups</div>
 		@foreach($groups as $group)
 		<div class="groupName">{{$group["name"]}}	
