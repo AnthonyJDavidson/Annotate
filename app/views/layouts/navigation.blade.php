@@ -3,7 +3,7 @@
 		@if(Auth::check())
 			<li><a href="home">Home</a></li>
 			<!-- <li><a href="literature">Literature</a></li>!-->
-			<li><a href="{{ URL::route('changePassword')}}">Change Password</a></li> 
+			<li><a href="account">Account</a></li> 
 		@else
 
 			<li><a href="home">Home</a></li>

@@ -5,7 +5,7 @@
             <div id="annotationsDiv">
                 <div id="left_Col" class="mCustomScrollbar">
                     <ul class="filters" id="tagsFilter">
-                        <h3>Annotation Filters</h3>
+                        <h3>Filters</h3>
                         <div><input type="checkbox" id="hideAnnotations" value="hideAnn">Hide all</div>
                         <h4>-By Tag</h4>
                         @foreach($tags as $t)
@@ -21,7 +21,8 @@
                 </div>
                 <div id="annotationDiv">
 	                <div id="annotation_text"  class="mCustomScrollbar" data-file="{{$docName}}"> 
-	                    <h3 id="nameOfText">{{$nameofDoc}}</h3>
+	                    <div id="nameOfText">{{$nameofDoc}}</div>
+	                    <br />
 	                    @foreach($doc as $paragraph =>$lines)
 	                        <div id="paragraph{{$paragraph}}">
 	                        @foreach($lines as $l => $words)
@@ -62,8 +63,8 @@
 	        <br />
 	        <textarea id="annotationTag" rows="1" cols="30" placeholder="Add a new Tag"></textarea>
 	        <br />
-	        <button type="button" id="button" class="cancelAnn btn btn-danger">Cancel</button>
-	        <button type="button" class="saveAnn btn btn-success">Save</button>
+	        <button type="button" id="button" class="cancelAnn">Cancel</button>
+	        <button type="button" class="saveAnn">Save</button>
 	    </div>
 
 

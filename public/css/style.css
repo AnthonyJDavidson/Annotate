@@ -45,6 +45,7 @@ body{
 	float: left;
 	width: 50%;
 	font-size: 2em;
+	
 }
 #navigation a{
 	color: #FFFFFF;
@@ -80,17 +81,27 @@ body{
 	width: 100%;
 	background-color: #A6ABB6;
 }
-
+.page-content a{
+	text-decoration: none;
+}
 /* Login */
 
-#loginBase{
+#homePage{
+	color: black;
+	background: white;
+	padding: 5px;
 	text-align: center;
 }
+
+.homeTitle{
+	font-size: 2.5em;
+}
 #loginTitle{
-	font-size: 3em;
+	font-size: 2em;
 	font-style: bold;
 }
 #loginBase ul{
+	color: black;
 	margin: 0;
 	padding: 0;
 	padding-bottom: 5px;
@@ -102,6 +113,7 @@ body{
 
 
 #left_col{
+	font-size: 1.3em;
 	border: solid;
 	border-width: .1em;
 	width: 11%;
@@ -110,7 +122,7 @@ body{
 	list-style-type: none;
 	margin-right: .5%;
 	overflow-y: auto;
-	height: 70%;
+	height: 80%;
 }
 
 #left_col ul{
@@ -127,7 +139,8 @@ body{
 	margin: 0 0 5px 0;
 }
 #annotation_text{
-	height: 70%;
+	font-size: 1.3em;
+	height: 80%;
 	text-align: center;
 	background-color: white;
 	width: 88.5%;
@@ -138,8 +151,43 @@ body{
 	margin-left: 1%;
 	overflow-y: auto;
 }
+
+
 #myProfile{
 	background: white;
+	text-align: center;
+	max-height: 80%;
+}
+.groupName{
+	font-size: 2em;
+	text-decoration: underline;
+}
+.groupInfo {
+	font-size: 1.5em;
+}
+#account_myGroups{
+	text-align: center;
+}
+#changePasswordForm{
+	text-align: center;
+}
+#acc_Page{
+
+	padding: 5px;
+	background: white;
+
+}
+.cP_field{
+	margin: 2px 0px;
+}
+
+
+
+
+
+#nameOfText{
+	font-size: 2em;
+	text-decoration: underline;
 }
 #documentUp{
 padding: 15px;
@@ -247,6 +295,13 @@ padding: 15px;
 }
 .annotation_annotatedText{
 	text-align: justify;
+	font-style: italic;
+}
+.annotation_Tag{
+	padding: 1px;
+	background: #A6ABB6;
+	border-radius: 6px;
+	border: 1px solid #A6ABB6;
 }
 .aToolTip_a{
 	border: solid;

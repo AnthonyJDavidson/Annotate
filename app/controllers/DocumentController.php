@@ -76,7 +76,7 @@ class DocumentController extends BaseController {
 			$lineArray = array();
 			$wordArray = array();
 			foreach ($parArray as $p => $value) {
-				$lineArray[$p] = explode("\r\n",$value);
+				$lineArray[$p] = explode("\n",$value);
 					foreach ($lineArray[$p] as $lA => $val) {
 						$wordArray[$p][$lA] = explode(" ",$val);
 					}

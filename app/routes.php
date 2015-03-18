@@ -16,9 +16,10 @@ Route::get('/', array('as' => 'home', 'uses' => 'HomeController@getIndex'));
 Route::get('/home',array('as' => 'home', 'uses' => 'HomeController@getIndex'));
 
 /* Route::get('/literature',function(){ return View::make('literature'); }); */
-Route::get('/literature',array('before' => 'auth', function(){ return View::make('literature'); })); 
-Route::get('/documentUpload',array('before' => 'auth', function(){ return View::make('documentUpload'); }));
+//Route::get('/literature',array('before' => 'auth', function(){ return View::make('literature'); })); 
+//Route::get('/documentUpload',array('before' => 'auth', function(){ return View::make('documentUpload'); }));
 Route::get('/about',function(){ return View::make('about'); });
+Route::get('/account',array('as' => 'account', 'uses' => 'AccountController@getAccount'));
 /*Route::get('/login',function(){ return View::make('login'); });*/
 
 //TODO hide in admin functionality

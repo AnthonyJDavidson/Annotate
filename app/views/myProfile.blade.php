@@ -1,36 +1,31 @@
 @extends('layouts.main')
 
 @section('content')
-		<div class="page-content">
-			<div id="myProfile">
-				<h1>My Groups</h1>
-				@foreach($groups as $group)
-				<h2>{{$group["name"]}}	
-						@if(Auth::user()->permission_level == 2)
-							<a href="editGroup{{$group["id"]}}">Edit</a>
-						@endif
-				</h2>
-				<table>
-					<thead>
-						<tr>
-							<th class="tHead">Available Documents</th>
-						</tr>
-					</thead>
-					<tbody>
-							@foreach($documents as $doc)
-								@if($doc["group_id"] == $group["id"])
-									<tr> 
-										<td class"docName" id="g{{$group["id"]}}d{{$doc["id"]}}"><a href="doc-{{$doc["storage_name"]}}.{{$doc["filetype"]}}">{{$doc["name"]}}</a></td>
-										
-									</tr>
-								@endif
-							@endforeach
-					
-					</tbody>
-				</table>
+<div class="page-content">
+	<div id="myProfile" class="mCustomScrollbar">
+		<div class="homeTitle myProfileTitle">My Groups</div>
+		@foreach($groups as $group)
+		<div class="groupName">{{$group["name"]}}	
+				@if(Auth::user()->permission_level == 2)
+					<a href="editGroup{{$group["id"]}}">Edit</a>
+				@endif
+		</div>
+		<br />
+		<div class="groupInfo">
+			<div>Available Documents</div>
+			<div>
+				@foreach($documents as $doc)
+					@if($doc["group_id"] == $group["id"]) 
+						<div class"docName" id="g{{$group["id"]}}d{{$doc["id"]}}"><a href="doc-{{$doc["storage_name"]}}.{{$doc["filetype"]}}">{{$doc["name"]}}</a></div>
+					@endif
 				@endforeach
-				
+			
 			</div>
 		</div>
+		<br />
+		@endforeach
+		
+	</div>
+</div>
 
 @stop

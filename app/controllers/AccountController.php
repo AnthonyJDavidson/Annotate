@@ -78,4 +78,23 @@ class AccountController extends BaseController{
 			->with('global','Could not activate account, contant admin');
 		}
 	}
+
+	public function getAccount(){ 
+		if (Auth::check()){
+			$user = User::find(Auth::user()->id);
+			$userGroups = UserGroup::where('user_id','=',$user->id)->get();
+			$groups = array();
+			foreach($userGroups as $uGroup){
+				//find all groups
+				$groups[$uGroup->group_id] = Group::where('id','=',$uGroup->group_id)->get()->first();
+			}
+			$documents = array();
+			$gs = array();
+			foreach ($groups as $g){
+				$gs[$g->id] = array('name' => $g->name);
+			}
+			$data = array('groups'=>$gs);
+			return View::make('account',$data);
+		}else return Redirect::route('home')->with('global', 'Please Sign In');
+	}
 }
