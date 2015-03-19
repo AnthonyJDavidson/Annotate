@@ -723,7 +723,7 @@ $(document).ready(function (){
                             }
                             //add tag to annotation in list
                             console.log();
-                            $('.annotationList #ann'+data.newAnn["new_a_id"]+' #tags'+data.newAnn["new_a_id"]).append('<span>'+tagsList[i]+'</span>');
+                            $('.annotationList #ann'+data.newAnn["new_a_id"]+' #tags'+data.newAnn["new_a_id"]).append('<span class="annotation_Tag">'+tagsList[i]+' </span>');
                         }
 
                         
