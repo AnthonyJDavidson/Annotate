@@ -328,7 +328,7 @@ function highlightDocumentAgain(ann,paragraph,a_id,words,lines,fArray){
                 }
             }else{
                 $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation");
-                $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color","rgba(255,254,39,0.2)");
+                $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color","rgba(255,254,39,0.4)");
             }
             var curData = $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).data("annotation");
             $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).data("annotation",curData+a_id+',');
@@ -575,7 +575,7 @@ $(document).ready(function (){
                                     }
                                 }else{
                                     if($('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).hasClass("filtered")){
-                                        $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color","rgba(255,254,39,0.2)");
+                                        $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color","rgba(255,254,39,0.4)");
                                         $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).removeClass("filtered");
                                     }
                                     $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation");   

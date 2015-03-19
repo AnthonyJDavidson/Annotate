@@ -11,7 +11,7 @@
 					<a href="editGroup{{$group["id"]}}">Edit</a>
 				@endif
 		</div>
-		<br />
+
 		<div class="groupInfo">
 			<div>Available Documents</div>
 			<div>

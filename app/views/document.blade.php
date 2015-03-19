@@ -5,15 +5,15 @@
             <div id="annotationsDiv">
                 <div id="left_Col" class="mCustomScrollbar">
                     <ul class="filters" id="tagsFilter">
-                        <h3>Filters</h3>
+                        <h3 style="font-weight: bold">Filters</h3>
                         <div><input type="checkbox" id="hideAnnotations" value="hideAnn">Hide all</div>
-                        <h4>-By Tag</h4>
+                        <h4 style="font-weight: bold">-By Tag</h4>
                         @foreach($tags as $t)
                         <li><input type="checkbox" class="hideMe" value="{{$t}}" checked="true">{{$t}}</li>
                         @endforeach
                     </ul>
                     <ul class="filters"  id="userNameFilter">
-                        <h4>-By User</h4>
+                        <h4 style="font-weight: bold">-By User</h4>
                         @foreach($userNames as $uN)
                         <li><input type="checkbox" class="hideUser" value="{{$uN["id"]}}" checked="true">{{$uN["name"]}}</li>
                         @endforeach
@@ -21,6 +21,7 @@
                 </div>
                 <div id="annotationDiv">
 	                <div id="annotation_text"  class="mCustomScrollbar" data-file="{{$docName}}"> 
+	                    
 	                    <div id="nameOfText">{{$nameofDoc}}</div>
 	                    <br />
 	                    @foreach($doc as $paragraph =>$lines)

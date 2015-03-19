@@ -96,6 +96,7 @@ body{
 
 .homeTitle{
 	font-size: 2.5em;
+	font-weight: bold;
 }
 #loginTitle{
 	font-size: 2em;
@@ -130,7 +131,7 @@ body{
 	margin: 5px;
 	padding: 0;
 	overflow: auto;
-	text-align: center;
+	text-align: left;
 }
 
 .filters{
@@ -161,7 +162,6 @@ body{
 }
 .groupName{
 	font-size: 2em;
-	text-decoration: underline;
 }
 .groupInfo {
 	font-size: 1.5em;
@@ -192,7 +192,7 @@ body{
 }
 #nameOfText{
 	font-size: 2em;
-	text-decoration: underline;
+	font-weight: bold;
 }
 #documentUp{
 	padding: 15px;
@@ -245,7 +245,8 @@ body{
 	float: right;
 }
 .annotation{
-	background-color: rgba(255,254,39,0.2);
+	/* mentor rgba(139,64,184,0.4); */
+	background-color: rgba(255,254,39,0.4);
 }
 .aToolTip{
 	position: absolute;
