@@ -87,12 +87,12 @@ function refreshAnnotationJquery(){
     $('.annotationL .editAnn').click(function(){
 
         var oldAnnotationID = $(this)[0].parentElement.id;
-        var oldAnnotation = $(this)[0].parentElement.children[3].innerText;
+        var oldAnnotation = $('.annotationL#'+oldAnnotationID+ ' .annotation_annotation').text();
         var oldTag = $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)).text();
         $('.annotationL#'+oldAnnotationID+ ' .editAnn').toggle();
         $('.annotationL#'+oldAnnotationID+ ' .deleteAnn').toggle();
-        $('.annotationL#'+oldAnnotationID+ ' .editAnn').before('<button type="button" class="editConfirm">Save</button>');
-        $('.annotationL#'+oldAnnotationID+ ' .editAnn').after('<button type="button" class="editCancel">Cancel</button>');
+        $('.annotationL#'+oldAnnotationID+ ' .editAnn').before('<img class="editCancel" src="images/cancel.png" height="12" width="12" alt="can">');
+        $('.annotationL#'+oldAnnotationID+ ' .editAnn').after('<img class="editConfirm" src="images/confirm.png" height="12" width="12" alt="can">');
         $('.annotationL#'+oldAnnotationID+ ' .annotation_annotation').after('<textArea rows="1" cols="30" id="tempTextAreaAnn" class="textArea_editAn" contenteditable>'+oldAnnotation+'</textArea>');
         $('.annotationL#'+oldAnnotationID+ ' .annotation_annotation').text("");
         $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)).before('<textArea rows="1" cols="15" id="tempTextAreaTag" class="textArea_editAn" contenteditable>'+oldTag+'</textArea>');
@@ -707,7 +707,7 @@ $(document).ready(function (){
                         }
 
                         //create annotation in list -- tags added in a few lines
-                        $('.annotationList').append('<div class="annotationL" id="ann'+data.newAnn["new_a_id"]+'" data-paragraph="'+data.newAnn["new_p_id"]+'" data-line="'+lines_Back+'" data-words="'+words_Back+'"><span data-perm='+perm+' data-user="'+data.newAnn["new_u_id"]+'" class="annotation_user" id="userNameAnnotation">'+$('#nameofUser').text()+'</span><br /><span>Annotation: </span><span class="annotation_annotation">'+data.newAnn["new_ann"]+'</span><br /><span>Related To: </span><span class="annotation_annotatedText">'+data.newAnn["new_a_text"]+'</span><br /><span>Tag: </span><span id="tags'+data.newAnn["new_a_id"]+'" class="annotation_Tag"></span><br /><button type="button" class="editAnn">Edit</button><button type="button" class="deleteAnn">Delete</button></div>');
+                        $('.annotationList').append('<div class="annotationL" id="ann'+data.newAnn["new_a_id"]+'" data-paragraph="'+data.newAnn["new_p_id"]+'" data-line="'+lines_Back+'" data-words="'+words_Back+'"><img class="deleteAnn" src="images/cancel.png" height="12" width="12" alt="can"><img class="editAnn" src="images/edit.png" height="12" width="12" alt="edt"><span data-perm='+perm+' data-user="'+data.newAnn["new_u_id"]+'" class="annotation_user" id="userNameAnnotation">'+$('#nameofUser').text()+'</span><br /><span>Annotation: </span><span class="annotation_annotation">'+data.newAnn["new_ann"]+'</span><br /><span>Related To: </span><span class="annotation_annotatedText">'+data.newAnn["new_a_text"]+'</span><br /><span>Tag: </span><span id="tags'+data.newAnn["new_a_id"]+'" class="annotation_Tag"></span><br /></div>');
                         //update filter list
                         var tagsList = annotationTag.split(/\W+/);
                         var curTags = new Array();
@@ -723,7 +723,7 @@ $(document).ready(function (){
                             }
                             //add tag to annotation in list
                             console.log();
-                            $('.annotationList #ann'+data.newAnn["new_a_id"]+' #tags'+data.newAnn["new_a_id"]).append('<span class="annotation_Tag">'+tagsList[i]+' </span>');
+                            $('.annotationList #ann'+data.newAnn["new_a_id"]+' #tags'+data.newAnn["new_a_id"]).append('<span class="annotation_Tag">'+tagsList[i]+'</span>');
                         }
 
                         
