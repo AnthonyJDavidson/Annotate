@@ -69,7 +69,7 @@ class DocumentController extends BaseController {
 			$userNames = array();
 			foreach($userNamesIds as $uNI){ 
 				$userRow = User::where('id','=',$uNI)->get()->first();
-				$userNames[$userRow->id] = array('id' => $userRow->id,'name' => (($userRow->firstnames).' '.($userRow->surname)));
+				$userNames[$userRow->id] = array('id' => $userRow->id,'name' => (($userRow->firstnames).' '.($userRow->surname)), 'perm' => $userRow->permission_level);
 			}
 			// Read line by line until end of file
 			$parArray = explode("//",fread($doc,filesize('documents/'.$d_name)));
@@ -141,6 +141,7 @@ class DocumentController extends BaseController {
 				}
 
 				$userN = $userNames[$a->user_id]['name'];
+				$perm = $userNames[$a->user_id]['perm'];
 				$annotations[$a->id] = array(
 								"a_id" => $a->id,
 								"a_text" => $a->a_text,
@@ -150,7 +151,8 @@ class DocumentController extends BaseController {
 								"userN" => $userN,
 								"paragraph_id"=>$a->paragraph_id,
 								"line_id" =>$a->line_id,
-								"wordsData"=>$a->words_Covered
+								"wordsData"=>$a->words_Covered,
+								"perm" =>$perm
 								);
 			}
 			fclose($doc);

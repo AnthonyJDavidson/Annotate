@@ -1,7 +1,7 @@
 <div class="header">
 	<span id="title">Annotate</span>
 	@if(Auth::check())
-		<span id="welcomeM">Hello, <span id="nameofUser">{{ Auth::user()->firstnames }} {{ Auth::user()->surname }}</span> <a href="{{ URL::route('account-signOut')}}">Sign Out</a></span>
+		<span id="welcomeM">Hello, <span id="nameofUser" data-perm="{{ Auth::user()->permission_level }}">{{ Auth::user()->firstnames }} {{ Auth::user()->surname }}</span> <a href="{{ URL::route('account-signOut')}}">Sign Out</a></span>
 	@else
 		<span id="welcomeM">Not Signed In</span>
 	@endif

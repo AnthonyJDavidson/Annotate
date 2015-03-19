@@ -30,9 +30,13 @@ function refreshAnnotationJquery(){
             //remove all highlights and annotations (front only)
             $('.annotation').each(function(){
                 $(this).removeClass("annotation");
+                $(this).removeClass("annotation_Mentor");
+                $(this).removeClass("annotation_Student");
+                $(this).removeClass("annotation_Overlap");
                 $(this).addClass("filtered");
                 $(this).css("background","none");
                 $(this).data("annotation","");
+                $(this).data("perm","0");
             });
             //add this tag to filtered array
             filteredArray.push($(this).val());
@@ -40,8 +44,12 @@ function refreshAnnotationJquery(){
         }else{ // unchecked
             $('.annotation').each(function(){
                 $(this).removeClass("annotation");
+                $(this).removeClass("annotation_Mentor");
+                $(this).removeClass("annotation_Student");
+                $(this).removeClass("annotation_Overlap");
                 $(this).css("background","none");
                 $(this).data("annotation","");
+                $(this).data("perm","0");
             });
             $('.filtered').each(function(){$(this).removeClass("filtered")});
             var indexofFilter = filteredArray.indexOf($(this).val());
@@ -147,7 +155,23 @@ function refreshAnnotationJquery(){
                 if(data.message == "Annotation not deleted"){
                     alert("incorrect User, dont delete others' annotations");
                 }else{
-                    //"unhighlight" words for each data-word
+                    //Remove all annotations and refresh all
+                    $('.annotation').each(function(){
+
+                        $(this).removeClass("annotation");
+                        $(this).removeClass("annotation_Mentor");
+                        $(this).removeClass("annotation_Student");
+                        $(this).removeClass("annotation_Overlap");
+                        $(this).addClass("filtered");
+                        $(this).css("background","none");
+                        $(this).data("annotation","");
+                        $(this).data("perm","0");
+                    });
+                    /* Old way, doies not work for different highlight colours
+                        needs update if re-write is done
+                        look at saveAnn and loadAnnotations for process
+
+                     //"unhighlight" words for each data-word
                     //"data-123".replace('data-','');
                     var par = el[0].parentElement.dataset["paragraph"];
                     var annWords = el[0].parentElement.dataset["words"];
@@ -172,24 +196,25 @@ function refreshAnnotationJquery(){
                                     element.removeClass("annotation");
                                     elementSpace.removeClass("annotation");
                                 }else{
-                                    var oldOp = element.css("background-color").split(',');
-                                    if(oldOp.length == 4){
-                                        var olOpNum = parseFloat(oldOp[3].substring(2,4));
-                                        olOpNum-=0.2;
-                                        var rgba = oldOp[0]+','+oldOp[1]+','+oldOp[2]+','+olOpNum+')';
-                                    }else{
-                                        var rgba = oldOp[0]+','+oldOp[1]+','+oldOp[2]+',0.8)';
-                                    }
-                                    element.css("background-color",rgba);
-                                    elementSpace.css("background-color",rgba);
+
+                                        var oldOp = element.css("background-color").split(',');
+                                        if(oldOp.length == 4){
+                                            var olOpNum = parseFloat(oldOp[3].substring(2,4));
+                                            olOpNum-=0.2;
+                                            var rgba = oldOp[0]+','+oldOp[1]+','+oldOp[2]+','+olOpNum+')';
+                                        }else{
+                                            var rgba = oldOp[0]+','+oldOp[1]+','+oldOp[2]+',0.8)';
+                                        }
+                                        element.css("background-color",rgba);
+                                        elementSpace.css("background-color",rgba);
                                 }
                             }
                         }
                         count++;
-                    }
-
+                    }*/
                     el[0].parentElement.remove();
                     console.log("Annotation Deleted",data.message);
+                    loadAnnotations(true,filteredArray);
                     refreshAnnotationJquery();
                 }
             },
@@ -242,44 +267,32 @@ function loadAnnotations(reload,fArray){
     console.log(annLists);
     for (var i = 0; i < annLists.length; i++) {
         console.log(annLists[i].id+ " loaded");
+        //permission level for color info
+        var ann_perm = $('#'+annLists[i].id+' .annotation_user').data("perm");
+        //Annotation
+        var ann_ann = $('#'+annLists[i].id+' .annotation_annotation').text();
+        //paragraph id
+        var ann_paragraph = $('#'+annLists[i].id).data("paragraph");
+        //which words to highlight
+        var ann_words =$('#'+annLists[i].id).data("words");
+        //which lines
+        var ann_lines =$('#'+annLists[i].id).data("line");
+
         if(fArray.length > 1){
             tagOfAnn = $('#'+annLists[i].id+' .annotation_Tag').text();
             if(fArray.indexOf(tagOfAnn) == -1 ){
-                //Annotated text
-                //not needed anymore?
-                //var ann_text = $('#'+annLists[i].id+' .annotation_annotatedText').text();
-                //Annotation
-                var ann_ann = $('#'+annLists[i].id+' .annotation_annotation').text();
-                //paragraph id
-                var ann_paragraph = $('#'+annLists[i].id).data("paragraph");
-                //which words to highlight
-                var ann_words =$('#'+annLists[i].id).data("words");
-                //which lines
-                var ann_lines =$('#'+annLists[i].id).data("line");
                 //call function to highlight
-                if(reload) highlightDocumentAgain(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines);
-                else highlightDocument(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines);
+                if(reload) highlightDocumentAgain(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines,ann_perm);
+                else highlightDocument(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines,ann_perm);
             }
         }else{
-            //Annotated text
-            //not needed anymore?
-            //var ann_text = $('#'+annLists[i].id+' .annotation_annotatedText').text();
-            //Annotation
-            var ann_ann = $('#'+annLists[i].id+' .annotation_annotation').text();
-            //paragraph id
-            var ann_paragraph = $('#'+annLists[i].id).data("paragraph");
-            //which words to highlight
-            var ann_words =$('#'+annLists[i].id).data("words");
-            //which lines
-            var ann_lines =$('#'+annLists[i].id).data("line");
-            //call function to highlight
-            if(reload) highlightDocumentAgain(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines);
-            else highlightDocument(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines);
+            if(reload) highlightDocumentAgain(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines,ann_perm);
+            else highlightDocument(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines,ann_perm);
         }
     }
 }
 
-function highlightDocument(ann,paragraph,a_id,words,lines){
+function highlightDocument(ann,paragraph,a_id,words,lines,perm){
     //basically copy paste of saveAnn success functionality
     var lines_Back = lines;
     var linesArray = lines_Back.split(',');
@@ -290,16 +303,39 @@ function highlightDocument(ann,paragraph,a_id,words,lines){
         var curWords = wordsArray[count].split(',');
         for (var i = 0; i < curWords.length - 1; i++) {
 
-            if($('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).hasClass("annotation")){
-                var oldOp = $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color").split(',');
-                if(oldOp.length == 4){ // has alpha < 1
-                    var olOpNum = parseFloat(oldOp[3].substring(2,4));
-                    olOpNum+=0.2;
-                    var rgba = oldOp[0]+','+oldOp[1]+','+oldOp[2]+','+olOpNum+')';
-                    $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color",rgba);
+            //if annotation already present on word or overlap already catered for
+            if($('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).hasClass("annotation") || $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).hasClass("annotation_Overlap")){
+                if($('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).data("perm") == perm){
+                    var oldOp = $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color").split(',');
+                    if(oldOp.length == 4){ // has alpha < 1
+                        var olOpNum = parseFloat(oldOp[3].substring(2,4));
+                        olOpNum+=0.2;
+                        var rgba = oldOp[0]+','+oldOp[1]+','+oldOp[2]+','+olOpNum+')';
+                        $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color",rgba);
+                    }
+                }else{
+                    $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation_Overlap");
+                    var oldOp = $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color").split(',');
+                    if(oldOp.length == 4){ // has alpha < 1
+                        var olOpNum = parseFloat(oldOp[3].substring(2,4));
+                        olOpNum+=0.2;
+                        //rgb corresponds to overlap rgb
+                        var rgba = 'rgba(210,65,153,'+olOpNum+')';
+                        $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color",rgba);
+                    }else{
+                        $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color","rgba(210,65,153,0.4)");
+                    }
                 }
+            //new ann, check for who user type
             }else{
+                // new start!!!
+                $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).data("perm",perm);
                 $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation");
+                if(perm == 2){
+                    $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation_Mentor");
+                }else{
+                    $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation_Student");
+                }
             }
             var curData = $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).data("annotation");
             $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).data("annotation",curData+a_id+',');
@@ -308,7 +344,7 @@ function highlightDocument(ann,paragraph,a_id,words,lines){
     }
 }
 
-function highlightDocumentAgain(ann,paragraph,a_id,words,lines,fArray){
+function highlightDocumentAgain(ann,paragraph,a_id,words,lines,perm){
     //basically copy paste of saveAnn success functionality
     var lines_Back = lines;
     var linesArray = lines_Back.split(',');
@@ -318,17 +354,43 @@ function highlightDocumentAgain(ann,paragraph,a_id,words,lines,fArray){
     while(count<wordsArray.length){
         var curWords = wordsArray[count].split(',');
         for (var i = 0; i < curWords.length - 1; i++) {
-            if($('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).hasClass("annotation")){
-                var oldOp = $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color").split(',');
-                if(oldOp.length == 4){ // has alpha < 1
-                    var olOpNum = parseFloat(oldOp[3].substring(2,4));
-                    olOpNum+=0.2;
-                    var rgba = oldOp[0]+','+oldOp[1]+','+oldOp[2]+','+olOpNum+')';
-                    $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color",rgba);
+
+            //if annotation already present on word or overlap already catered for
+            if($('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).hasClass("annotation") || $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).hasClass("annotation_Overlap")){
+                if($('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).data("perm") == perm){
+                    var oldOp = $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color").split(',');
+                    if(oldOp.length == 4){ // has alpha < 1
+                        var olOpNum = parseFloat(oldOp[3].substring(2,4));
+                        olOpNum+=0.2;
+                        var rgba = oldOp[0]+','+oldOp[1]+','+oldOp[2]+','+olOpNum+')';
+                        $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color",rgba);
+                    }
+                }else{
+                    $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation_Overlap");
+                    var oldOp = $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color").split(',');
+                    if(oldOp.length == 4){ // has alpha < 1
+                        var olOpNum = parseFloat(oldOp[3].substring(2,4));
+                        olOpNum+=0.2;
+                        //rgb corresponds to overlap rgb
+                        var rgba = 'rgba(210,65,153,'+olOpNum+')';
+                        $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color",rgba);
+                    }else{
+                        $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color","rgba(210,65,153,0.4)");
+                    }
                 }
+            //new ann, check for who user type
             }else{
+                // new start!!!
+                $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).data("perm",perm);
                 $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation");
-                $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color","rgba(255,254,39,0.4)");
+                if(perm == 2){
+                    $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation_Mentor");
+                    $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color","rgba(139,64,184,0.4)");
+
+                }else{
+                    $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation_Student");
+                    $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color","rgba(255,254,39,0.4)");
+                }
             }
             var curData = $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).data("annotation");
             $('#annotation_text #'+paragraph+' .'+linesArray[count]+' .word'+curWords[i]).data("annotation",curData+a_id+',');
@@ -442,16 +504,25 @@ $(document).ready(function (){
         if($(this).is(":checked")) {//checked
             //remove all highlights and annotations (front only)
             $('.annotation').each(function(){
+
                 $(this).removeClass("annotation");
+                $(this).removeClass("annotation_Mentor");
+                $(this).removeClass("annotation_Student");
+                $(this).removeClass("annotation_Overlap");
                 $(this).addClass("filtered");
                 $(this).css("background","none");
                 $(this).data("annotation","");
+                $(this).data("perm","0");
             });
         }else{ // unchecked
             $('.annotation').each(function(){
                 $(this).removeClass("annotation");
+                $(this).removeClass("annotation_Mentor");
+                $(this).removeClass("annotation_Student");
+                $(this).removeClass("annotation_Overlap");
                 $(this).css("background","none");
                 $(this).data("annotation","");
+                $(this).data("perm","0");
             });
             $('.filtered').each(function(){$(this).removeClass("filtered")});
             loadAnnotations(true,filteredArray);
@@ -559,24 +630,50 @@ $(document).ready(function (){
                         var words_Back = data.newAnn["new_words"];
                         var wordsArray = words_Back.split(':');
                         var count = 0;
-
+                        var perm = $('.header #nameofUser').data("perm");
                         while(count<wordsArray.length){
                             var curWords = wordsArray[count].split(',');
                             for (var i = 0; i < curWords.length - 1; i++) {
 
-                                if($('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).hasClass("annotation")){
-                                    var oldOp = $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color").split(',');
-                                    if(oldOp.length == 4){ // has alpha < 1
-                                        var olOpNum = parseFloat(oldOp[3].substring(2,4));
-                                        olOpNum+=0.2;
-                                        var rgba = oldOp[0]+','+oldOp[1]+','+oldOp[2]+','+olOpNum+')';
-                                        $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color",rgba);
 
+
+                                if($('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).hasClass("annotation") || $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).hasClass("annotation_Overlap")){
+                                    if($('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).data("perm") == perm){
+                                        var oldOp = $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color").split(',');
+                                        if(oldOp.length == 4){ // has alpha < 1
+                                            var olOpNum = parseFloat(oldOp[3].substring(2,4));
+                                            olOpNum+=0.2;
+                                            var rgba = oldOp[0]+','+oldOp[1]+','+oldOp[2]+','+olOpNum+')';
+                                            $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color",rgba);
+
+                                        }
+                                    }else{
+                                        $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation_Overlap");
+                                        var oldOp = $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color").split(',');
+                                        if(oldOp.length == 4){ // has alpha < 1
+                                            var olOpNum = parseFloat(oldOp[3].substring(2,4));
+                                            olOpNum+=0.2;
+                                            var rgba = oldOp[0]+','+oldOp[1]+','+oldOp[2]+','+olOpNum+')';
+                                            $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color",rgba);
+                                        }else{
+                                            $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color","rgba(210,65,153,0.4)");
+                                        }
                                     }
                                 }else{
-                                    if($('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).hasClass("filtered")){
-                                        $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color","rgba(255,254,39,0.4)");
-                                        $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).removeClass("filtered");
+                                    if($('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).hasClass("filtered")){ // need to refresh backgrounds
+                                        if(perm == 1){
+                                            $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color","rgba(255,254,39,0.4)");
+                                            $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).removeClass("filtered");
+                                            $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation_Student");
+                                        }else{
+                                            $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).css("background-color","rgba(139,64,184,0.4)");
+                                            $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).removeClass("filtered");
+                                            $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation_Mentor");
+                                        }
+                                    }else{
+                                        if(perm == 1) $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation_Student");
+                                        else $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation_Mentor")
+                                        $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).data("perm",perm);
                                     }
                                     $('#annotation_text #'+paragraphId+' .'+linesArray[count]+' .word'+curWords[i]).addClass("annotation");   
                                 }
@@ -587,7 +684,7 @@ $(document).ready(function (){
                         }
 
                         //create annotation in list -- tags added in a few lines
-                        $('.annotationList').append('<div class="annotationL" id="ann'+data.newAnn["new_a_id"]+'" data-paragraph="'+data.newAnn["new_p_id"]+'" data-line="'+lines_Back+'" data-words="'+words_Back+'"><span data-user="'+data.newAnn["new_u_id"]+'" class="annotation_user" id="userNameAnnotation">'+$('#nameofUser').text()+'</span><br /><span>Annotation: </span><span class="annotation_annotation">'+data.newAnn["new_ann"]+'</span><br /><span>Related To: </span><span class="annotation_annotatedText">'+data.newAnn["new_a_text"]+'</span><br /><span>Tag: </span><span id="tags'+data.newAnn["new_a_id"]+'" class="annotation_Tag"></span><br /><button type="button" class="editAnn">Edit</button><button type="button" class="deleteAnn">Delete</button></div>');
+                        $('.annotationList').append('<div class="annotationL" id="ann'+data.newAnn["new_a_id"]+'" data-paragraph="'+data.newAnn["new_p_id"]+'" data-line="'+lines_Back+'" data-words="'+words_Back+'"><span data-perm='+perm+' data-user="'+data.newAnn["new_u_id"]+'" class="annotation_user" id="userNameAnnotation">'+$('#nameofUser').text()+'</span><br /><span>Annotation: </span><span class="annotation_annotation">'+data.newAnn["new_ann"]+'</span><br /><span>Related To: </span><span class="annotation_annotatedText">'+data.newAnn["new_a_text"]+'</span><br /><span>Tag: </span><span id="tags'+data.newAnn["new_a_id"]+'" class="annotation_Tag"></span><br /><button type="button" class="editAnn">Edit</button><button type="button" class="deleteAnn">Delete</button></div>');
                         //update filter list
                         var tagsList = annotationTag.split(/\W+/);
                         var curTags = new Array();

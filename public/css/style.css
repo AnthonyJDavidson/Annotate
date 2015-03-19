@@ -125,6 +125,7 @@ body{
 	margin-right: .5%;
 	overflow-y: auto;
 	height: 80%;
+	padding-left: 10px;
 }
 
 #left_col ul{
@@ -246,7 +247,19 @@ body{
 }
 .annotation{
 	/* mentor rgba(139,64,184,0.4); */
+	/* overlap rgba(210, 65, 153, 0.4) */
 	background-color: rgba(255,254,39,0.4);
+}
+.annotation_student{
+	/* mentor rgba(139,64,184,0.4); */
+	/* overlap rgba(210, 65, 153, 0.4) */
+	background-color: rgba(255,254,39,0.4);
+}
+.annotation_Mentor{
+	background-color: rgba(139,64,184,0.4);
+}
+.annotation_Overlap{
+	background-color: rgba(210,65,153,0.4);
 }
 .aToolTip{
 	position: absolute;

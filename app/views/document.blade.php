@@ -27,7 +27,7 @@
 	                    @foreach($doc as $paragraph =>$lines)
 	                        <div id="paragraph{{$paragraph}}">
 	                        @foreach($lines as $l => $words)
-	                            <div class="line{{$l}}" data-linewordcount="{{sizeof($words)}}">@foreach($words as $w =>$word)<span class="word{{$w}}" data-annotation="" >{{$word}}</span><span class="wordSpace word{{$w}}" data-annotation=""> </span>@endforeach</div>
+	                            <div class="line{{$l}}" data-linewordcount="{{sizeof($words)}}">@foreach($words as $w =>$word)<span class="word{{$w}}" data-annotation="" data-perm="0">{{$word}}</span><span class="wordSpace word{{$w}}" data-annotation="" data-perm="0"> </span>@endforeach</div>
 	                        @endforeach
 	                        </div>
 	                        <br />
@@ -40,7 +40,7 @@
 	    	<h4 style="text-align: center">Annotation List</h4>
             @foreach($annotations as $ann)
             <div class="annotationL" id="ann{{$ann["a_id"]}}" data-paragraph="{{$ann["paragraph_id"]}}" data-line="{{$ann["line_id"]}}" data-words="{{$ann["wordsData"]}}">
-                <span data-user="{{$ann["user_id"]}}" class="annotation_user" id="userNameAnnotation">{{$ann["userN"]}}</span>
+                <span data-perm="{{$ann["perm"]}}" data-user="{{$ann["user_id"]}}" class="annotation_user" id="userNameAnnotation">{{$ann["userN"]}}</span>
                 <br />
                 <span>Annotation: </span>
                 <span class="annotation_annotation">{{$ann["annotation"]}}</span>

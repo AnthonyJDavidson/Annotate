@@ -22,7 +22,7 @@ Route::get('/about',function(){ return View::make('about'); });
 Route::get('/account',array('as' => 'account', 'uses' => 'AccountController@getAccount'));
 /*Route::get('/login',function(){ return View::make('login'); });*/
 
-//TODO hide in admin functionality
+//TODO hide in admin functionality ???
 // create new User
 Route::get('/create',array('as' => 'account-create', 'uses' =>'UserController@getCreate'));
 Route::post('create',array('as' => 'account-create-post', 'uses' =>'UserController@postCreate'));
