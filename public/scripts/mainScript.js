@@ -70,10 +70,18 @@ function refreshAnnotationJquery(){
             $('.page-content').after('<div class="aToolTip" style="top:'+(ypos+10)+'px;left:'+(xpos+10)+'px"></div>');
             for (var i = 0; i < annotation_ids.length -1;i++) {
                 if(annotation_ids[0]!=""){
+                    tagsHtml="";
+                    var tags="";
                     var ann_ann = $('.annotationL#'+annotation_ids[i]+' .annotation_annotation').text();
-                    var tags = $('.annotationL#'+annotation_ids[i]+' .annotation_Tag').text();
+                    $('.annotationL#'+annotation_ids[i]+' .annotation_Tag').each(function(){
+                        tags+= $(this).text()+',';
+                    })
+                    tagsSplit = tags.split(/\W+/);
+                    for(ts in tagsSplit){
+                        if(tagsSplit[ts] != "")tagsHtml = tagsHtml+'<span class="aToolTip_tags">'+tagsSplit[ts]+'</span>';
+                    }
                     var name = $('.annotationL#'+annotation_ids[i]+' #userNameAnnotation').text();
-                    $('.aToolTip').append('<div class="aToolTip_a"><div class="aToolTip_ann">'+ann_ann+'</div><div><span class="aToolTip_tags">'+tags+'</span>  <span class="aToolTip_user">'+name+'</span></div></div>');
+                    $('.aToolTip').append('<div class="aToolTip_a"><div class="aToolTip_ann">'+ann_ann+'</div><div>'+tagsHtml+'<span class="aToolTip_user">'+name+'</span></div></div>');
                 }
             }
         }
@@ -707,7 +715,7 @@ $(document).ready(function (){
                         }
 
                         //create annotation in list -- tags added in a few lines
-                        $('.annotationList').append('<div class="annotationL" id="ann'+data.newAnn["new_a_id"]+'" data-paragraph="'+data.newAnn["new_p_id"]+'" data-line="'+lines_Back+'" data-words="'+words_Back+'"><img class="deleteAnn" src="images/cancel.png" height="12" width="12" alt="can"><img class="editAnn" src="images/edit.png" height="12" width="12" alt="edt"><span data-perm='+perm+' data-user="'+data.newAnn["new_u_id"]+'" class="annotation_user" id="userNameAnnotation">'+$('#nameofUser').text()+'</span><br /><span>Annotation: </span><span class="annotation_annotation">'+data.newAnn["new_ann"]+'</span><br /><span>Related To: </span><span class="annotation_annotatedText">'+data.newAnn["new_a_text"]+'</span><br /><span>Tag: </span><span id="tags'+data.newAnn["new_a_id"]+'" class="annotation_Tag"></span><br /></div>');
+                        $('.annotationList').append('<div class="annotationL" id="ann'+data.newAnn["new_a_id"]+'" data-paragraph="'+data.newAnn["new_p_id"]+'" data-line="'+lines_Back+'" data-words="'+words_Back+'"><img class="deleteAnn" src="images/cancel.png" height="12" width="12" alt="can"><img class="editAnn" src="images/edit.png" height="12" width="12" alt="edt"><span data-perm='+perm+' data-user="'+data.newAnn["new_u_id"]+'" class="annotation_user" id="userNameAnnotation">'+$('#nameofUser').text()+'</span><br /><span>Annotation: </span><span class="annotation_annotation">'+data.newAnn["new_ann"]+'</span><br /><span>Related To: </span><span class="annotation_annotatedText">'+data.newAnn["new_a_text"]+'</span><br /><span>Tag: </span><span id="tags'+data.newAnn["new_a_id"]+'"></span><br /></div>');
                         //update filter list
                         var tagsList = annotationTag.split(/\W+/);
                         var curTags = new Array();

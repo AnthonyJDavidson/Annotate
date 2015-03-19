@@ -246,13 +246,9 @@ body{
 	float: right;
 }
 .annotation{
-	/* mentor rgba(139,64,184,0.4); */
-	/* overlap rgba(210, 65, 153, 0.4) */
 	background-color: rgba(255,254,39,0.4);
 }
 .annotation_student{
-	/* mentor rgba(139,64,184,0.4); */
-	/* overlap rgba(210, 65, 153, 0.4) */
 	background-color: rgba(255,254,39,0.4);
 }
 .annotation_Mentor{
@@ -261,6 +257,7 @@ body{
 .annotation_Overlap{
 	background-color: rgba(210,65,153,0.4);
 }
+/* http://paletton.com/#uid=64F0u0km6A7c5QihEI4qEvsuuq5 */
 .aToolTip{
 	position: absolute;
 	left: 0px; 
