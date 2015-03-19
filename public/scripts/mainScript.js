@@ -216,6 +216,7 @@ function refreshAnnotationJquery(){
                     console.log("Annotation Deleted",data.message);
                     loadAnnotations(true,filteredArray);
                     refreshAnnotationJquery();
+                    loadStates();
                 }
             },
             error: function(data){
@@ -399,7 +400,28 @@ function highlightDocumentAgain(ann,paragraph,a_id,words,lines,perm){
     }
 }
 
+function loadStates(){
 
+    var annotator_count =0;
+    var ann_count = 0;
+    var myAnn_count = 0;
+    var t_count = 0;
+    $(".annotationL").each(function(){
+        ann_count++;
+        if($(this).find('.annotation_user').text() == $('#nameofUser').text()) myAnn_count++;
+    });
+    $(".hideMe").each(function(){
+        t_count++;
+    });
+    $(".hideUser").each(function(){
+        annotator_count++;
+    });
+    $('#stats_annotators').text('Annotators: '+annotator_count);
+    $('#stats_annotations').text('Annotations: '+ann_count);
+    $('#stats_nested').text('My Annotations: '+myAnn_count);
+    $('#stats_tags').text('Tags: '+t_count);
+    return 0;
+}
 
 function init() {
     if (window.Event) {
@@ -532,6 +554,7 @@ $(document).ready(function (){
 
     loadAnnotations(false,filteredArray);
     refreshAnnotationJquery();
+    loadStates();
 
     $('.annotationTool').mousedown(function(){
         event.stopPropagation();
@@ -704,6 +727,7 @@ $(document).ready(function (){
                         }
 
                         
+                        loadStates();
                         refreshAnnotationJquery();
                         $('.annotationTool #annotationInput').val("");
                         $('.annotationTool #annotationTag').val("");

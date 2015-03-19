@@ -21,7 +21,7 @@
                 </div>
                 <div id="annotationDiv">
 	                <div id="annotation_text"  class="mCustomScrollbar" data-file="{{$docName}}"> 
-	                    
+	                	
 	                    <div id="nameOfText">{{$nameofDoc}}</div>
 	                    <br />
 	                    @foreach($doc as $paragraph =>$lines)
@@ -35,9 +35,16 @@
 	                </div>
 	            </div>
             </div>
+            <div id="annotationStats">
+            	<span class="a_stats" id="stats_annotators">Annotators: 0</span>
+		    	<span class="a_stats" id="stats_annotations" >Annotations: 0</span>
+		    	<span class="a_stats" id="stats_nested">My Annotations: 0</span>
+		    	<span class="a_stats" id="stats_tags">Tags: 0</span>
+	    	</div>
 	    </div>
-	    <div class="annotationList ">
-	    	<h4 style="text-align: center">Annotation List</h4>
+	    <div class="annotationList">
+	    	<div class="homeTitle myProfileTitle" style="text-align:center">Annotation List</div>
+	    	<br />
             @foreach($annotations as $ann)
             <div class="annotationL" id="ann{{$ann["a_id"]}}" data-paragraph="{{$ann["paragraph_id"]}}" data-line="{{$ann["line_id"]}}" data-words="{{$ann["wordsData"]}}">
                 <span data-perm="{{$ann["perm"]}}" data-user="{{$ann["user_id"]}}" class="annotation_user" id="userNameAnnotation">{{$ann["userN"]}}</span>
@@ -48,7 +55,7 @@
                 <div>Related To: </div>
                 <span class="annotation_annotatedText">{{$ann["a_text"]}}</span>
                 <br />
-                <span>Tag:</span>
+                <span>Tag: </span>
                 <span id="tags{{$ann["a_id"]}}" >@foreach($ann["tags"] as $tag)<span class="annotation_Tag">{{$tag}}</span>@endforeach</span><br />
                 <button type="button" class="editAnn">Edit</button>
                 <button type="button" class="deleteAnn">Delete</button>
