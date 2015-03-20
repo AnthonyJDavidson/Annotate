@@ -78,7 +78,10 @@ function refreshAnnotationJquery(){
                     })
                     tagsSplit = tags.split(/\W+/);
                     for(ts in tagsSplit){
-                        if(tagsSplit[ts] != "")tagsHtml = tagsHtml+'<span class="aToolTip_tags">'+tagsSplit[ts]+'</span>';
+                        var tagclass = "";
+                        if($('.annotationL#'+annotation_ids[i]+' .annotation_user').data("perm") == 2) tagclass = "aToolTip_tags_mentor";
+                        else tagclass = "aToolTip_tags_student";
+                        if(tagsSplit[ts] != "")tagsHtml = tagsHtml+'<span class="'+tagclass+'">'+tagsSplit[ts]+'</span>';
                     }
                     var name = $('.annotationL#'+annotation_ids[i]+' #userNameAnnotation').text();
                     $('.aToolTip').append('<div class="aToolTip_a"><div class="aToolTip_ann">'+ann_ann+'</div><div>'+tagsHtml+'<span class="aToolTip_user">'+name+'</span></div></div>');

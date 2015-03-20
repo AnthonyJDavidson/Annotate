@@ -273,10 +273,17 @@ body{
 	overflow: auto; padding: 3px; 
 	border-radius: 5px;
 }
-.aToolTip_tags{
+.aToolTip_tags_student{
 	font-style: italic;
 	padding: 1px;
-	background: #A6ABB6;
+	background: rgba(255,254,39,0.4);
+	border-radius: 6px;
+	border: 1px solid #A6ABB6;
+}
+.aToolTip_tags_mentor{
+	font-style: italic;
+	padding: 1px;
+	background: rgba(139,64,184,0.4);
 	border-radius: 6px;
 	border: 1px solid #A6ABB6;
 }
