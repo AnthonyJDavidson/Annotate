@@ -156,7 +156,7 @@ class DocumentController extends BaseController {
 								);
 			}
 			fclose($doc);
-			$data = array("nameofDoc" => $document->name, "doc" => $wordArray, "docName" =>$d_name, "annotations" =>$annotations, "tags" => $all_tags, "userNames" => $userNames);
+			$data = array("curUser"=>$user->id, "nameofDoc" => $document->name, "doc" => $wordArray, "docName" =>$d_name, "annotations" =>$annotations, "tags" => $all_tags, "userNames" => $userNames);
 			return View::make('document',$data);
 
 		}else return Redirect::route('home')->with('global', 'Please Sign In');
