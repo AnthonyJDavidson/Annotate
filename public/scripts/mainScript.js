@@ -73,6 +73,7 @@ function refreshAnnotationJquery(){
                     tagsHtml="";
                     var tags="";
                     var ann_ann = $('.annotationL#'+annotation_ids[i]+' .annotation_annotation').text();
+                    var ann_annText = $('.annotationL#'+annotation_ids[i]+' .annotation_annotatedText').text();
                     $('.annotationL#'+annotation_ids[i]+' .annotation_Tag').each(function(){
                         tags+= $(this).text()+',';
                     })
@@ -84,7 +85,7 @@ function refreshAnnotationJquery(){
                         if(tagsSplit[ts] != "")tagsHtml = tagsHtml+'<span class="'+tagclass+'">'+tagsSplit[ts]+'</span>';
                     }
                     var name = $('.annotationL#'+annotation_ids[i]+' #userNameAnnotation').text();
-                    $('.aToolTip').append('<div class="aToolTip_a"><div class="aToolTip_ann">'+ann_ann+'</div><div>'+tagsHtml+'<span class="aToolTip_user">'+name+'</span></div></div>');
+                    $('.aToolTip').append('<div class="aToolTip_a"><div class="aToolTip_aText">"'+ann_annText+'"</div><div class="aToolTip_ann">'+ann_ann+'</div>'+tagsHtml+'<br /><div class="aToolTip_user">'+name+'</div></div>');
                 }
             }
         }
