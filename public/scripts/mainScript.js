@@ -224,7 +224,7 @@ function refreshAnnotationJquery(){
                     console.log("Annotation Deleted",data.message);
                     loadAnnotations(true,filteredArray);
                     refreshAnnotationJquery();
-                    loadStates();
+                    loadStats();
                 }
             },
             error: function(data){
@@ -408,7 +408,7 @@ function highlightDocumentAgain(ann,paragraph,a_id,words,lines,perm){
     }
 }
 
-function loadStates(){
+function loadStats(){
 
     var annotator_count =0;
     var ann_count = 0;
@@ -560,9 +560,27 @@ $(document).ready(function (){
         }       
     });
 
+    $('.align').mouseenter(function(){
+        $(this).css("background","#A6ABB6");
+    });
+    $('.align').mouseleave(function(){
+        $(this).css("background","none");
+    });
+
+    $('.align').mousedown(function(){
+        $(this).css("background","#000");
+    });
+    $('.align').mouseup(function(){
+        $(this).css("background","#A6ABB6");
+        if(this.id == "ta_left") $("#annotation_text").css("text-align","left");
+        if(this.id == "ta_center") $("#annotation_text").css("text-align","center");
+        if(this.id == "ta_right") $("#annotation_text").css("text-align","right");
+    });
+
+
     loadAnnotations(false,filteredArray);
     refreshAnnotationJquery();
-    loadStates();
+    loadStats();
 
     $('.annotationTool').mousedown(function(){
         event.stopPropagation();
@@ -735,7 +753,7 @@ $(document).ready(function (){
                         }
 
                         
-                        loadStates();
+                        loadStats();
                         refreshAnnotationJquery();
                         $('.annotationTool #annotationInput').val("");
                         $('.annotationTool #annotationTag').val("");

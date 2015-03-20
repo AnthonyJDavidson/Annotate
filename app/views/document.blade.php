@@ -5,6 +5,10 @@
             <div id="annotationsDiv">
                 <div id="left_Col" class="mCustomScrollbar">
                     <ul class="filters" id="tagsFilter">
+                    	<h3 style="font-weight: bold">Layout</h3>
+                    	<img class="align" id="ta_left" src="images/ta_left.png" height="25" width="25" alt="left">
+                    	<img class="align" id="ta_center" src="images/ta_center.png" height="25" width="25" alt="center">
+                    	<img class="align" id="ta_right" src="images/ta_right.png" height="25" width="25" alt="right">
                         <h3 style="font-weight: bold">Filters</h3>
                         <div><input type="checkbox" id="hideAnnotations" value="hideAnn">Hide all</div>
                         <h4 style="font-weight: bold">-By Tag</h4>
