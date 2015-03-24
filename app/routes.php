@@ -49,4 +49,4 @@ Route::get('/editGroup{g_id}',array('as'=>'getEditGroup','uses'=>'GroupControlle
 Route::get('/doc-{d_name}',array('as'=>'getEditGroup','uses'=>'DocumentController@loadDoc'));
 Route::post('/saveAnnotation',array('as'=>'saveAnnotation','uses'=>'AnnotationController@saveAnnotation'));
 Route::post('/deleteAnn',array('as'=>'deleteAnn','uses'=>'AnnotationController@deleteAnn'));
-Route::post('/editAnnotation',array('as'=>'deleteAnn','uses'=>'AnnotationController@editAnnotation'));
+Route::post('/editAnnotation',array('as'=>'editAnn','uses'=>'AnnotationController@editAnnotation'));
