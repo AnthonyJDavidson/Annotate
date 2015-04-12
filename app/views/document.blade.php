@@ -18,8 +18,9 @@
                     </ul>
                     <ul class="filters"  id="userNameFilter">
                         <h4 style="font-weight: bold">-By User</h4>
+                        <span style="font-size: 12px">*** denotes Mentor</span>
                         @foreach($userNames as $uN)
-                        <li><input type="checkbox" class="hideUser" value="{{$uN["id"]}}" checked="true">{{$uN["name"]}}</li>
+                        <li><input type="checkbox" class="hideUser" value="{{$uN["id"]}}" checked="true">{{$uN["name"]}}@if($uN["perm"] == 2) ***@endif</li>
                         @endforeach
                     </ul>
                 </div>
