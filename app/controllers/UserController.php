@@ -27,7 +27,7 @@ class UserController extends BaseController {
 			)
 		);
 		if($validator->fails()){
-			return Redirect::route('account-signIn')->withErrors($validator)->withInput();
+			return Redirect::route('home')->withErrors($validator)->withInput();
 		}else{
 
 			$remember = (Input::has('remember')) ? true : false;
@@ -40,11 +40,11 @@ class UserController extends BaseController {
 			if($auth){
 				return Redirect::intended('/');
 			}else{
-				return Redirect::route('account-signIn')
+				return Redirect::route('home')
 					->with('global','Wrong email/password OR account not activated');
 			}
 		}
-		return Redirect::route('account-signIn')
+		return Redirect::route('home')
 			->with('global','Problem signing in, have you activated your account?');
 	}
 
@@ -68,7 +68,7 @@ class UserController extends BaseController {
 			)
 		);
 		if($validator->fails()){
-			return Redirect::route('changePassword')->withErrors($validator);
+			return Redirect::route('account')->withErrors($validator);
 		}else{
 			$user = User::find(Auth::user()->id);
 			$curPassword = Input::get('current_password');
@@ -80,11 +80,11 @@ class UserController extends BaseController {
 					return Redirect::route('home')->with('global','password changed');
 				}
 			}else{
-				return Redirect::route('changePassword')->with('global','Current Password incorrect');
+				return Redirect::route('account')->with('global','Current Password incorrect');
 			}
 		}
 
-		return Redirect::route('changePassword')->with('global','Password could not be changed');
+		return Redirect::route('account')->with('global','Password could not be changed');
 	}
 
 	/* User Account Creation */
@@ -110,7 +110,7 @@ class UserController extends BaseController {
 		if($validator->fails()){
 			//TODO
 			//expand error feedback
-			return Redirect::route('account-create')->withErrors($validator)->withInput();
+			return Redirect::route('home')->with('global', 'Error in edit group, try again');
 		}else{
 			$email = Input::get('email');
 			$firstnames = Input::get('firstnames');
@@ -121,7 +121,6 @@ class UserController extends BaseController {
 			$code =	str_random(60);
 
 			$user = User::create(array(
-				'permission_level' => 1,
 				'email' => $email,
 				'firstnames' => $firstnames,
 				'surname' => $surname,

@@ -3,7 +3,7 @@
 @section('content')
 		<div class="page-content">
 		<div id="editGroup">
-				<div class="groupName">{{$groupInfo["name"]}}</div>
+				<div class="groupName">Edit Group</div>
 				<div id="createUser">
 					<h2>Create User</h2>
 					<!-- fix error feedback (late on in proj) <pre>{{ print_r($errors) }}</pre> !-->
@@ -29,7 +29,9 @@
 						</div>
 						<span style="font-size: .9em">*Be Sure to make a note of this password to send to student</span>
 						<br />
-
+						<div class="field">
+							Group: <input type="text" name="group_name" value="{{$groupInfo["name"]}}" readonly>
+						</div><br />
 						<input type="submit" value="Create Account"> 	
 						{{ Form::token() }}
 					</form>
@@ -38,8 +40,8 @@
 
 				<div id="documentUpload">
 					<div class="uploadDocument" data-group="{{$groupInfo["id"]}}">
-						Upload A Document  
-						<input type="file" name="file" id="uploadDoc"/><br>
+						<h2>Upload A Document</h2>  
+						<input type="file" name="file" id="uploadDoc"><br>
 					</div>
 					
 				</div>

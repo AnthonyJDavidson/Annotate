@@ -198,10 +198,10 @@ body{
 #documentUp{
 	padding: 15px;
 }
-.uploadDoc{
-	text-align:inherit;
-	display: inherit;
+.uploadDocument input[type=file]{
+    display: inline-block;
 }
+
 .annotationTool { 
 	position: absolute;
 	left: 0px; 

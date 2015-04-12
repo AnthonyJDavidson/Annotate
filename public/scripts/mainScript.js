@@ -10,7 +10,8 @@ var text ="";
 var textElemSet = false;
 var iconYpos =0;
 var iconXpos =0;
-var filteredArray = [""];
+var filteredArrayTag = [""];
+var filteredArrayUser = [""];
 $(".page-content").mCustomScrollbar({
     axis:"y",
     mouseWheel:{ normalizeDelta: false }
@@ -23,6 +24,7 @@ function refreshAnnotationJquery(){
     $('.annotationL .editAnn').off();
     $('.filter .byTag').off();
     $('.hideMe').off();
+    $('.hideUser').off();
 
 
     $('.hideMe').change(function(){
@@ -39,8 +41,8 @@ function refreshAnnotationJquery(){
                 $(this).data("perm","0");
             });
             //add this tag to filtered array
-            filteredArray.push($(this).val());
-            loadAnnotations(true,filteredArray);
+            filteredArrayTag.push($(this).val());
+            loadAnnotations(true,filteredArrayTag,filteredArrayUser);
         }else{ // unchecked
             $('.annotation').each(function(){
                 $(this).removeClass("annotation");
@@ -52,11 +54,45 @@ function refreshAnnotationJquery(){
                 $(this).data("perm","0");
             });
             $('.filtered').each(function(){$(this).removeClass("filtered")});
-            var indexofFilter = filteredArray.indexOf($(this).val());
+            var indexofFilter = filteredArrayTag.indexOf($(this).val());
             if (indexofFilter > -1) {
-                filteredArray.splice(indexofFilter, 1);
+                filteredArrayTag.splice(indexofFilter, 1);
             }
-            loadAnnotations(true,filteredArray);
+            loadAnnotations(true,filteredArrayTag,filteredArrayUser);
+            refreshAnnotationJquery();
+        }  
+    });
+    
+    $('.hideUser').change(function(){
+        if(!($(this).is(":checked"))) {//unchecked
+            //remove all highlights and annotations (front only)
+            $('.annotation').each(function(){
+                $(this).removeClass("annotation");
+                $(this).removeClass("annotation_Mentor");
+                $(this).removeClass("annotation_Student");
+                $(this).removeClass("annotation_Overlap");
+                $(this).addClass("filtered");
+                $(this).css("background","none");
+                $(this).data("annotation","");
+            });
+            //add this tag to filtered array
+            if(filteredArrayUser.indexOf($(this).val()) == -1) filteredArrayUser.push(($(this).val()).toString());
+            loadAnnotations(true,filteredArrayTag,filteredArrayUser);
+        }else{ // unchecked
+            $('.annotation').each(function(){
+                $(this).removeClass("annotation");
+                $(this).removeClass("annotation_Mentor");
+                $(this).removeClass("annotation_Student");
+                $(this).removeClass("annotation_Overlap");
+                $(this).css("background","none");
+                $(this).data("annotation","");
+            });
+            $('.filtered').each(function(){$(this).removeClass("filtered")});
+            var indexofFilter = filteredArrayUser.indexOf($(this).val());
+            if (indexofFilter > -1) {
+                filteredArrayUser.splice(indexofFilter, 1);
+            }
+            loadAnnotations(true,filteredArrayTag,filteredArrayUser);
             refreshAnnotationJquery();
         }  
     });
@@ -179,7 +215,7 @@ function refreshAnnotationJquery(){
                         $(this).data("annotation","");
                         $(this).data("perm","0");
                     });
-                    /* Old way, doies not work for different highlight colours
+                    /* Old way, does not work for different highlight colours
                         needs update if re-write is done
                         look at saveAnn and loadAnnotations for process
 
@@ -226,7 +262,7 @@ function refreshAnnotationJquery(){
                     }*/
                     el[0].parentElement.remove();
                     console.log("Annotation Deleted",data.message);
-                    loadAnnotations(true,filteredArray);
+                    loadAnnotations(true,filteredArrayTag,filteredArrayUser);
                     refreshAnnotationJquery();
                     loadStats();
                 }
@@ -275,13 +311,16 @@ function refreshCommentImgJquery(){
     });
 }
 
-function loadAnnotations(reload,fArray){
+function loadAnnotations(reload,fArray,u_fArray){
     var annLists = $(".annotationL");
-    console.log(annLists);
+    //console.log(annLists);
     for (var i = 0; i < annLists.length; i++) {
-        console.log(annLists[i].id+ " loaded");
+        //console.log(annLists[i].id+ " loaded");
+
         //permission level for color info
         var ann_perm = $('#'+annLists[i].id+' .annotation_user').data("perm");
+        //user id (for filter)
+        var ann_uId = $('#'+annLists[i].id+' .annotation_user').data("user").toString();
         //Annotation
         var ann_ann = $('#'+annLists[i].id+' .annotation_annotation').text();
         //paragraph id
@@ -291,14 +330,22 @@ function loadAnnotations(reload,fArray){
         //which lines
         var ann_lines =$('#'+annLists[i].id).data("line");
 
-        if(fArray.length > 1){
-            tagOfAnn = $('#'+annLists[i].id+' .annotation_Tag').text();
-            if(fArray.indexOf(tagOfAnn) == -1 ){
-                //call function to highlight
-                if(reload) highlightDocumentAgain(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines,ann_perm);
-                else highlightDocument(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines,ann_perm);
+        var tag_Filter = false;
+        tagAr = [];
+        $('#'+annLists[i].id+' .annotation_Tag').each(function(){
+            tagAr.push($(this).text());
+        });
+        count = 0;
+        for(t in tagAr){
+            if(fArray.indexOf(tagAr[t]) == -1){
+                count++;
             }
-        }else{
+        }
+        if(count == 0) tag_Filter = true;
+
+
+        if(tag_Filter == false && u_fArray.indexOf(ann_uId)  == -1 ){
+            //call function to highlight
             if(reload) highlightDocumentAgain(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines,ann_perm);
             else highlightDocument(ann_ann,ann_paragraph,annLists[i].id,ann_words,ann_lines,ann_perm);
         }
@@ -559,7 +606,7 @@ $(document).ready(function (){
                 $(this).data("perm","0");
             });
             $('.filtered').each(function(){$(this).removeClass("filtered")});
-            loadAnnotations(true,filteredArray);
+            loadAnnotations(true,filteredArrayTag,filteredArrayUser);
             refreshAnnotationJquery();
         }       
     });
@@ -582,7 +629,7 @@ $(document).ready(function (){
     });
 
 
-    loadAnnotations(false,filteredArray);
+    loadAnnotations(false,filteredArrayTag,filteredArrayUser);
     refreshAnnotationJquery();
     loadStats();
 

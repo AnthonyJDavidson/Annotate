@@ -64,101 +64,105 @@ class DocumentController extends BaseController {
 			$document = Document::where('storage_name','=',substr($d_name,0, -4))->get()->first();
 			$group = $document->group_id;
 			$userGroup = UserGroup::where('group_id','=',$group)->get();
-			$userNamesIds = array();
-			foreach ($userGroup as $uG) $userNamesIds[$uG->id] = $uG->user_id;
-			$userNames = array();
-			foreach($userNamesIds as $uNI){ 
-				$userRow = User::where('id','=',$uNI)->get()->first();
-				$userNames[$userRow->id] = array('id' => $userRow->id,'name' => (($userRow->firstnames).' '.($userRow->surname)), 'perm' => $userRow->permission_level);
-			}
-			// Read line by line until end of file
-			$parArray = explode("//",fread($doc,filesize('documents/'.$d_name)));
-			$lineArray = array();
-			$wordArray = array();
-			foreach ($parArray as $p => $value) {
-				$lineArray[$p] = explode("\n",$value);
-					foreach ($lineArray[$p] as $lA => $val) {
-						$wordArray[$p][$lA] = explode(" ",$val);
-					}
-			}
-			
-			
 
-			$d_sName = substr($d_name, 0, -4);
-			$document = Document::where('storage_name','=',$d_sName)->get()->first();
-			$d_id = $document->id;
-			$ann = Annotation::where('doc_id','=',$d_id)->get();
-			$annotations = array();
-
-			$all_tags = array(); // array to store all tags in a document ---MESSY--- New db Table?
-			$all_Tags_index = 0;
-			foreach ($ann as $a) {
-				$ann_tags = array();//tags for current annotation (1 by 1)
-				$tags = $a->tags; //tags in stored format "tag1, tag2" etc
-				$moretags = true;
-				$index = 0;
-				while($moretags == true){
-					$pos = stripos($tags, ',');
-					if($pos === false){
-						$ann_tags[$index] = $tags;//only 1 tag
-						$moretags = false;
-						if(in_array($tags, $all_tags) == false){
-							$all_tags[$all_Tags_index] = $tags;
-							$all_Tags_index++;
-						}						
-					}else{
-						$foundTag = substr($tags, 0, $pos);
-						$ann_tags[$index] = $foundTag;
-						$index++;
-						//check for duplicate tags
-						if(in_array($foundTag, $all_tags) ==false ){
-							$all_tags[$all_Tags_index] = $foundTag;
-							$all_Tags_index++;
-						}
-						$tags = substr($tags, $pos+2, strlen($tags));
-					}
+			$userPartofGroup = false;
+			foreach ($userGroup as $uG) if($uG->user_id == $user->id)$userPartofGroup = true;
+			if($userPartofGroup){
+				$userNamesIds = array();
+				foreach ($userGroup as $uG) $userNamesIds[$uG->id] = $uG->user_id;
+				$userNames = array();
+				foreach($userNamesIds as $uNI){ 
+					$userRow = User::where('id','=',$uNI)->get()->first();
+					$userNames[$userRow->id] = array('id' => $userRow->id,'name' => (($userRow->firstnames).' '.($userRow->surname)), 'perm' => $userRow->permission_level);
 				}
-				while($moretags == true){
-					$pos = stripos($tags, ',');
-					if($pos === false){
-						$ann_tags[$index] = $tags;//only 1 tag
-						$moretags = false;
-						if(in_array($tags, $all_tags) == false){
-							$all_tags[$all_Tags_index] = $tags;
-							$all_Tags_index++;
-						}						
-					}else{
-						$foundTag = substr($tags, 0, $pos);
-						$ann_tags[$index] = $foundTag;
-						$index++;
-						//check for duplicate tags
-						if(in_array($foundTag, $all_tags) ==false ){
-							$all_tags[$all_Tags_index] = $foundTag;
-							$all_Tags_index++;
+				// Read line by line until end of file
+				$parArray = explode("//",fread($doc,filesize('documents/'.$d_name)));
+				$lineArray = array();
+				$wordArray = array();
+				foreach ($parArray as $p => $value) {
+					$lineArray[$p] = explode("\n",$value);
+						foreach ($lineArray[$p] as $lA => $val) {
+							$wordArray[$p][$lA] = explode(" ",$val);
 						}
-						$tags = substr($tags, $pos+2, strlen($tags));
-					}
 				}
+				
+				
 
-				$userN = $userNames[$a->user_id]['name'];
-				$perm = $userNames[$a->user_id]['perm'];
-				$annotations[$a->id] = array(
-								"a_id" => $a->id,
-								"a_text" => $a->a_text,
-								"annotation" => $a->annotation,
-								"tags" => $ann_tags,
-								"user_id" => $a->user_id,
-								"userN" => $userN,
-								"paragraph_id"=>$a->paragraph_id,
-								"line_id" =>$a->line_id,
-								"wordsData"=>$a->words_Covered,
-								"perm" =>$perm
-								);
-			}
-			fclose($doc);
-			$data = array("curUser"=>$user->id, "nameofDoc" => $document->name, "doc" => $wordArray, "docName" =>$d_name, "annotations" =>$annotations, "tags" => $all_tags, "userNames" => $userNames);
-			return View::make('document',$data);
+				$d_sName = substr($d_name, 0, -4);
+				$document = Document::where('storage_name','=',$d_sName)->get()->first();
+				$d_id = $document->id;
+				$ann = Annotation::where('doc_id','=',$d_id)->get();
+				$annotations = array();
 
+				$all_tags = array(); // array to store all tags in a document ---MESSY--- New db Table?
+				$all_Tags_index = 0;
+				foreach ($ann as $a) {
+					$ann_tags = array();//tags for current annotation (1 by 1)
+					$tags = $a->tags; //tags in stored format "tag1, tag2" etc
+					$moretags = true;
+					$index = 0;
+					while($moretags == true){
+						$pos = stripos($tags, ',');
+						if($pos === false){
+							$ann_tags[$index] = $tags;//only 1 tag
+							$moretags = false;
+							if(in_array($tags, $all_tags) == false){
+								$all_tags[$all_Tags_index] = $tags;
+								$all_Tags_index++;
+							}						
+						}else{
+							$foundTag = substr($tags, 0, $pos);
+							$ann_tags[$index] = $foundTag;
+							$index++;
+							//check for duplicate tags
+							if(in_array($foundTag, $all_tags) ==false ){
+								$all_tags[$all_Tags_index] = $foundTag;
+								$all_Tags_index++;
+							}
+							$tags = substr($tags, $pos+2, strlen($tags));
+						}
+					}
+					while($moretags == true){
+						$pos = stripos($tags, ',');
+						if($pos === false){
+							$ann_tags[$index] = $tags;//only 1 tag
+							$moretags = false;
+							if(in_array($tags, $all_tags) == false){
+								$all_tags[$all_Tags_index] = $tags;
+								$all_Tags_index++;
+							}						
+						}else{
+							$foundTag = substr($tags, 0, $pos);
+							$ann_tags[$index] = $foundTag;
+							$index++;
+							//check for duplicate tags
+							if(in_array($foundTag, $all_tags) ==false ){
+								$all_tags[$all_Tags_index] = $foundTag;
+								$all_Tags_index++;
+							}
+							$tags = substr($tags, $pos+2, strlen($tags));
+						}
+					}
+
+					$userN = $userNames[$a->user_id]['name'];
+					$perm = $userNames[$a->user_id]['perm'];
+					$annotations[$a->id] = array(
+									"a_id" => $a->id,
+									"a_text" => $a->a_text,
+									"annotation" => $a->annotation,
+									"tags" => $ann_tags,
+									"user_id" => $a->user_id,
+									"userN" => $userN,
+									"paragraph_id"=>$a->paragraph_id,
+									"line_id" =>$a->line_id,
+									"wordsData"=>$a->words_Covered,
+									"perm" =>$perm
+									);
+				}
+				fclose($doc);
+				$data = array("curUser"=>$user->id, "nameofDoc" => $document->name, "doc" => $wordArray, "docName" =>$d_name, "annotations" =>$annotations, "tags" => $all_tags, "userNames" => $userNames);
+				return View::make('document',$data);
+			}else return Redirect::route('home')->with('global', 'You are not a member of this group');
 		}else return Redirect::route('home')->with('global', 'Please Sign In');
 	}
 }
