@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 24, 2015 at 02:22 PM
+-- Generation Time: Apr 19, 2015 at 11:56 PM
 -- Server version: 5.5.36
 -- PHP Version: 5.4.25
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `annotations` (
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
 
 --
 -- Dumping data for table `annotations`
@@ -53,7 +53,7 @@ INSERT INTO `annotations` (`id`, `user_id`, `doc_id`, `paragraph_id`, `line_id`,
 (4, 7, 19, 'paragraph3', 'line2,', 'Multiple Tag Example', '0,1,2,', 'Shadows our safety.', 'Tag3, Tag4', '2015-03-21 10:45:58', '2015-03-23 18:33:39', '0000-00-00 00:00:00'),
 (5, 7, 19, 'paragraph4', 'line2,', 'Mentor annotation for overlap', '0,1,2,3,4,5,6,7,8,9,10,11,', 'Than the cloud that distills a mirror to reflect its own slow', 'Tag4', '2015-03-21 10:46:33', '2015-03-23 18:33:40', '2015-03-23 18:33:40'),
 (6, 11, 19, 'paragraph4', 'line2,', 'Reader Annotation for overlap', '6,7,8,9,10,11,', 'mirror to reflect its own slow', 'Tag4', '2015-03-21 10:47:09', '2015-03-21 10:47:09', '0000-00-00 00:00:00'),
-(7, 11, 19, 'paragraph6', 'line1,', 'Reader Annotation Example', '0,1,2,3,4,5,6,7,8,9,', 'One cry, and I stumble from bed, cow-heavy and floral', 'Tag2, Tag1', '2015-03-21 10:47:42', '2015-03-21 10:47:42', '0000-00-00 00:00:00'),
+(7, 11, 19, 'paragraph6', 'line1,', 'Reader Annotation Changed', '0,1,2,3,4,5,6,7,8,9,', 'One cry, and I stumble from bed, cow-heavy and floral', 'Tag2, Tag1', '2015-03-21 10:47:42', '2015-04-19 21:52:41', '0000-00-00 00:00:00'),
 (8, 10, 19, 'paragraph6', 'line1,', 'Multiple Reader overlap Example', '3,4,5,6,', 'I stumble from bed', 'Tag5', '2015-03-21 10:48:23', '2015-03-21 10:48:23', '0000-00-00 00:00:00'),
 (9, 7, 19, 'paragraph4', 'line2,', 'Double Annotation example', '0,1,2,', 'Than the cloud', 'Tag3', '2015-03-21 10:53:16', '2015-03-21 10:53:16', '0000-00-00 00:00:00'),
 (10, 7, 19, 'paragraph4', 'line2,', 'Triple Example', '0,', 'Than', 'Tag5', '2015-03-21 10:53:32', '2015-03-21 10:53:32', '0000-00-00 00:00:00'),
@@ -67,7 +67,8 @@ INSERT INTO `annotations` (`id`, `user_id`, `doc_id`, `paragraph_id`, `line_id`,
 (18, 7, 21, 'paragraph2', 'line3,', 'nextInt() is a function that reads the next interger that is read in bu the scanner', '4,5,6,', 'n = in.nextInt();', 'Scanner', '2015-03-23 16:42:48', '2015-03-23 16:42:48', '0000-00-00 00:00:00'),
 (19, 7, 21, 'paragraph1', 'line1,', 'You must always name you class', '1,', 'BinarySearch', 'Fundemental', '2015-03-23 16:43:25', '2015-03-23 16:43:25', '0000-00-00 00:00:00'),
 (21, 7, 21, 'paragraph8', 'line9,', 'stops the program at this point. Is generally not recommended', '8,', 'break;', 'Fundemental', '2015-03-23 16:45:11', '2015-03-23 16:45:11', '0000-00-00 00:00:00'),
-(22, 7, 21, 'paragraph5', 'line1,line2,line3,', 'This is a "for" loop. Similar to a while loop but written using this syntax. c begins at 0 and increments by 1 until it is equal to n', '4,5,6,7,8,9,10,11,:0,1,2,3,4,5,6,7,8,:0,1,2,3,4,', 'for (c = 0; c < n; c++){\narray[c] = in.nextInt();\n}', 'Loop', '2015-03-23 16:46:05', '2015-03-23 16:46:05', '0000-00-00 00:00:00');
+(22, 7, 21, 'paragraph5', 'line1,line2,line3,', 'This is a "for" loop. Similar to a while loop but written using this syntax. c begins at 0 and increments by 1 until it is equal to n', '4,5,6,7,8,9,10,11,:0,1,2,3,4,5,6,7,8,:0,1,2,3,4,', 'for (c = 0; c < n; c++){\narray[c] = in.nextInt();\n}', 'Loop', '2015-03-23 16:46:05', '2015-03-23 16:46:05', '0000-00-00 00:00:00'),
+(23, 7, 19, 'paragraph0', 'line0,', 'Overlap example', '0,1,2,3,', 'Love set you going', 'Tag3', '2015-04-14 15:14:51', '2015-04-14 15:14:51', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -130,7 +131,7 @@ INSERT INTO `groups` (`id`, `name`, `created_at`, `updated_at`, `deleted_at`) VA
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `permission_level` int(11) NOT NULL,
+  `permission_level` int(11) NOT NULL DEFAULT '1',
   `email` varchar(50) NOT NULL,
   `firstnames` varchar(60) NOT NULL,
   `surname` varchar(60) NOT NULL,
@@ -150,9 +151,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `permission_level`, `email`, `firstnames`, `surname`, `password`, `password_temp`, `code`, `active`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(7, 2, 'adavidsonFYPROJECT@gmail.com', 'Test', 'Mentor', '$2y$10$omnapbGwaFSFsY8xjV/KGOEa1cekCourar6d8ZbTTxJuOacrpk.5S', '', '', 1, '9G8lKX27Hk1BGV5OWZC7R47E1I7AptN1yrfGJPMcbRplE6lCrYd5LQIGLYPj', '2014-12-11 20:19:28', '2015-03-21 10:46:41', '0000-00-00 00:00:00'),
+(7, 2, 'adavidsonFYPROJECT@gmail.com', 'Test', 'Mentor', '$2y$10$omnapbGwaFSFsY8xjV/KGOEa1cekCourar6d8ZbTTxJuOacrpk.5S', '', '', 1, 'o5v2cYBWaPaWauu92Gv2eUoAuT0jcCQRkRHwAKoInnNj96oKiNrDQw8wEeYO', '2014-12-11 20:19:28', '2015-04-19 21:12:50', '0000-00-00 00:00:00'),
 (10, 1, 'anthony.davidson.2011@nuim.ie', 'Test', 'Reader1', '$2y$10$h7PaMtFeOS83LdHTrnGrceJi2pSUeO8IKZJ0zO/DGL2p8yOobvueC', '', '', 1, '2wj8r9dydhrWJyfSX7AFC3BViIHY3g0mjaP4AEbkRJYTijSWk0kDySvpiA1i', '2014-12-12 14:28:58', '2015-03-23 16:41:32', '0000-00-00 00:00:00'),
-(11, 1, 'darkshineo@hotmail.com', 'Test', 'Reader2', '$2y$10$1ownWsE8qzDYNxjIkpTJO.UlBGHeAMBOiEWG46WYfg05Q/VyAE9Fa', '', '', 1, 'pFv0d10WRHA5lZUA0gPLG7v4B6El7zNmCzlL7xWlZAqzC7cq6Y1xEfJTA9mG', '2015-03-19 21:13:20', '2015-03-23 16:38:00', '0000-00-00 00:00:00');
+(11, 1, 'darkshineo@hotmail.com', 'Test', 'Reader2', '$2y$10$t7X6n/YAOu1HGqDoa56a4OO3C4CYJkm3AiyW3Dmke70O/mBgIUjNa', '', '', 1, '', '2015-04-19 21:10:49', '2015-04-19 21:13:12', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -162,24 +163,25 @@ INSERT INTO `users` (`id`, `permission_level`, `email`, `firstnames`, `surname`,
 
 CREATE TABLE IF NOT EXISTS `user_groups` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `group_id` int(11) NOT NULL,
+  `group_id` varchar(11) NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `deleted_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `user_groups`
 --
 
 INSERT INTO `user_groups` (`id`, `group_id`, `user_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 7, '2014-12-02 14:12:13', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 1, 10, '2014-12-02 14:12:13', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(4, 2, 10, '2015-02-25 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(5, 1, 11, '2014-12-02 14:12:13', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(6, 2, 7, '2015-02-25 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(1, '1', 7, '2014-12-02 14:12:13', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, '1', 10, '2014-12-02 14:12:13', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(4, '2', 10, '2015-02-25 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(5, '1', 11, '2014-12-02 14:12:13', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(6, '2', 7, '2015-02-25 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(7, '1', 11, '2015-04-19 21:10:49', '2015-04-19 21:10:49', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
