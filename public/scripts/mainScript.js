@@ -136,20 +136,28 @@ function refreshAnnotationJquery(){
 
         var oldAnnotationID = $(this)[0].parentElement.id;
         var oldAnnotation = $('.annotationL#'+oldAnnotationID+ ' .annotation_annotation').text();
-        var oldTag = $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)).text();
+        //get tags
+        var tagString = "";
+        $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)+' .annotation_Tag').each(function(){
+            tagString+= $(this).text() + ', ';
+        });
+        tagString = tagString.substring(0, tagString.length - 2);
+        var tagStringArray = tagString.split(', ');
+
         $('.annotationL#'+oldAnnotationID+ ' .editAnn').toggle();
         $('.annotationL#'+oldAnnotationID+ ' .deleteAnn').toggle();
         $('.annotationL#'+oldAnnotationID+ ' .editAnn').before('<img class="editCancel" src="images/cancel.png" height="12" width="12" alt="can">');
         $('.annotationL#'+oldAnnotationID+ ' .editAnn').after('<img class="editConfirm" src="images/confirm.png" height="12" width="12" alt="can">');
         $('.annotationL#'+oldAnnotationID+ ' .annotation_annotation').after('<textArea rows="1" cols="30" id="tempTextAreaAnn" class="textArea_editAn" contenteditable>'+oldAnnotation+'</textArea>');
         $('.annotationL#'+oldAnnotationID+ ' .annotation_annotation').text("");
-        $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)).before('<textArea rows="1" cols="15" id="tempTextAreaTag" class="textArea_editAn" contenteditable>'+oldTag+'</textArea>');
+        $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)).before('<textArea rows="1" cols="15" id="tempTextAreaTag" class="textArea_editAn" contenteditable>'+tagString+'</textArea>');
         $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)+' .annotation_Tag').text("");
         var newAnnotation;
         var newTag;
         $('.annotationL#'+oldAnnotationID+ ' .editConfirm').click(function(){
             newAnnotation = $('.annotationL#'+oldAnnotationID+ ' #tempTextAreaAnn').val();
             newTag = $('.annotationL#'+oldAnnotationID+ ' #tempTextAreaTag').val();
+            newTagArray = newTag.split(', ');
             $('.annotationL#'+oldAnnotationID+ ' .textArea_editAn').remove();
             $('.annotationL#'+oldAnnotationID+ ' .editAnn').toggle();
             $('.annotationL#'+oldAnnotationID+ ' .deleteAnn').toggle();
@@ -164,11 +172,20 @@ function refreshAnnotationJquery(){
                     if(data.message == "Annotation not Edited"){
                         alert("incorrect user id, dont edit others' annotations");
                         $('.annotationL#'+oldAnnotationID+ ' .annotation_annotation').text(oldAnnotation);
-                        $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)+' .annotation_Tag').text(oldTag);
+                        var count = 0; // replace old tags 
+                        $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)+' .annotation_Tag').each(function(){
+                            $(this).text(tagStringArray[count]);
+                            count++;
+                        });
                     }else{
                         console.log("Annotation Edited");
                         $('.annotationL#'+oldAnnotationID+ ' .annotation_annotation').text(newAnnotation);
-                        $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)+' .annotation_Tag').text(newTag);
+                        $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)+' .annotation_Tag').each(function(){
+                            $(this).remove();
+                        });
+                        for(var i=0;i<newTagArray.length;i++){
+                            $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)).append('<span class="annotation_Tag">'+newTagArray[i]+'</span>')
+                        }
                     }
                 },
                 error: function(data){
@@ -180,7 +197,12 @@ function refreshAnnotationJquery(){
         });
         $('.annotationL#'+oldAnnotationID+ ' .editCancel').click(function(){
             $('.annotationL#'+oldAnnotationID+ ' .annotation_annotation').text(oldAnnotation);
-            $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)+' .annotation_Tag').text(oldTag);
+
+            var count = 0; // replace old tags 
+            $('.annotationL#'+oldAnnotationID+ ' #tags'+oldAnnotationID.substring(3)+' .annotation_Tag').each(function(){
+                $(this).text(tagStringArray[count]);
+                count++;
+            });
             $('.annotationL#'+oldAnnotationID+ ' .textArea_editAn').remove();
             $('.annotationL#'+oldAnnotationID+ ' .editAnn').toggle();
             $('.annotationL#'+oldAnnotationID+ ' .deleteAnn').toggle();

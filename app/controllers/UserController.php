@@ -96,54 +96,71 @@ class UserController extends BaseController {
 
 	//process form information
 	public function postCreate(){
-		$validator = Validator::make(Input::all(),
-			array(
-				'email' => 'required|email|unique:users',
-				'firstnames' => 'required',
-				'surname' => 'required',
-				'password' => 'required|min:6',
-				'password_again' => 'required|same:password'
-			)
+		if (Auth::user()->permission_level == 2){
+			$validator = Validator::make(Input::all(),
+				array(
+					'email' => 'required|email|unique:users',
+					'firstnames' => 'required',
+					'surname' => 'required',
+					'password' => 'required|min:6',
+					'password_again' => 'required|same:password'
+				)
 
-		);
+			);
 
-		if($validator->fails()){
-			//TODO
-			//expand error feedback
-			return Redirect::route('home')->with('global', 'Error in edit group, try again');
-		}else{
-			$email = Input::get('email');
-			$firstnames = Input::get('firstnames');
-			$surname = Input::get('surname');
-			$password = Input::get('password');
+			if($validator->fails()){
+				//TODO
+				//expand error feedback
+				return Redirect::route('home')->with('global', 'Error in edit group, try again');
+			}else if (Input::has('groupId')){ // checkbox
+				$gId = Input::get('groupId');
+				$email = Input::get('email');
+				$firstnames = Input::get('firstnames');
+				$surname = Input::get('surname');
+				$password = Input::get('password');
 
-			//Activation Code
-			$code =	str_random(60);
+				$curUGroup = UserGroup::where('group_id','=',$gId)->where('user_id','=',(Auth::user()->id))->get();
+				if($curUGroup){
 
-			$user = User::create(array(
-				'email' => $email,
-				'firstnames' => $firstnames,
-				'surname' => $surname,
-				'password' => Hash::make($password),
-				'code' => $code,
-				'active' => 0
-			));
+					
 
-			if($user){
-				//send email
-				Mail::send('emails.auth.activate', 
-					array(
-						'link'=> URL::route('account-activate',$code), 
-						'firstnames' => $firstnames, 
-						'surname' => $surname),
-					function( $message ) use ($user) {
-					$message->to($user->email, $user->firstnames)->subject('Activate Your Account');
-					});
+					//Activation Code
+					$code =	str_random(60);
 
-				return Redirect::route('home')
-				->with('global', 'Account Created, Email sent for activation');
+					$user = new User;
+					$user->email = $email;
+					$user->firstnames = $firstnames;
+					$user->surname = $surname;
+					$user->password = Hash::make($password);
+					$user->code = $code;
+					$user->active = 0;
+
+
+					if($user){
+						$user->save();
+						$uGroup_new = new UserGroup;
+						$uGroup_new->group_id = $gId;
+						$uGroup_new->user_id = $user->id;
+						$uGroup_new->save();
+
+						//send email
+						Mail::send('emails.auth.activate', 
+							array(
+								'link'=> URL::route('account-activate',$code), 
+								'firstnames' => $firstnames, 
+								'surname' => $surname),
+							function( $message ) use ($user) {
+							$message->to($user->email, $user->firstnames)->subject('Activate Your Account');
+							});
+
+						return Redirect::route('home')
+						->with('global', 'Account Created, Email sent for activation');
+					}
+				}else return Redirect::route('home')->with('global', 'Error in edit group, are you a member?');
+			}else{
+				return Redirect::route('home')->with('global', 'Error in edit group, try again');
 			}
-		}
+		}else return Redirect::route('home')->with('global', 'Insufficient permissions/Please Sign in');
 	}
 
 	// Account activation

@@ -6,7 +6,7 @@
 				<div class="groupName">Edit Group</div>
 				<div id="createUser">
 					<h2>Create User</h2>
-					<!-- fix error feedback (late on in proj) <pre>{{ print_r($errors) }}</pre> !-->
+					<!-- <pre>{{ print_r($errors) }}</pre> !-->
 					<form action="{{ URL::route('account-create-post') }}" method="post">
 						<div class="field">
 							Email: <input type="text" name="email">
@@ -30,7 +30,7 @@
 						<span style="font-size: .9em">*Be Sure to make a note of this password to send to student</span>
 						<br />
 						<div class="field">
-							Group: <input type="text" name="group_name" value="{{$groupInfo["name"]}}" readonly>
+							Please confirm Group: {{$groupInfo["name"]}} <input type="checkbox" name="groupId" value="{{$groupInfo["id"]}}">
 						</div><br />
 						<input type="submit" value="Create Account"> 	
 						{{ Form::token() }}

@@ -16,23 +16,27 @@
 				
 				<div class="cP_field">
 					<span>Current Password </span><input type="password" name="current_password">
-					@if($errors->has('current_password'))
-						{{ $errors->first('current_password') }}
-					@endif	
 				</div>
+				@if($errors->has('current_password'))
+						{{ $errors->first('current_password') }}
+				@endif	
 				<div class="cP_field">
 					<span>New Password </span><input type="password" name="new_password">
-					@if($errors->has('new_password'))
-						{{ $errors->first('new_password') }}
-					@endif	
+					
 				</div>
+				@if($errors->has('new_password'))
+						{{ $errors->first('new_password') }}
+				@endif	
 				<div class="cP_field">
 					<span>Password Again </span><input type="password" name="password_again">
-					@if($errors->has('password_again'))
-						{{ $errors->first('password_again') }}
-					@endif	
 				</div>
-				<input type="submit" value"Change Password">
+				@if($errors->has('password_again'))
+						{{ $errors->first('password_again') }}
+				@endif
+				<div>
+					<input type="submit" value"Change Password">
+				</div>
+				
 
 				{{ Form::token()}}
 			</form>

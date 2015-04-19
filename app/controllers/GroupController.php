@@ -15,7 +15,7 @@ class GroupController extends BaseController {
 			$data = array('groupInfo'=>$gInfo);
 			return View::make('editGroup',$data);
 
-		}else return Redirect::route('home')
-				->with('global', 'Insufficient permissions');
+		}else return Redirect::route('home')->with('global', 'Insufficient permissions');
 	}
+
 }
